@@ -27,6 +27,16 @@
   <input type="text" [(ngModel)]="addressSearchTerm" placeholder="Search by Address">
   <button (click)="advancedSearch()">Search</button>
 </div>  
+<div *ngIf="searchPerformed">
+  <label for="sortOptions">Sort By:</label>
+  <select id="sortOptions" [(ngModel)]="selectedSortOption" name="sortOptions">
+    <option value="addressAsc">Address - Ascending</option>
+    <option value="addressDesc">Address - Descending</option>
+    <option value="nameAsc">Name - Ascending</option>
+    <option value="nameDesc">Name - Descending</option>
+  </select>
+  <button (click)="sortAgencies()">Sort</button>
+</div>
 <div *ngFor="let agency of allAgencies">
   <div>
     <table>

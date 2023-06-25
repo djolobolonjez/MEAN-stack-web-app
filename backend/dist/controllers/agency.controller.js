@@ -21,7 +21,7 @@ class AgencyController {
         this.search = (req, res, searchType) => {
             if (searchType == search_type_1.SearchType.AddressSearch) {
                 let address = req.query.param;
-                user_1.default.find({ 'address': { $regex: address } }, (err, users) => {
+                user_1.default.find({ 'type': "agency", 'address': { $regex: address, $options: "i" } }, (err, users) => {
                     if (err) {
                         console.log(err);
                     }
@@ -32,7 +32,7 @@ class AgencyController {
             }
             else if (searchType == search_type_1.SearchType.NameSearch) {
                 let name = req.query.param;
-                user_1.default.find({ 'name': { $regex: name } }, (err, users) => {
+                user_1.default.find({ 'type': "agency", 'agencyName': { $regex: name, $options: "i" } }, (err, users) => {
                     if (err) {
                         console.log(err);
                     }
@@ -44,7 +44,8 @@ class AgencyController {
             else {
                 let name = req.query.name;
                 let address = req.query.address;
-                user_1.default.find({ 'name': { $regex: name }, 'address': { $regex: address } }, (err, users) => {
+                user_1.default.find({ 'type': "agency", 'agencyName': { $regex: name, $options: "i" },
+                    'address': { $regex: address, $options: "i" } }, (err, users) => {
                     if (err) {
                         console.log(err);
                     }

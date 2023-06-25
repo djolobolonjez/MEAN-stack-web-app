@@ -17,7 +17,7 @@ export class AgencyController {
     search = (req: express.Request, res: express.Response, searchType: SearchType) => {
         if (searchType == SearchType.AddressSearch) {
             let address = req.query.param;
-            UserModel.find({'address': {$regex: address}}, (err, users) => {
+            UserModel.find({'type': "agency", 'address': {$regex: address, $options: "i"}}, (err, users) => {
                 if (err) {
                     console.log(err);
                 }
@@ -28,7 +28,7 @@ export class AgencyController {
         }
         else if (searchType == SearchType.NameSearch) {
             let name = req.query.param;
-            UserModel.find({'name': {$regex: name}}, (err, users) => {
+            UserModel.find({'type': "agency", 'agencyName': {$regex: name, $options: "i"}}, (err, users) => {
                 if (err) {
                     console.log(err);
                 }
@@ -40,7 +40,8 @@ export class AgencyController {
         else {
             let name = req.query.name;
             let address = req.query.address;
-            UserModel.find({'name': {$regex: name}, 'address': {$regex: address}}, (err, users) => {
+            UserModel.find({'type': "agency", 'agencyName': {$regex: name, $options: "i"},
+             'address': {$regex: address, $options: "i"}}, (err, users) => {
                 if (err) {
                     console.log(err);
                 }

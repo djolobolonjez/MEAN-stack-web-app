@@ -22,6 +22,8 @@ export class MainComponent implements OnInit {
   nameSearchTerm: string;
 
   searchType: string;
+  searchPerformed: boolean = false;
+  selectedSortOption: string;
 
   ngOnInit(): void {
     this.agencyService.getAllAgencies().subscribe((users: User[]) => {
@@ -54,6 +56,7 @@ export class MainComponent implements OnInit {
     users.map((user) => {
       let agency: Agency = {
         id: user.id,
+        address: user.address,
         name: user.agencyName,
         description: user.description
       };
@@ -62,14 +65,17 @@ export class MainComponent implements OnInit {
     return agencies;
   }
   search() {
+    this.searchPerformed = false;
     if (this.searchType == "name") {
       this.agencyService.searchAgenciesByName(this.searchTerm).subscribe((users: User[]) => {
         this.allAgencies = this.retrieveAgencies(users);
+        this.searchPerformed = true;
       })
     }
     else {
       this.agencyService.searchAgenciesByAddress(this.searchTerm).subscribe((users: User[]) => {
         this.allAgencies = this.retrieveAgencies(users);
+        this.searchPerformed = true;
       })
     }
   }
@@ -78,6 +84,22 @@ export class MainComponent implements OnInit {
     this.agencyService.advancedSearch(this.nameSearchTerm, this.addressSearchTerm).subscribe((users: User[]) => {
       this.allAgencies = this.retrieveAgencies(users);
     })
+  }
+
+  sortAgencies() {
+    console.log(this.selectedSortOption);
+    if (this.selectedSortOption == "addressAsc") {
+      this.allAgencies.sort((a, b) => a.address.localeCompare(b.address));
+    }
+    else if (this.selectedSortOption == "addressDesc") {
+      this.allAgencies.sort((a, b) => b.address.localeCompare(a.address));
+    }
+    else if (this.selectedSortOption == "nameAsc") {
+      this.allAgencies.sort((a, b) => a.name.localeCompare(b.name)); 
+    }
+    else {
+      this.allAgencies.sort((a, b) => b.name.localeCompare(a.name));
+    }
   }
 
 }
