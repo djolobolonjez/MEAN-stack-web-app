@@ -5,6 +5,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AgencyController = void 0;
 const user_1 = __importDefault(require("../models/user"));
+const search_type_1 = require("../types/search.type");
 class AgencyController {
     constructor() {
         this.getAllAgencies = (req, res) => {
@@ -16,6 +17,42 @@ class AgencyController {
                     res.json(agencies);
                 }
             });
+        };
+        this.search = (req, res, searchType) => {
+            if (searchType == search_type_1.SearchType.AddressSearch) {
+                let address = req.query.param;
+                user_1.default.find({ 'address': { $regex: address } }, (err, users) => {
+                    if (err) {
+                        console.log(err);
+                    }
+                    else {
+                        res.json(users);
+                    }
+                });
+            }
+            else if (searchType == search_type_1.SearchType.NameSearch) {
+                let name = req.query.param;
+                user_1.default.find({ 'name': { $regex: name } }, (err, users) => {
+                    if (err) {
+                        console.log(err);
+                    }
+                    else {
+                        res.json(users);
+                    }
+                });
+            }
+            else {
+                let name = req.query.name;
+                let address = req.query.address;
+                user_1.default.find({ 'name': { $regex: name }, 'address': { $regex: address } }, (err, users) => {
+                    if (err) {
+                        console.log(err);
+                    }
+                    else {
+                        res.json(users);
+                    }
+                });
+            }
         };
     }
 }

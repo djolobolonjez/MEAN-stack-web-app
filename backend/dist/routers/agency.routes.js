@@ -5,7 +5,11 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const agency_controller_1 = require("../controllers/agency.controller");
+const search_type_1 = require("../types/search.type");
 const AgencyRouter = express_1.default.Router();
 AgencyRouter.route('/getAllAgencies').get((req, res) => new agency_controller_1.AgencyController().getAllAgencies(req, res));
+AgencyRouter.route('/searchByName').get((req, res) => new agency_controller_1.AgencyController().search(req, res, search_type_1.SearchType.NameSearch));
+AgencyRouter.route('/searchByAddress').get((req, res) => new agency_controller_1.AgencyController().search(req, res, search_type_1.SearchType.AddressSearch));
+AgencyRouter.route('/advancedSearch').get((req, res) => new agency_controller_1.AgencyController().search(req, res, search_type_1.SearchType.AdvancedSearch));
 exports.default = AgencyRouter;
 //# sourceMappingURL=agency.routes.js.map
