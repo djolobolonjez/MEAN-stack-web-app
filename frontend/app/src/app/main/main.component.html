@@ -1,9 +1,32 @@
 <h1>Uredi me</h1>
-<div class="button-container">
-    
-    <button (click)="login()">Login</button>
-    <button (click)="register()">Register</button>
+<div>
+  <button (click)="login()">Login</button>
 </div>
+<div>
+  <button (click)="register()">Register</button>
+</div>
+<div>
+  <button (click)="toggleSearch()">Search</button>
+</div>
+<div>
+  <button (click)="toggleAdvancedSearch()">Advanced Search</button>
+</div>
+
+<div *ngIf="isStandardSearch">
+  <label for="searchType">Search By:</label>
+  <select [(ngModel)]="searchType" name="searchType">
+    <option value="name">Name</option>
+    <option value="address">Address</option>
+  </select>
+  <input type="text" [(ngModel)]="searchTerm" placeholder="Enter search term">
+  <button (click)="search()">Search</button>
+</div>
+
+<div *ngIf="isAdvancedSearch">
+  <input type="text" [(ngModel)]="nameSearchTerm" placeholder="Search by Name">
+  <input type="text" [(ngModel)]="addressSearchTerm" placeholder="Search by Address">
+  <button (click)="advancedSearch()">Search</button>
+</div>  
 <div *ngFor="let agency of allAgencies">
   <div>
     <table>
