@@ -18,6 +18,28 @@ class UserController {
                 }
             });
         };
+        this.login = (req, res) => {
+            let username = req.body.username;
+            let password = req.body.password;
+            user_1.default.findOne({ 'username': username, 'password': password }, (err, user) => {
+                if (err) {
+                    console.log(err); // prijaviti gresku o pogresno unetim podacima
+                }
+                else {
+                    res.json(user);
+                }
+            });
+        };
+        this.getId = (req, res) => {
+            user_1.default.findOne({}).sort({ "id": -1 }).limit(1).exec((err, user) => {
+                if (err) {
+                    console.log(err);
+                }
+                else {
+                    res.json(user);
+                }
+            });
+        };
     }
 }
 exports.UserController = UserController;

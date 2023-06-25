@@ -15,3 +15,6 @@
       <button type="submit">Login</button>
     </form>
   </div>
+  <div *ngIf="loginErrorMessage">
+    <p>{{ loginErrorMessage }}</p>
+  </div>

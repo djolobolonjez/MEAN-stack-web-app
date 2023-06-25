@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ClientService } from '../services/client.service';
 import { AgencyService } from '../services/agency.service';
+import { CommonService } from '../services/common.service';
+import { User } from '../models/user';
 
 @Component({
   selector: 'app-register',
@@ -9,10 +11,15 @@ import { AgencyService } from '../services/agency.service';
 })
 export class RegisterComponent implements OnInit {
 
-  constructor(private clientService: ClientService, private agencyService: AgencyService) { }
+  constructor(private clientService: ClientService, private agencyService: AgencyService, private commonService: CommonService) { }
 
   ngOnInit(): void {
+    this.commonService.getId().subscribe((user: User) => {
+      this.id = user.id + 1;
+    })
   }
+
+  id: number;
 
   userType: string;
   username: string;
@@ -41,14 +48,14 @@ export class RegisterComponent implements OnInit {
     }
     else {
       if (this.userType == "client") {
-        this.clientService.register(this.username, this.password, this.phone, this.email, this.firstname, this.lastname)
+        this.clientService.register(this.id, this.username, this.password, this.phone, this.email, this.firstname, this.lastname, "client")
         .subscribe((resp) => {
           alert(resp['message']);
         })
       }
       else {
-        this.agencyService.register(this.username, this.password, this.phone, this.email, this.agencyName, this.address,
-          this.uniqueNumber, this.description).subscribe((resp) => {
+        this.agencyService.register(this.id, this.username, this.password, this.phone, this.email, this.agencyName, this.address,
+          this.uniqueNumber, this.description, "agency").subscribe((resp) => {
             alert(resp['message']);
           })
       }
