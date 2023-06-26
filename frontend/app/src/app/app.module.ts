@@ -10,6 +10,10 @@ import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
 import { ClientComponent } from './client/client.component';
 import { AgencyComponent } from './agency/agency.component';
+import { ObjectsComponent } from './objects/objects.component';
+import { AgenciesComponent } from './agencies/agencies.component';
+import { JobsComponent } from './jobs/jobs.component';
+import { ProfileComponent } from './profile/profile.component';
 
 @NgModule({
   declarations: [
@@ -18,7 +22,11 @@ import { AgencyComponent } from './agency/agency.component';
     LoginComponent,
     RegisterComponent,
     ClientComponent,
-    AgencyComponent
+    AgencyComponent,
+    ObjectsComponent,
+    AgenciesComponent,
+    JobsComponent,
+    ProfileComponent
   ],
   imports: [
     BrowserModule,

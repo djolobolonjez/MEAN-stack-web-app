@@ -5,12 +5,23 @@ import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
 import { ClientComponent } from './client/client.component';
 import { AgencyComponent } from './agency/agency.component';
+import { ProfileComponent } from './profile/profile.component';
+import { ObjectsComponent } from './objects/objects.component';
+import { AgenciesComponent } from './agencies/agencies.component';
+import { JobsComponent } from './jobs/jobs.component';
 
 const routes: Routes = [
   { path: "", component: MainComponent },
   { path: "login", component: LoginComponent },
   { path: "register", component: RegisterComponent },
-  { path: "client", component: ClientComponent },
+  { path: "client", component: ClientComponent, children: [
+    { path: '', redirectTo: 'profile', pathMatch: 'full'},
+    { path: 'profile', component: ProfileComponent },
+    { path: 'objects', component: ObjectsComponent },
+    { path: 'agencies', component: AgenciesComponent },
+    { path: 'jobs', component: JobsComponent }
+  ] 
+  },
   { path: "agency", component: AgencyComponent }
 ];
 

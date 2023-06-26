@@ -23,6 +23,7 @@ export class LoginComponent implements OnInit {
   login(): void {
     this.commonService.login(this.username, this.password).subscribe((user: User) => {
       if (user != null) {
+        sessionStorage.setItem('username', this.username);
         let route = user.type;
         this.router.navigate([route]);
       } 
