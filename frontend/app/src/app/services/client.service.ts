@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { last } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -23,5 +24,20 @@ export class ClientService {
     };
 
     return this.http.post(`${this.uri}/user/register`, data);
+  }
+
+  getLoggedUser(username) {
+    return this.http.get(`${this.uri}/client/getLoggedUser?param=${username}`);
+  }
+
+  editUser(username, firstname, lastname, email, phone) {
+    let data = {
+      username: username,
+      firstname: firstname,
+      lastname: lastname,
+      email: email,
+      phone: phone
+    };
+    return this.http.post(`${this.uri}/client/editUser`, data);
   }
 }

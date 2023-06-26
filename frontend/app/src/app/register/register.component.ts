@@ -36,6 +36,9 @@ export class RegisterComponent implements OnInit {
 
   passwordError: string;
 
+  image: any;
+  imageChoosen: boolean = false;
+
   register(): void {
     if (this.password.length < 7 || this.password.length > 12) {
       this.passwordError = "Password should be between 7 and 12 characters long!";
@@ -65,6 +68,22 @@ export class RegisterComponent implements OnInit {
   isValidPassword(password: string) {
     const regex = /^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z][A-Za-z\d@$!%*#?&]+$/;
     return regex.test(password);
+  }
+
+  imageSelected(event: any) {
+    if (event.target.value) {
+      this.image = <File>event.target.files[0];
+      this.imageChoosen = true;
+    }
+  }
+
+  upload() {
+    this.imageChoosen = false;
+    let form = new FormData();
+    if (this.image) {
+      form.append('profilePicture', this.image, this.image.name);
+      // pozvati metodu iz common service-a
+    }
   }
 
 }

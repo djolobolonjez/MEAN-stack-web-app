@@ -1,1 +1,23 @@
-<p>profile works!</p>
+<div>
+    <h2>User Information</h2>
+    <div>
+      <label for="firstname">First Name:</label>
+      <input type="text" id="firstname" [(ngModel)]="firstname" [readonly]="!isEditing" />
+    </div>
+    <div>
+      <label for="lastname">Last Name:</label>
+      <input type="text" id="lastname" [(ngModel)]="lastname" [readonly]="!isEditing" />
+    </div>
+    <div>
+      <label for="email">Email:</label>
+      <input type="email" id="email" [(ngModel)]="email" [readonly]="!isEditing" />
+    </div>
+    <div>
+      <label for="phone">Phone:</label>
+      <input type="text" id="phone" [(ngModel)]="phone" [readonly]="!isEditing" />
+    </div>
+    <div>
+      <button (click)="editUser()">Edit</button>
+      <button *ngIf="isEditing" (click)="applyChanges()">Apply Changes</button>
+    </div>
+  </div>

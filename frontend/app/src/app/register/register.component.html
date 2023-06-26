@@ -70,6 +70,17 @@
           </div>
         </div>
       </div>
+      <div>
+        <form>      
+          <div>
+            <input type="file" (input)="imageSelected($event)" />
+          </div>
+          <br>
+          <div>
+            <button *ngIf="imageChoosen" type="submit" (click)="upload()">Upload</button>
+          </div>
+        </form>
+      </div>
       
       <button type="submit">Register</button>
     </form>
