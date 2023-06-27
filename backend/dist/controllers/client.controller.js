@@ -24,10 +24,12 @@ class ClientController {
             let lastname = req.body.lastname;
             let email = req.body.email;
             let phone = req.body.phone;
+            let image = req.body.image;
             user_1.default.updateOne({ 'username': username }, { $set: { 'firstname': firstname,
                     'lastname': lastname,
                     'email': email,
-                    'phone': phone } }, (err, resp) => {
+                    'phone': phone,
+                    'profilePicture': image } }, (err, resp) => {
                 if (err) {
                     console.log(err);
                 }

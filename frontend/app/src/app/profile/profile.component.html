@@ -17,6 +17,13 @@
       <input type="text" id="phone" [(ngModel)]="phone" [readonly]="!isEditing" />
     </div>
     <div>
+      <img [src]="profileImage" alt="Image">
+      <div *ngIf="isEditing">
+        <input type="file" (input)="editProfilePicture($event)" />
+        <button *ngIf="imageChoosen" (click)="uploadProfilePicture()">Upload</button>
+      </div>
+    </div>
+    <div>
       <button (click)="editUser()">Edit</button>
       <button *ngIf="isEditing" (click)="applyChanges()">Apply Changes</button>
     </div>

@@ -25,7 +25,17 @@ export class LoginComponent implements OnInit {
       if (user != null) {
         sessionStorage.setItem('username', this.username);
         let route = user.type;
-        this.router.navigate([route]);
+        if (route != 'client' && route != 'agency') {
+          this.loginErrorMessage = "Access violation!";
+        }
+        else {
+          if (user.valid) {
+            this.router.navigate([route]);
+          }
+          else {
+            this.loginErrorMessage = "Account is not activated!";
+          }
+        }
       } 
       else {
         this.loginErrorMessage = "Invalid username or password!";

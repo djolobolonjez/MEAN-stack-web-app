@@ -1,29 +1,10 @@
 import express, { Request, Response } from 'express';
-import multer, {File} from 'multer';
 import { UserController } from '../controllers/user.controller';
-import UserModel from '../models/user'
+import UserModel from '../models/user';
+import path from 'path';
+import fs from 'fs';
 
 const UserRouter = express.Router();
-
-let uploadImage = () => {
-    const storage = multer.diskStorage({
-        destination: (req, file, callback) => {
-            callback(null, 'uploads');
-        },
-        filename: (req, file, callback) => {
-            callback(null, req.params.username + '_' +  file.originalname);
-        }
-    });
-    const imageFilter = (req, file, callback) => {
-        if (!file.originalname.match(/\.(jpg|png)$/)) {
-            return callback(new Error('You can upload only images!'), false);
-        }
-        callback(null, true);
-    }
-    
-    return multer({imageFilter, storage});
-};
-
 
 UserRouter.route('/register').post(
     (req, res) => new UserController().register(req, res)
@@ -37,15 +18,34 @@ UserRouter.route('/getId').get(
     (req, res) => new UserController().getId(req, res)
 );
 
-UserRouter.post('/:username/upload', uploadImage().single('profilePicture'), (req: Request & {file: File}, res: Response) => {
-    const file = req.file;
-    
+UserRouter.route('/images/:username').get(
+    (req, res) => new UserController().getImage(req, res)
+);
+
+UserRouter.post('/:username/upload', (req: Request, res: Response) => {
+    let imageBlob: any;
+
+    if (!req.body.blob) {
+        let imagePath = `uploads\\default.jpg`;
+        const fullPath = path.join(__dirname, '../../', imagePath);
+
+        fs.readFile(fullPath, (err, data) => {
+            if (err) {
+                console.log(err);
+                return res.status(500).send('Internal server error');
+            }
+            imageBlob = `data:image/jpeg;base64,` + data.toString('base64');
+        })
+    }
+    else {
+        imageBlob = req.body.blob;
+    }
     UserModel.findOne({'username': req.params.username}, (err, user) => {
         if (err) {
             console.log(err);
         }
         else {
-            user['profilePicture'] = file.path;
+            user['profilePicture'] = imageBlob;
             user.save((err, resp) => {
                 if (err) {
                     console.log(err);

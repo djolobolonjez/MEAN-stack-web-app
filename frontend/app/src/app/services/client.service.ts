@@ -30,13 +30,14 @@ export class ClientService {
     return this.http.get(`${this.uri}/client/getLoggedUser?param=${username}`);
   }
 
-  editUser(username, firstname, lastname, email, phone) {
+  editUser(username, firstname, lastname, email, phone, image) {
     let data = {
       username: username,
       firstname: firstname,
       lastname: lastname,
       email: email,
-      phone: phone
+      phone: phone,
+      image: image
     };
     return this.http.post(`${this.uri}/client/editUser`, data);
   }

@@ -14,6 +14,8 @@ import { ObjectsComponent } from './objects/objects.component';
 import { AgenciesComponent } from './agencies/agencies.component';
 import { JobsComponent } from './jobs/jobs.component';
 import { ProfileComponent } from './profile/profile.component';
+import { AdminComponent } from './admin/admin.component';
+import { AdminLoginComponent } from './admin-login/admin-login.component';
 
 @NgModule({
   declarations: [
@@ -26,7 +28,9 @@ import { ProfileComponent } from './profile/profile.component';
     ObjectsComponent,
     AgenciesComponent,
     JobsComponent,
-    ProfileComponent
+    ProfileComponent,
+    AdminComponent,
+    AdminLoginComponent
   ],
   imports: [
     BrowserModule,

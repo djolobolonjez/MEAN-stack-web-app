@@ -4,6 +4,8 @@ import { AgencyService } from '../services/agency.service';
 import { CommonService } from '../services/common.service';
 import { User } from '../models/user';
 import { Router } from '@angular/router';
+import { ImageWrapper } from '../models/image';
+import { ImageService } from '../services/image.service';
 
 @Component({
   selector: 'app-register',
@@ -13,9 +15,11 @@ import { Router } from '@angular/router';
 export class RegisterComponent implements OnInit {
 
   constructor(private clientService: ClientService, private agencyService: AgencyService,
-              private commonService: CommonService, private router: Router) { }
+              private commonService: CommonService, private router: Router,
+              private imageService: ImageService) { }
 
   ngOnInit(): void {
+    this.imageHandler = new ImageWrapper();
     this.commonService.getId().subscribe((user: User) => {
       this.id = user.id + 1;
     })
@@ -38,9 +42,9 @@ export class RegisterComponent implements OnInit {
 
   passwordError: string;
 
-  image: any;
+  imageHandler: ImageWrapper;
+  imageBlob: string;
   imageChoosen: boolean = false;
-  form: FormData;
 
   register(): void {
     if (this.password.length < 7 || this.password.length > 12) {
@@ -56,7 +60,7 @@ export class RegisterComponent implements OnInit {
       if (this.userType == "client") {
         this.clientService.register(this.id, this.username, this.password, this.phone, this.email, this.firstname, this.lastname, "client")
         .subscribe((resp) => {
-          this.commonService.uploadProfilePicture(this.username, this.form).subscribe((result) => {
+          this.commonService.uploadProfilePicture(this.username, this.imageBlob).subscribe((result) => {
             alert(result['message']);
           })
         })
@@ -78,18 +82,25 @@ export class RegisterComponent implements OnInit {
   }
 
   imageSelected(event: any): void {
-    if (event.target.value) {
-      this.image = <File>event.target.files[0];
-      this.imageChoosen = true;
-    }
+    this.imageService.imageSelected(event, this.imageHandler)
+      .then((isValid) => {
+        this.imageChoosen = isValid;
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }
-
   upload(): void {
     this.imageChoosen = false;
-    this.form = new FormData();
-    if (this.image) {
-      this.form.append('profilePicture', this.image, this.image.name);
-    }
-  }
+    const reader = new FileReader();
+    reader.onload = (readerEvent) => {
+      this.imageBlob = readerEvent.target.result as string;
+    };
 
+    reader.readAsDataURL(this.imageHandler.image);
+  }
 }
+
+  
+
+

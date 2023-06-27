@@ -9,9 +9,13 @@ import { ProfileComponent } from './profile/profile.component';
 import { ObjectsComponent } from './objects/objects.component';
 import { AgenciesComponent } from './agencies/agencies.component';
 import { JobsComponent } from './jobs/jobs.component';
+import { AdminLoginComponent } from './admin-login/admin-login.component';
+import { AdminComponent } from './admin/admin.component';
 
 const routes: Routes = [
   { path: "", component: MainComponent },
+  { path: "admin-login", component: AdminLoginComponent},
+  { path: "admin", component: AdminComponent},
   { path: "login", component: LoginComponent },
   { path: "register", component: RegisterComponent },
   { path: "client", component: ClientComponent, children: [

@@ -5,6 +5,14 @@ export class UserController {
 
     register = (req: express.Request, res: express.Response) => {
         let user = new UserModel(req.body);
+        user.valid = false;
+
+        UserModel.updateOne({'username': 'admin'}, {$push: {'requests': user.username}}, (err, resp) => {
+            if (err) {
+                console.log(err);
+            }
+        });
+
         user.save((err, resp) => {
             if (err) {
                 console.log(err); // prijaviti nekako drugacije gresku
@@ -12,7 +20,7 @@ export class UserController {
             else {
                 res.json({'message': 'ok'});
             }
-        })
+        });
     }
 
     login = (req: express.Request, res: express.Response) => {
@@ -36,6 +44,19 @@ export class UserController {
             }
             else {
                 res.json(user);
+            }
+        })
+    }
+
+    getImage = (req: express.Request, res: express.Response) => {
+        UserModel.findOne({'username': req.params.username}, (err, user) => {
+            if (err) {
+                console.log(err);
+            }
+            else {
+                const imageBlob = user['profilePicture'];
+
+                res.status(200).json({'image': imageBlob});
             }
         })
     }

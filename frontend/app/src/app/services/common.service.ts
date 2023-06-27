@@ -23,7 +23,16 @@ export class CommonService {
     return this.http.get(`${this.uri}/user/getId`);
   }
 
-  uploadProfilePicture(username: string, form: FormData) {
-    return this.http.post(`${this.uri}/user/` + username + `/upload`, form);
+  
+uploadProfilePicture(username: string, blob: string) {
+    let data = {
+      blob: blob
+    };
+
+    return this.http.post(`${this.uri}/user/${username}/upload`, data);
+  }
+
+  getImage(username: string) {
+    return this.http.get(`${this.uri}/user/images/${username}`);
   }
 }

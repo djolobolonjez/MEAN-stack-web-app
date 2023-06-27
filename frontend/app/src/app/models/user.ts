@@ -12,4 +12,6 @@ export class User {
     uniqueNumber: string;
     description: string;
     profilePicture: string;
+    valid: boolean;
+    requests: Array<string>;
 }

@@ -9,6 +9,12 @@ class UserController {
     constructor() {
         this.register = (req, res) => {
             let user = new user_1.default(req.body);
+            user.valid = false;
+            user_1.default.updateOne({ 'username': 'admin' }, { $push: { 'requests': user.username } }, (err, resp) => {
+                if (err) {
+                    console.log(err);
+                }
+            });
             user.save((err, resp) => {
                 if (err) {
                     console.log(err); // prijaviti nekako drugacije gresku
@@ -37,6 +43,17 @@ class UserController {
                 }
                 else {
                     res.json(user);
+                }
+            });
+        };
+        this.getImage = (req, res) => {
+            user_1.default.findOne({ 'username': req.params.username }, (err, user) => {
+                if (err) {
+                    console.log(err);
+                }
+                else {
+                    const imageBlob = user['profilePicture'];
+                    res.status(200).json({ 'image': imageBlob });
                 }
             });
         };

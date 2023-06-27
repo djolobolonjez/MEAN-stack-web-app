@@ -41,6 +41,12 @@ let User = new Schema({
     },
     profilePicture: {
         type: String
+    },
+    requests: {
+        type: Array
+    },
+    valid: {
+        type: Boolean
     }
 });
 
