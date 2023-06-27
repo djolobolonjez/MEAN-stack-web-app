@@ -38,6 +38,9 @@ let User = new Schema({
     },
     description: {
         type: String
+    },
+    profilePicture: {
+        type: String
     }
 });
 

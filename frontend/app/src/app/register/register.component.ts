@@ -3,6 +3,7 @@ import { ClientService } from '../services/client.service';
 import { AgencyService } from '../services/agency.service';
 import { CommonService } from '../services/common.service';
 import { User } from '../models/user';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-register',
@@ -11,7 +12,8 @@ import { User } from '../models/user';
 })
 export class RegisterComponent implements OnInit {
 
-  constructor(private clientService: ClientService, private agencyService: AgencyService, private commonService: CommonService) { }
+  constructor(private clientService: ClientService, private agencyService: AgencyService,
+              private commonService: CommonService, private router: Router) { }
 
   ngOnInit(): void {
     this.commonService.getId().subscribe((user: User) => {
@@ -38,6 +40,7 @@ export class RegisterComponent implements OnInit {
 
   image: any;
   imageChoosen: boolean = false;
+  form: FormData;
 
   register(): void {
     if (this.password.length < 7 || this.password.length > 12) {
@@ -53,7 +56,9 @@ export class RegisterComponent implements OnInit {
       if (this.userType == "client") {
         this.clientService.register(this.id, this.username, this.password, this.phone, this.email, this.firstname, this.lastname, "client")
         .subscribe((resp) => {
-          alert(resp['message']);
+          this.commonService.uploadProfilePicture(this.username, this.form).subscribe((result) => {
+            alert(result['message']);
+          })
         })
       }
       else {
@@ -62,6 +67,8 @@ export class RegisterComponent implements OnInit {
             alert(resp['message']);
           })
       }
+
+      this.router.navigate(['']);
     }
   }
 
@@ -70,19 +77,18 @@ export class RegisterComponent implements OnInit {
     return regex.test(password);
   }
 
-  imageSelected(event: any) {
+  imageSelected(event: any): void {
     if (event.target.value) {
       this.image = <File>event.target.files[0];
       this.imageChoosen = true;
     }
   }
 
-  upload() {
+  upload(): void {
     this.imageChoosen = false;
-    let form = new FormData();
+    this.form = new FormData();
     if (this.image) {
-      form.append('profilePicture', this.image, this.image.name);
-      // pozvati metodu iz common service-a
+      this.form.append('profilePicture', this.image, this.image.name);
     }
   }
 

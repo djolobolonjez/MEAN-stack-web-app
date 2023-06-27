@@ -22,4 +22,8 @@ export class CommonService {
   getId() {
     return this.http.get(`${this.uri}/user/getId`);
   }
+
+  uploadProfilePicture(username: string, form: FormData) {
+    return this.http.post(`${this.uri}/user/` + username + `/upload`, form);
+  }
 }

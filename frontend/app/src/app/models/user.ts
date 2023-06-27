@@ -11,4 +11,5 @@ export class User {
     address: string;
     uniqueNumber: string;
     description: string;
+    profilePicture: string;
 }
