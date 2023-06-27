@@ -47,6 +47,9 @@ let User = new Schema({
     },
     valid: {
         type: Boolean
+    },
+    invalid: {
+        type: Array
     }
 });
 

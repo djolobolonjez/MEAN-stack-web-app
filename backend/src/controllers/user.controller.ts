@@ -1,5 +1,7 @@
 import express from 'express';
 import UserModel from '../models/user';
+import path from 'path';
+import fs from 'fs';
 
 export class UserController {
 
@@ -59,6 +61,47 @@ export class UserController {
                 res.status(200).json({'image': imageBlob});
             }
         })
+    }
+
+    upload = (req: express.Request, res: express.Response) => {
+        let imageBlob: string;
+
+        if (!req.body.blob) {
+            let imagePath = `uploads\\default.jpg`;
+            const fullPath = path.join(__dirname, '../../', imagePath);
+    
+            fs.readFile(fullPath, (err, data) => {
+                if (err) {
+                    console.log(err);
+                    return res.status(500).send('Internal server error');
+                }
+                imageBlob = `data:image/jpeg;base64,` + data.toString('base64');
+                this.updateProfilePicture(imageBlob, req, res);
+            });
+        }
+        else {
+            imageBlob = req.body.blob;
+            this.updateProfilePicture(imageBlob, req, res);
+        }
+    }
+
+    updateProfilePicture(imageBlob: string, req: express.Request, res: express.Response) {
+        UserModel.findOne({'username': req.params.username}, (err, user) => {
+            if (err) {
+                console.log(err);
+            }
+            else {
+                user['profilePicture'] = imageBlob;
+                user.save((err, resp) => {
+                    if (err) {
+                        console.log(err);
+                    }
+                    else {
+                        res.json({'message': 'ok'});
+                    }
+                })
+            }
+        });
     }
  
 }

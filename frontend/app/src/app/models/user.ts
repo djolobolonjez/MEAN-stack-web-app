@@ -14,4 +14,5 @@ export class User {
     profilePicture: string;
     valid: boolean;
     requests: Array<string>;
+    invalid: Array<string>;
 }

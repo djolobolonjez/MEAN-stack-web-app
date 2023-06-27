@@ -18,4 +18,17 @@ export class AdminService {
 
     return this.http.post(`${this.uri}/admin/login`, data);
   }
+
+  getRegistrationRequests() {
+    return this.http.get(`${this.uri}/admin/getRegistrationRequests`);
+  }
+
+  allowRegistration(username: string) {
+    console.log("okk");
+    return this.http.get(`${this.uri}/admin/allowRegistration?param=${username}`);
+  }
+
+  denyRegistration(username: string) {
+    return this.http.get(`${this.uri}/admin/denyRegistration?param=${username}`);
+  }
 }

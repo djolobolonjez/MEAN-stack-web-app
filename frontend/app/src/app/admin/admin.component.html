@@ -1,1 +1,13 @@
-<p>admin works!</p>
+<h3>Requests</h3>
+<div *ngFor="let request of registrationRequests">
+    <div>
+        <table>
+        <tr>
+            <td><h4>Username: {{request}}</h4></td>
+            <td><button (click)="allowRegistration(request)">Allow</button></td>
+            <td><button (click)="denyRegistration(request)">Deny</button></td>
+        </tr>
+        </table>
+    </div>
+</div>
+<hr>

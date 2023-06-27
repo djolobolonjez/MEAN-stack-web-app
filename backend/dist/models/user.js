@@ -50,6 +50,9 @@ let User = new Schema({
     },
     valid: {
         type: Boolean
+    },
+    invalid: {
+        type: Array
     }
 });
 exports.default = mongoose_1.default.model('UserModel', User, 'korisnici');
