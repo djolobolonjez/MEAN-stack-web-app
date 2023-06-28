@@ -5,6 +5,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AdminController = void 0;
 const user_1 = __importDefault(require("../models/user"));
+const agency_1 = __importDefault(require("../models/agency"));
 class AdminController {
     constructor() {
         this.login = (req, res) => {
@@ -36,6 +37,11 @@ class AdminController {
                     console.log(err);
                 }
             });
+            agency_1.default.updateOne({ 'username': username }, { $set: { 'valid': true } }, (err, resp) => {
+                if (err) {
+                    console.log(err);
+                }
+            });
             user_1.default.updateOne({ 'username': 'admin' }, { $pull: { 'requests': username } }, (err, resp) => {
                 if (err) {
                     console.log(err);
@@ -48,23 +54,44 @@ class AdminController {
         this.denyRegistration = (req, res) => {
             let username = req.query.param;
             user_1.default.findOne({ 'username': username }, (err, user) => {
-                console.log(user.email);
-                user_1.default.updateOne({ 'username': 'admin' }, {
-                    $pull: { 'requests': username },
-                    $push: { 'invalid': { $each: [username, user.email] } }
-                }, (err, resp) => {
-                    if (err) {
-                        console.log(err);
-                    }
-                    user_1.default.deleteOne({ 'username': username }, (err, resp) => {
+                if (user != null) {
+                    user_1.default.updateOne({ 'username': 'admin' }, {
+                        $pull: { 'requests': username },
+                        $push: { 'invalid': { $each: [username, user.email] } }
+                    }, (err, resp) => {
                         if (err) {
                             console.log(err);
                         }
-                        else {
-                            res.json({ 'message': 'ok' });
-                        }
+                        user_1.default.deleteOne({ 'username': username }, (err, resp) => {
+                            if (err) {
+                                console.log(err);
+                            }
+                            else {
+                                res.json({ 'message': 'ok' });
+                            }
+                        });
                     });
-                });
+                }
+                else {
+                    agency_1.default.findOne({ 'username': username }, (err, user) => {
+                        user_1.default.updateOne({ 'username': 'admin' }, {
+                            $pull: { 'requests': username },
+                            $push: { 'invalid': { $each: [username, user.email] } }
+                        }, (err, resp) => {
+                            if (err) {
+                                console.log(err);
+                            }
+                            agency_1.default.deleteOne({ 'username': username }, (err, resp) => {
+                                if (err) {
+                                    console.log(err);
+                                }
+                                else {
+                                    res.json({ 'message': 'ok' });
+                                }
+                            });
+                        });
+                    });
+                }
             });
         };
     }

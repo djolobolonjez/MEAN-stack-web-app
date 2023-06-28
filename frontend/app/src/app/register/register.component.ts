@@ -20,9 +20,6 @@ export class RegisterComponent implements OnInit {
 
   ngOnInit(): void {
     this.imageHandler = new ImageWrapper();
-    this.commonService.getId().subscribe((user: User) => {
-      this.id = user.id + 1;
-    })
   }
 
   id: number;
@@ -58,18 +55,28 @@ export class RegisterComponent implements OnInit {
     }
     else {
       if (this.userType == "client") {
+        this.commonService.getId("client").subscribe((user: User) => {
+          this.id = user.id + 1;
+        });
+
         this.clientService.register(this.id, this.username, this.password, this.phone, this.email, this.firstname, this.lastname, "client")
         .subscribe((resp) => {
-          this.commonService.uploadProfilePicture(this.username, this.imageBlob).subscribe((result) => {
+          this.commonService.uploadProfilePicture(this.username, this.imageBlob, "client").subscribe((result) => {
             alert(result['message']);
           })
         })
       }
       else {
+        this.commonService.getId("agency").subscribe((user: User) => {
+          this.id = user.id + 1;
+        });
+
         this.agencyService.register(this.id, this.username, this.password, this.phone, this.email, this.agencyName, this.address,
           this.uniqueNumber, this.description, "agency").subscribe((resp) => {
-            alert(resp['message']);
-          })
+            this.commonService.uploadProfilePicture(this.username, this.imageBlob, "agency").subscribe((resp) => {
+              alert(resp['message']);
+            });
+          });
       }
 
       this.router.navigate(['']);

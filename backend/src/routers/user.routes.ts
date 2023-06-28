@@ -24,4 +24,8 @@ UserRouter.route('/:username/upload').post(
     (req, res) => new UserController().upload(req, res)
 );
 
+UserRouter.route('/getLoggedUser').get(
+    (req, res) => new UserController().getLoggedUser(req, res)
+);
+
 export default UserRouter;

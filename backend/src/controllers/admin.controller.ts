@@ -1,5 +1,6 @@
 import express from 'express';
 import UserModel from '../models/user';
+import AgencyModel from '../models/agency';
 
 export class AdminController {
 
@@ -37,6 +38,12 @@ export class AdminController {
             }
         });
 
+        AgencyModel.updateOne({'username': username}, {$set: {'valid': true}}, (err, resp) => {
+            if (err) {
+                console.log(err);
+            }
+        });
+
         UserModel.updateOne({'username': 'admin'}, {$pull: {'requests': username}}, (err, resp) => {
             if (err) {
                 console.log(err);
@@ -51,7 +58,8 @@ export class AdminController {
         let username = req.query.param;
 
         UserModel.findOne({'username': username}, (err, user) => {
-            UserModel.updateOne({'username': 'admin'},
+            if (user != null) {
+                UserModel.updateOne({'username': 'admin'},
                 {
                     $pull: {'requests': username}, 
                     $push: {'invalid': {$each: [username, user.email]}}
@@ -69,6 +77,30 @@ export class AdminController {
                         }
                     });
                 });
-        })
+            }
+            else {
+                AgencyModel.findOne({'username': username}, (err, user) => {
+                    UserModel.updateOne({'username': 'admin'},
+                {
+                    $pull: {'requests': username}, 
+                    $push: {'invalid': {$each: [username, user.email]}}
+                },
+                (err, resp) => {
+                    if (err) {
+                        console.log(err);
+                    }
+                    AgencyModel.deleteOne({'username': username}, (err, resp) => {
+                        if (err) {
+                            console.log(err);
+                        }
+                        else {
+                            res.json({'message': 'ok'});
+                        }
+                    });
+                });
+                })
+            }
+            
+        });
     }
 }

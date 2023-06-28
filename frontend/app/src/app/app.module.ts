@@ -12,10 +12,12 @@ import { ClientComponent } from './client/client.component';
 import { AgencyComponent } from './agency/agency.component';
 import { ObjectsComponent } from './objects/objects.component';
 import { AgenciesComponent } from './agencies/agencies.component';
-import { JobsComponent } from './jobs/jobs.component';
 import { ProfileComponent } from './profile/profile.component';
 import { AdminComponent } from './admin/admin.component';
 import { AdminLoginComponent } from './admin-login/admin-login.component';
+import { ClientJobsComponent } from './client-jobs/client-jobs.component';
+import { AgencyJobsComponent } from './agency-jobs/agency-jobs.component';
+import { WorkersComponent } from './workers/workers.component';
 
 @NgModule({
   declarations: [
@@ -27,10 +29,12 @@ import { AdminLoginComponent } from './admin-login/admin-login.component';
     AgencyComponent,
     ObjectsComponent,
     AgenciesComponent,
-    JobsComponent,
     ProfileComponent,
     AdminComponent,
-    AdminLoginComponent
+    AdminLoginComponent,
+    ClientJobsComponent,
+    AgencyJobsComponent,
+    WorkersComponent
   ],
   imports: [
     BrowserModule,

@@ -44,4 +44,18 @@ export class AgencyService {
     let params = new HttpParams().set('name', name).set('address', address);
     return this.http.get(`${this.uri}/agency/advancedSearch`, {params});
   }
+
+  editUser(username, agencyName, address, email, phone, description, image) {
+    let data = {
+      username: username,
+      agencyName: agencyName,
+      address: address,
+      email: email,
+      phone: phone,
+      description: description,
+      image: image
+    };
+
+    return this.http.post(`${this.uri}/agency/editUser`, data);
+  }
 }

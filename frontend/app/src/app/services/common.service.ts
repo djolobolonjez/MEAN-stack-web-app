@@ -19,14 +19,18 @@ export class CommonService {
     return this.http.post(`${this.uri}/user/login`, data);
   }
 
-  getId() {
-    return this.http.get(`${this.uri}/user/getId`);
+  getId(type: string) {
+    return this.http.get(`${this.uri}/user/getId?param=type`);
   }
 
+  getLoggedUser(username) {
+    return this.http.get(`${this.uri}/user/getLoggedUser?param=${username}`);
+  }
   
-uploadProfilePicture(username: string, blob: string) {
+  uploadProfilePicture(username: string, blob: string, userType: string) {
     let data = {
-      blob: blob
+      blob: blob,
+      userType: userType
     };
 
     return this.http.post(`${this.uri}/user/${username}/upload`, data);

@@ -24,7 +24,6 @@ export class AdminService {
   }
 
   allowRegistration(username: string) {
-    console.log("okk");
     return this.http.get(`${this.uri}/admin/allowRegistration?param=${username}`);
   }
 

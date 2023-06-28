@@ -3,4 +3,5 @@ export interface Agency {
     address: string;
     name: string;
     description: string;
+    valid: boolean;
 }

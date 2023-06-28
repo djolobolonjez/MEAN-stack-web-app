@@ -21,7 +21,7 @@ export class LoginComponent implements OnInit {
   loginErrorMessage: string;
 
   login(): void {
-    this.commonService.login(this.username, this.password).subscribe((user: User) => {
+    this.commonService.login(this.username, this.password).subscribe((user: any) => {
       if (user != null) {
         sessionStorage.setItem('username', this.username);
         let route = user.type;

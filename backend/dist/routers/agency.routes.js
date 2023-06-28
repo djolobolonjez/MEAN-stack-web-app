@@ -11,5 +11,6 @@ AgencyRouter.route('/getAllAgencies').get((req, res) => new agency_controller_1.
 AgencyRouter.route('/searchByName').get((req, res) => new agency_controller_1.AgencyController().search(req, res, search_type_1.SearchType.NameSearch));
 AgencyRouter.route('/searchByAddress').get((req, res) => new agency_controller_1.AgencyController().search(req, res, search_type_1.SearchType.AddressSearch));
 AgencyRouter.route('/advancedSearch').get((req, res) => new agency_controller_1.AgencyController().search(req, res, search_type_1.SearchType.AdvancedSearch));
+AgencyRouter.route('/editUser').post((req, res) => new agency_controller_1.AgencyController().editUser(req, res));
 exports.default = AgencyRouter;
 //# sourceMappingURL=agency.routes.js.map

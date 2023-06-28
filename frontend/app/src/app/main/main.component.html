@@ -40,7 +40,7 @@
 <div *ngFor="let agency of allAgencies">
   <div>
     <table>
-      <tr>
+      <tr *ngIf="agency.valid">
         <td><h3>{{agency.name}}</h3></td>
         <td><p>{{agency.description}}</p></td>
       </tr>

@@ -26,10 +26,6 @@ export class ClientService {
     return this.http.post(`${this.uri}/user/register`, data);
   }
 
-  getLoggedUser(username) {
-    return this.http.get(`${this.uri}/client/getLoggedUser?param=${username}`);
-  }
-
   editUser(username, firstname, lastname, email, phone, image) {
     let data = {
       username: username,

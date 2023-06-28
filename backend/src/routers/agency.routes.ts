@@ -18,6 +18,10 @@ AgencyRouter.route('/searchByAddress').get(
 
 AgencyRouter.route('/advancedSearch').get(
     (req, res) => new AgencyController().search(req, res, SearchType.AdvancedSearch)
-)
+);
+
+AgencyRouter.route('/editUser').post(
+    (req, res) => new AgencyController().editUser(req, res)
+);
 
 export default AgencyRouter;

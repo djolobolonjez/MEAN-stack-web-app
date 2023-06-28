@@ -8,9 +8,11 @@ import { AgencyComponent } from './agency/agency.component';
 import { ProfileComponent } from './profile/profile.component';
 import { ObjectsComponent } from './objects/objects.component';
 import { AgenciesComponent } from './agencies/agencies.component';
-import { JobsComponent } from './jobs/jobs.component';
 import { AdminLoginComponent } from './admin-login/admin-login.component';
 import { AdminComponent } from './admin/admin.component';
+import { ClientJobsComponent } from './client-jobs/client-jobs.component';
+import { WorkersComponent } from './workers/workers.component';
+import { AgencyJobsComponent } from './agency-jobs/agency-jobs.component';
 
 const routes: Routes = [
   { path: "", component: MainComponent },
@@ -23,10 +25,16 @@ const routes: Routes = [
     { path: 'profile', component: ProfileComponent },
     { path: 'objects', component: ObjectsComponent },
     { path: 'agencies', component: AgenciesComponent },
-    { path: 'jobs', component: JobsComponent }
+    { path: 'client-jobs', component: ClientJobsComponent }
   ] 
   },
-  { path: "agency", component: AgencyComponent }
+  { path: "agency", component: AgencyComponent, children: [
+    { path: '', redirectTo: 'profile', pathMatch: 'full'},
+    { path: 'profile', component: ProfileComponent },
+    { path: 'workers', component: WorkersComponent },
+    { path: 'agency-jobs', component: AgencyJobsComponent }
+  ] 
+  }
 ];
 
 @NgModule({

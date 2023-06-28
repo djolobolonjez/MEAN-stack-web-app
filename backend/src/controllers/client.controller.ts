@@ -2,12 +2,34 @@ import express from 'express';
 import UserModel from '../models/user';
 
 export class ClientController {
-    getLoggedUser = (req: express.Request, res: express.Response) => {
-        let param = req.query.param;
+        
+    register = (req: express.Request, res: express.Response) => {
+        let user = new UserModel(req.body);
+        user.valid = false;
 
-        UserModel.findOne({'username': param}, (err, user) => {
+        UserModel.updateOne({'username': 'admin'}, {$push: {'requests': user.username}}, (err, resp) => {
             if (err) {
                 console.log(err);
+            }
+        });
+
+        user.save((err, resp) => {
+            if (err) {
+                console.log(err); // prijaviti nekako drugacije gresku
+            }
+            else {
+                res.json({'message': 'ok'});
+            }
+        });
+    }
+
+    login = (req: express.Request, res: express.Response) => {
+        let username = req.body.username;
+        let password = req.body.password;
+
+        UserModel.findOne({'username': username, 'password': password}, (err, user) => {
+            if (err) {
+                console.log(err); // prijaviti gresku o pogresno unetim podacima
             }
             else {
                 res.json(user);

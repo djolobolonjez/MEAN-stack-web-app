@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 
 const Schema = mongoose.Schema;
 
-let User = new Schema({
+let Agency = new Schema({
     id: {
         type: Number
     },
@@ -18,24 +18,33 @@ let User = new Schema({
     email: {
         type: String
     },
-    firstname: {
+    agencyName: {
         type: String
     },
-    lastname: {
+    address: {
         type: String
     },
-    type: {
+    uniqueNumber: {
         type: String
     },
-    requests: {
-        type: Array
+    description: {
+        type: String
+    },
+    profilePicture: {
+        type: String
     },
     valid: {
         type: Boolean
     },
-    invalid: {
+    type: {
+        type: String
+    },
+    workers: {
         type: Array
+    },
+    openVacancies: {
+        type: Number
     }
 });
 
-export default mongoose.model('UserModel', User, 'korisnici');
+export default mongoose.model('AgencyModel', Agency, 'agencije');

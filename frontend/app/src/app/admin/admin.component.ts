@@ -22,7 +22,7 @@ export class AdminComponent implements OnInit {
   allowRegistration(username: string) {
     this.adminService.allowRegistration(username).subscribe((resp) => {
       this.ngOnInit();
-    })
+    });
   }
 
   denyRegistration(username: string) {

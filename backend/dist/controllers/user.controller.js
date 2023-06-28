@@ -5,11 +5,20 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.UserController = void 0;
 const user_1 = __importDefault(require("../models/user"));
+const agency_1 = __importDefault(require("../models/agency"));
 const path_1 = __importDefault(require("path"));
 const fs_1 = __importDefault(require("fs"));
 class UserController {
     constructor() {
         this.register = (req, res) => {
+            if (req.body.type == "client") {
+                this.clientRegister(req, res);
+            }
+            else {
+                this.agencyRegister(req, res);
+            }
+        };
+        this.clientRegister = (req, res) => {
             let user = new user_1.default(req.body);
             user.valid = false;
             user_1.default.updateOne({ 'username': 'admin' }, { $push: { 'requests': user.username } }, (err, resp) => {
@@ -26,6 +35,23 @@ class UserController {
                 }
             });
         };
+        this.agencyRegister = (req, res) => {
+            let agency = new agency_1.default(req.body);
+            agency.valid = false;
+            user_1.default.updateOne({ 'username': 'admin' }, { $push: { 'requests': agency.username } }, (err, resp) => {
+                if (err) {
+                    console.log(err);
+                }
+            });
+            agency.save((err, resp) => {
+                if (err) {
+                    console.log(err); // prijaviti nekako drugacije gresku
+                }
+                else {
+                    res.json({ 'message': 'ok' });
+                }
+            });
+        };
         this.login = (req, res) => {
             let username = req.body.username;
             let password = req.body.password;
@@ -34,17 +60,65 @@ class UserController {
                     console.log(err); // prijaviti gresku o pogresno unetim podacima
                 }
                 else {
-                    res.json(user);
+                    if (user != null) {
+                        res.json(user);
+                    }
+                    else {
+                        agency_1.default.findOne({ 'username': username, 'password': password }, (err, agency) => {
+                            if (err) {
+                                console.log(err); // prijaviti gresku o pogresno unetim podacima
+                            }
+                            else {
+                                res.json(agency);
+                            }
+                        });
+                    }
                 }
             });
         };
         this.getId = (req, res) => {
-            user_1.default.findOne({}).sort({ "id": -1 }).limit(1).exec((err, user) => {
+            let type = req.query.param;
+            if (type == "client") {
+                user_1.default.findOne({}).sort({ "id": -1 }).limit(1).exec((err, user) => {
+                    if (err) {
+                        console.log(err);
+                    }
+                    else {
+                        res.json(user);
+                    }
+                });
+            }
+            else {
+                agency_1.default.findOne({}).sort({ "id": -1 }).limit(1).exec((err, user) => {
+                    if (err) {
+                        console.log(err);
+                    }
+                    else {
+                        res.json(user);
+                    }
+                });
+            }
+        };
+        this.getLoggedUser = (req, res) => {
+            let param = req.query.param;
+            user_1.default.findOne({ 'username': param }, (err, user) => {
                 if (err) {
                     console.log(err);
                 }
                 else {
-                    res.json(user);
+                    if (user != null) {
+                        res.json(user);
+                    }
+                    else {
+                        agency_1.default.findOne({ 'username': param }, (err, agency) => {
+                            if (err) {
+                                console.log(err);
+                            }
+                            else {
+                                res.json(agency);
+                            }
+                        });
+                    }
                 }
             });
         };
@@ -61,6 +135,7 @@ class UserController {
         };
         this.upload = (req, res) => {
             let imageBlob;
+            let type = req.body.userType;
             if (!req.body.blob) {
                 let imagePath = `uploads\\default.jpg`;
                 const fullPath = path_1.default.join(__dirname, '../../', imagePath);
@@ -70,17 +145,45 @@ class UserController {
                         return res.status(500).send('Internal server error');
                     }
                     imageBlob = `data:image/jpeg;base64,` + data.toString('base64');
-                    this.updateProfilePicture(imageBlob, req, res);
+                    if (type == "client") {
+                        this.updateClientPicture(imageBlob, req, res);
+                    }
+                    else {
+                        this.updateAgencyPicture(imageBlob, req, res);
+                    }
                 });
             }
             else {
                 imageBlob = req.body.blob;
-                this.updateProfilePicture(imageBlob, req, res);
+                if (type == "client") {
+                    this.updateClientPicture(imageBlob, req, res);
+                }
+                else {
+                    this.updateAgencyPicture(imageBlob, req, res);
+                }
             }
         };
     }
-    updateProfilePicture(imageBlob, req, res) {
+    updateClientPicture(imageBlob, req, res) {
         user_1.default.findOne({ 'username': req.params.username }, (err, user) => {
+            if (err) {
+                console.log(err);
+            }
+            else {
+                user['profilePicture'] = imageBlob;
+                user.save((err, resp) => {
+                    if (err) {
+                        console.log(err);
+                    }
+                    else {
+                        res.json({ 'message': 'ok' });
+                    }
+                });
+            }
+        });
+    }
+    updateAgencyPicture(imageBlob, req, res) {
+        agency_1.default.findOne({ 'username': req.params.username }, (err, user) => {
             if (err) {
                 console.log(err);
             }

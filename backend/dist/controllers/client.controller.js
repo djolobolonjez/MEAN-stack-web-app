@@ -7,11 +7,29 @@ exports.ClientController = void 0;
 const user_1 = __importDefault(require("../models/user"));
 class ClientController {
     constructor() {
-        this.getLoggedUser = (req, res) => {
-            let param = req.query.param;
-            user_1.default.findOne({ 'username': param }, (err, user) => {
+        this.register = (req, res) => {
+            let user = new user_1.default(req.body);
+            user.valid = false;
+            user_1.default.updateOne({ 'username': 'admin' }, { $push: { 'requests': user.username } }, (err, resp) => {
                 if (err) {
                     console.log(err);
+                }
+            });
+            user.save((err, resp) => {
+                if (err) {
+                    console.log(err); // prijaviti nekako drugacije gresku
+                }
+                else {
+                    res.json({ 'message': 'ok' });
+                }
+            });
+        };
+        this.login = (req, res) => {
+            let username = req.body.username;
+            let password = req.body.password;
+            user_1.default.findOne({ 'username': username, 'password': password }, (err, user) => {
+                if (err) {
+                    console.log(err); // prijaviti gresku o pogresno unetim podacima
                 }
                 else {
                     res.json(user);
