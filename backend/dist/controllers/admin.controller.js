@@ -127,6 +127,16 @@ class AdminController {
         this.deleteVacancyRequest = (req, res) => {
             let name = req.query.param;
         };
+        this.getAllClients = (req, res) => {
+            user_1.default.find({ 'type': 'client' }, (err, users) => {
+                if (err) {
+                    console.log(err);
+                }
+                else {
+                    res.json(users);
+                }
+            });
+        };
     }
 }
 exports.AdminController = AdminController;

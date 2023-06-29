@@ -187,6 +187,55 @@ class UserController {
                 });
             }
         };
+        this.getUserByUsername = (req, res) => {
+            let username = req.body.username;
+            let type = req.body.type;
+            if (type == "client") {
+                user_1.default.findOne({ 'username': username }, (err, user) => {
+                    if (err) {
+                        console.log(err);
+                    }
+                    else {
+                        res.json(user);
+                    }
+                });
+            }
+            else {
+                agency_1.default.findOne({ 'username': username }, (err, agency) => {
+                    if (err) {
+                        console.log(err);
+                    }
+                    else {
+                        res.json(agency);
+                    }
+                });
+            }
+        };
+        this.changePassword = (req, res) => {
+            let username = req.body.username;
+            let password = req.body.password;
+            let type = req.body.type;
+            if (type == "client" || type == "admin") {
+                user_1.default.updateOne({ 'username': username }, { $set: { 'password': password } }, (err, resp) => {
+                    if (err) {
+                        console.log(err);
+                    }
+                    else {
+                        res.json({ 'message': 'ok' });
+                    }
+                });
+            }
+            else {
+                agency_1.default.updateOne({ 'username': username }, { $set: { 'password': password } }, (err, resp) => {
+                    if (err) {
+                        console.log(err);
+                    }
+                    else {
+                        res.json({ 'message': 'ok' });
+                    }
+                });
+            }
+        };
     }
     updateClientPicture(imageBlob, req, res) {
         user_1.default.findOne({ 'username': req.params.username }, (err, user) => {

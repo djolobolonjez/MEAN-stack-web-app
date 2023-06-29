@@ -12,5 +12,6 @@ AdminRouter.route('/allowRegistration').get((req, res) => new admin_controller_1
 AdminRouter.route('/denyRegistration').get((req, res) => new admin_controller_1.AdminController().denyRegistration(req, res));
 AdminRouter.route('/acceptVacancyRequest').get((req, res) => new admin_controller_1.AdminController().acceptVacancyRequest(req, res));
 AdminRouter.route('/deleteVacancyRequest').get((req, res) => new admin_controller_1.AdminController().deleteVacancyRequest(req, res));
+AdminRouter.route('/getAllClients').get((req, res) => new admin_controller_1.AdminController().getAllClients(req, res));
 exports.default = AdminRouter;
 //# sourceMappingURL=admin.routes.js.map

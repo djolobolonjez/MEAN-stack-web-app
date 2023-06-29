@@ -32,4 +32,12 @@ UserRouter.route('/getUserById').post(
     (req, res) => new UserController().getUserById(req, res)
 );
 
+UserRouter.route('/getUserByUsername').post(
+    (req, res) => new UserController().getUserByUsername(req, res)
+);
+
+UserRouter.route('/changePassword').post(
+    (req, res) => new UserController().changePassword(req, res)
+);
+
 export default UserRouter;

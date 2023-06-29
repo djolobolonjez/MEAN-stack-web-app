@@ -41,6 +41,9 @@ let User = new Schema({
     },
     invalid: {
         type: Array
+    },
+    profilePicture: {
+        type: String
     }
 });
 exports.default = mongoose_1.default.model('UserModel', User, 'korisnici');

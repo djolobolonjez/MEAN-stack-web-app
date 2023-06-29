@@ -42,4 +42,8 @@ export class AdminService {
   deleteVacancyRequest(name: string) {
     return this.http.get(`${this.uri}/admin/deleteVacancyRequest?param=${name}`);
   }
+
+  getAllClients() {
+    return this.http.get(`${this.uri}/admin/getAllClients`);
+  }
 }

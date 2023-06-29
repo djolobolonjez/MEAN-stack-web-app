@@ -50,7 +50,7 @@ export class RegisterComponent implements OnInit {
     else if (this.password != this.confirmPassword) {
       this.passwordError = "Passwords do not match!";
     }
-    else if (!this.isValidPassword(this.password)) {
+    else if (!this.commonService.isValidPassword(this.password)) {
       this.passwordError = "Wrong password format!";
     }
     else {
@@ -81,11 +81,6 @@ export class RegisterComponent implements OnInit {
 
       this.router.navigate(['']);
     }
-  }
-
-  isValidPassword(password: string) {
-    const regex = /^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z][A-Za-z\d@$!%*#?&]+$/;
-    return regex.test(password);
   }
 
   imageSelected(event: any): void {

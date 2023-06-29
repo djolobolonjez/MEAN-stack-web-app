@@ -1,5 +1,5 @@
-<div>
-    <button routerLink="/client/profile">Profile</button>
+<div *ngIf="userType != 'adminUser'">
+    <button (click)="showProfile()">Profile</button>
     <button routerLink="/client/objects">Objects</button>
     <button routerLink="/client/agencies">Agencies</button>
     <button routerLink="/client/client-jobs">Jobs</button>

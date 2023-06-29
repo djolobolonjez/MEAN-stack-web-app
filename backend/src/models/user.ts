@@ -38,6 +38,9 @@ let User = new Schema({
     },
     invalid: {
         type: Array
+    },
+    profilePicture: {
+        type: String
     }
 });
 

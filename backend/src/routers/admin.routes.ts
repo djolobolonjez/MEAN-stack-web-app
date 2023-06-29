@@ -27,4 +27,8 @@ AdminRouter.route('/deleteVacancyRequest').get(
     (req, res) => new AdminController().deleteVacancyRequest(req, res)
 );
 
+AdminRouter.route('/getAllClients').get(
+    (req, res) => new AdminController().getAllClients(req, res)
+);
+
 export default AdminRouter;

@@ -5,6 +5,7 @@ import { CommonService } from '../services/common.service';
 import { ImageWrapper } from '../models/image';
 import { ImageService } from '../services/image.service';
 import { AgencyService } from '../services/agency.service';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-profile',
@@ -14,7 +15,8 @@ import { AgencyService } from '../services/agency.service';
 export class ProfileComponent implements OnInit {
 
   constructor(private clientService: ClientService, private commonService: CommonService,
-              private imageService: ImageService, private agencyService: AgencyService) { }
+              private imageService: ImageService, private agencyService: AgencyService,
+              private route: ActivatedRoute, private router: Router) { }
 
   username: string;
   firstname: string;
@@ -24,10 +26,18 @@ export class ProfileComponent implements OnInit {
   profileImage: string;
   type: string;
 
+  userType: string;
+
   imageHandler: ImageWrapper;
 
   isClient: boolean;
   isEditing: boolean = false;
+
+  passwordInput: boolean = false;
+  oldPassword: string;
+  newPasswordFirst: string;
+  newPasswordSecond: string;
+  passwordMessage: string;
 
   agencyName: string;
   description: string;
@@ -37,24 +47,36 @@ export class ProfileComponent implements OnInit {
 
   ngOnInit(): void {
     this.imageHandler = new ImageWrapper();
-    this.commonService.getLoggedUser(sessionStorage.getItem('username')).subscribe((user: User) => {
-      if (user.type == "client") {
-        this.firstname = user.firstname;
-        this.lastname = user.lastname;
+    this.route.paramMap.subscribe((params) => {
+      this.userType = params.get('userType');
+
+      const urlSegments = this.router.url.split('/');
+      this.type = urlSegments[1];
+      this.isClient = (this.type == "client" ? true : false);
+
+      if (this.type == "agency") {
+        let id = parseInt(params.get('id'));
+        this.commonService.getUserById(id, this.type).subscribe((user: User) => {
+          this.username = user.username;
+          this.agencyName = user.agencyName;
+          this.description = user.description;
+          this.address = user.address;
+          this.email = user.email;
+          this.phone = user.phone;
+          this.profileImage = user.profilePicture;
+        })
       }
       else {
-        this.agencyName = user.agencyName;
-        this.description = user.description;
-        this.address = user.address;
+        this.username = params.get('username');
+        this.commonService.getUserByUsername(this.username, this.type).subscribe((user: User) => {
+          this.firstname = user.firstname;
+          this.lastname = user.lastname;
+          this.email = user.email;
+          this.phone = user.phone;
+          this.profileImage = user.profilePicture;
+        });
       }
-      this.type = user.type;
-      this.username = sessionStorage.getItem('username');
-      
-      this.email = user.email;
-      this.phone = user.phone;
-      this.profileImage = user.profilePicture;
-      this.isClient = (user.type == "client" ? true : false);
-    })
+     });
   }
 
   editUser() {
@@ -95,6 +117,43 @@ export class ProfileComponent implements OnInit {
     };
 
     reader.readAsDataURL(this.imageHandler.image);
+  }
+
+  showPasswordInput() {
+    this.passwordInput = true;
+  }
+
+  submitPassword() {
+    this.commonService.getUserByUsername(this.username, this.type).subscribe((user: User) => {
+      if (this.oldPassword != user.password) {
+        this.passwordMessage = "Wrong old password!";
+      }
+      else {
+        if (this.newPasswordFirst != this.newPasswordSecond) {
+          this.passwordMessage = "Passwords don't match!";
+        }
+        else {
+          if (!this.commonService.isValidPassword(this.newPasswordFirst)) {
+            this.passwordMessage = "Wrong password format!";
+          }
+          else {
+            this.passwordMessage = "";
+            this.commonService.changePassword(this.username, this.newPasswordFirst, this.type)
+              .subscribe((resp) => {
+                alert(resp['message']);
+                this.refreshCurrentRoute();
+              });
+          }
+        }
+      }
+    })
+  }
+
+  refreshCurrentRoute() {
+    const currentRoute = this.router.url;
+    this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+      this.router.navigate([currentRoute]);
+    });
   }
 
 }

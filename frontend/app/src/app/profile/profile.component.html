@@ -39,4 +39,25 @@
       <button (click)="editUser()">Edit</button>
       <button *ngIf="isEditing" (click)="applyChanges()">Apply Changes</button>
     </div>
+    <div>
+      <button (click)="showPasswordInput()">Change password</button>
+    </div>
+    <div *ngIf="passwordInput">
+      <div>
+        <label for="oldPassword">Old password:</label>
+        <input type="password" id="oldPassword" [(ngModel)]="oldPassword">
+      </div>
+      <div>
+        <label for="newPasswordFirst">New password:</label>
+        <input type="password" id="newPasswordFirst" [(ngModel)]="newPasswordFirst">
+      </div>
+      <div>
+        <label for="newPasswordSecond">Confirm password:</label>
+        <input type="password" id="newPasswordSecond" [(ngModel)]="newPasswordSecond">
+      </div>
+      <div>
+        <button (click)="submitPassword()">Submit</button>
+      </div>
+      <p>{{passwordMessage}}</p>
+    </div>
   </div>

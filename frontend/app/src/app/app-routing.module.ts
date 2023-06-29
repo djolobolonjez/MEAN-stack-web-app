@@ -22,7 +22,7 @@ const routes: Routes = [
   { path: "register", component: RegisterComponent },
   { path: "client", component: ClientComponent, children: [
     { path: '', redirectTo: 'profile', pathMatch: 'full'},
-    { path: 'profile', component: ProfileComponent },
+    { path: ':username/:userType/profile', component: ProfileComponent },
     { path: 'objects', component: ObjectsComponent },
     { path: 'agencies', component: AgenciesComponent },
     { path: 'client-jobs', component: ClientJobsComponent }
@@ -30,7 +30,7 @@ const routes: Routes = [
   },
   { path: "agency", component: AgencyComponent, children: [
     { path: '', redirectTo: 'profile', pathMatch: 'full'},
-    { path: 'profile', component: ProfileComponent },
+    { path: ':id/:userType/profile', component: ProfileComponent },
     { path: ':id/:userType/workers', component: WorkersComponent },
     { path: 'agency-jobs', component: AgencyJobsComponent }
   ] 

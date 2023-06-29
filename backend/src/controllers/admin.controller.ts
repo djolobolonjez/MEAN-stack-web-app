@@ -142,4 +142,15 @@ export class AdminController {
     deleteVacancyRequest = (req: express.Request, res: express.Response) => {
         let name = req.query.param;
     }
+
+    getAllClients = (req: express.Request, res: express.Response) => {
+        UserModel.find({'type': 'client'}, (err, users) => {
+            if (err) {
+                console.log(err);
+            }
+            else {
+                res.json(users);
+            }
+        });
+    }
 }

@@ -240,4 +240,61 @@ export class UserController {
             });
         }
     }
+
+    getUserByUsername = (req: express.Request, res: express.Response) => {
+        let username = req.body.username;
+        let type = req.body.type;
+
+        if (type == "client") {
+            UserModel.findOne({'username': username}, (err, user) => {
+                if (err) {
+                    console.log(err);
+                }
+                else {
+                    res.json(user);
+                }
+            });
+        }
+        else {
+            AgencyModel.findOne({'username': username}, (err, agency) => {
+                if (err) {
+                    console.log(err);
+                }
+                else {
+                    res.json(agency);
+                }
+            });
+        }
+    }
+
+    changePassword = (req: express.Request, res: express.Response) => {
+        let username = req.body.username;
+        let password = req.body.password;
+        let type = req.body.type;
+
+        if (type == "client" || type == "admin") {
+            UserModel.updateOne({'username': username},
+                {$set: {'password': password}},
+                (err, resp) => {
+                if (err) {
+                    console.log(err);
+                }
+                else {
+                    res.json({'message': 'ok'});
+                }
+            });
+        }
+        else {
+            AgencyModel.updateOne({'username': username},
+                {$set: {'password': password}},
+                (err, resp) => {
+                if (err) {
+                    console.log(err);
+                }
+                else {
+                    res.json({'message': 'ok'});
+                }
+            });
+        }
+    }
 }

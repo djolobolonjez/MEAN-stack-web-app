@@ -1,3 +1,23 @@
+
+<div>
+    <button (click)="showClients()">Clients</button>
+    <button (click)="logout()">Logout</button>
+</div>
+
+
+<table *ngIf="displayClients">
+  <thead>
+    <tr>
+      <th>Username</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let client of clients">
+      <td (click)="navigateToProfile(client.username)">{{ client.username }}</td>
+    </tr>
+  </tbody>
+</table>
+<hr>
 <h3>Requests</h3>
 <div *ngFor="let request of registrationRequests">
     <div>

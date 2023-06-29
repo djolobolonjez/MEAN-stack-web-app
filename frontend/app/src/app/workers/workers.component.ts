@@ -82,7 +82,6 @@ export class WorkersComponent implements OnInit {
     this.agencyService.submitWorker(this.agencyId, this.newWorker).subscribe((resp) => {
       alert(resp['message']);
       this.agencyService.getWorkers(this.agencyId).subscribe((workers: Worker[]) => {
-        console.log(workers);
         this.workers = workers;
       });
     })

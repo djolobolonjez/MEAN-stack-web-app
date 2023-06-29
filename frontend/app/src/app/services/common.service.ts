@@ -34,6 +34,14 @@ export class CommonService {
     };
     return this.http.post(`${this.uri}/user/getUserById`, data);
   }
+
+  getUserByUsername(username: string, type: string) {
+    let data = {
+      username: username,
+      type: type
+    };
+    return this.http.post(`${this.uri}/user/getUserByUsername`, data);
+  }
   
   uploadProfilePicture(username: string, blob: string, userType: string) {
     let data = {
@@ -46,5 +54,19 @@ export class CommonService {
 
   getImage(username: string) {
     return this.http.get(`${this.uri}/user/images/${username}`);
+  }
+
+  changePassword(username, password, type) {
+    let data = {
+      username: username, 
+      password: password, 
+      type: type
+    };
+    return this.http.post(`${this.uri}/user/changePassword`, data);
+  }
+
+  isValidPassword(password: string) {
+    const regex = /^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z][A-Za-z\d@$!%*#?&]+$/;
+    return regex.test(password);
   }
 }

@@ -13,5 +13,7 @@ UserRouter.route('/images/:username').get((req, res) => new user_controller_1.Us
 UserRouter.route('/:username/upload').post((req, res) => new user_controller_1.UserController().upload(req, res));
 UserRouter.route('/getLoggedUser').get((req, res) => new user_controller_1.UserController().getLoggedUser(req, res));
 UserRouter.route('/getUserById').post((req, res) => new user_controller_1.UserController().getUserById(req, res));
+UserRouter.route('/getUserByUsername').post((req, res) => new user_controller_1.UserController().getUserByUsername(req, res));
+UserRouter.route('/changePassword').post((req, res) => new user_controller_1.UserController().changePassword(req, res));
 exports.default = UserRouter;
 //# sourceMappingURL=user.routes.js.map
