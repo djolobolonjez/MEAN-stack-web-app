@@ -44,6 +44,9 @@ let Agency = new Schema({
     },
     workers: {
         type: Array
+    },
+    openVacancies: {
+        type: Number
     }
 });
 exports.default = mongoose_1.default.model('AgencyModel', Agency, 'agencije');

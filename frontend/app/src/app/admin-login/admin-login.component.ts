@@ -23,6 +23,7 @@ export class AdminLoginComponent implements OnInit {
   login() {
     this.adminService.login(this.username, this.password).subscribe((user: User) => {
       if (user != null) {
+        sessionStorage.setItem('username', this.username);
         if (user.type != 'admin') {
           this.loginErrorMessage = "Access violation!";
         }

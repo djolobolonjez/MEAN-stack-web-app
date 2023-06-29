@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { CommonService } from '../services/common.service';
+import { Agency } from '../models/agency';
 
 @Component({
   selector: 'app-agency',
@@ -8,7 +10,7 @@ import { Router } from '@angular/router';
 })
 export class AgencyComponent implements OnInit {
 
-  constructor(private router: Router) { }
+  constructor(private router: Router, private commonService: CommonService) { }
 
   ngOnInit(): void {
   }
@@ -16,6 +18,13 @@ export class AgencyComponent implements OnInit {
   logout(): void {
     sessionStorage.clear();
     this.router.navigate(['']);
+  }
+
+  visitWorkers() {
+    let username = sessionStorage.getItem('username');
+    this.commonService.getLoggedUser(username).subscribe((agency: Agency) => {
+      this.router.navigate(['agency', agency.id, 'agencyUser', 'workers'])
+    });
   }
 
 }

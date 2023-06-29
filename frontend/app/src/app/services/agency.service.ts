@@ -1,6 +1,7 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Agency } from '../models/agency';
+import { Worker } from '../models/worker';
 
 @Injectable({
   providedIn: 'root'
@@ -57,5 +58,30 @@ export class AgencyService {
     };
 
     return this.http.post(`${this.uri}/agency/editUser`, data);
+  }
+
+  getWorkers(id: number) {
+    return this.http.get(`${this.uri}/agency/getWorkers?param=${id}`);
+  }
+
+  sendVacanciesRequest(id: number, numberOfVacancies: number) {
+    let data = {
+      id: id,
+      numberOfVacancies: numberOfVacancies
+    };
+
+    return this.http.post(`${this.uri}/agency/sendVacanciesRequest`, data);
+  }
+
+  submitWorker(id: number, worker: Worker) {
+    let data = {
+      firstname: worker.firstname,
+      lastname: worker.lastname,
+      email: worker.lastname,
+      phone: worker.phone,
+      specialization: worker.specialization,
+      agency: id
+    };
+    return this.http.post(`${this.uri}/agency/submitWorker`, data);
   }
 }

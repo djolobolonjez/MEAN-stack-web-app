@@ -31,7 +31,7 @@ const routes: Routes = [
   { path: "agency", component: AgencyComponent, children: [
     { path: '', redirectTo: 'profile', pathMatch: 'full'},
     { path: 'profile', component: ProfileComponent },
-    { path: 'workers', component: WorkersComponent },
+    { path: ':id/:userType/workers', component: WorkersComponent },
     { path: 'agency-jobs', component: AgencyJobsComponent }
   ] 
   }

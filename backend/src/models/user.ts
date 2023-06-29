@@ -30,6 +30,9 @@ let User = new Schema({
     requests: {
         type: Array
     },
+    vacancyRequests: {
+        type: Array
+    },
     valid: {
         type: Boolean
     },

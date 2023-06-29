@@ -1,1 +1,110 @@
-<p>workers works!</p>
+<div *ngFor="let worker of workers">
+    <div *ngIf="worker != null">
+      <table>
+        <tr>
+            <th>First name</th>
+            <th>Last name</th>
+            <th>Phone</th>
+            <th>Email</th>
+            <th>Specialization</th>
+        </tr>
+        <tr>
+          <td>{{worker.firstname}}</td>
+          <td>{{worker.lastname}}</td>
+          <td>{{worker.phone}}</td>
+          <td>{{worker.email}}</td>
+          <td>{{worker.specialization}}</td>
+          <td><button>Edit</button></td>
+          <td><button>Delete</button></td>
+        </tr>
+      </table>
+    </div>
+  </div>
+  <div *ngIf="userType == 'adminUser'">
+    <button (click)="showAdminForm()">Add worker</button>
+</div>
+<hr/>
+<div *ngIf="userType == 'agencyUser' && openVacancies >= 0">
+    <p>Number of open vacancies: {{openVacancies}}</p>
+</div>
+<div *ngIf="openVacancies === 0 && userType == 'agencyUser'">
+    <button (click)="showInputFields()">Request More Vacancies</button>
+</div>
+
+<div *ngIf="openVacancies > 0 && userType == 'agencyUser'">
+    <button (click)="showWorkerFields()">Add Worker</button>
+</div>
+  
+<div *ngIf="showInput">
+    <input type="number" [(ngModel)]="vacanciesRequested">
+    <button (click)="sendRequest()">Send</button>
+</div>
+
+<div *ngIf="showWorkerInput">
+    <h3>Add Worker</h3>
+<div>
+    <label for="firstName">First Name:</label>
+    <input type="text" id="firstName" [(ngModel)]="newWorker.firstname">
+</div>
+<div>
+    <label for="lastName">Last Name:</label>
+    <input type="text" id="lastName" [(ngModel)]="newWorker.lastname">
+</div>
+<div>
+    <label for="email">Email:</label>
+    <input type="email" id="email" [(ngModel)]="newWorker.email">
+</div>
+<div>
+    <label for="phone">Phone:</label>
+    <input type="text" id="phone" [(ngModel)]="newWorker.phone">
+</div>
+<div>
+    <label for="specialization">Specialization:</label>
+    <input type="text" id="specialization" [(ngModel)]="newWorker.specialization">
+</div>
+    <button (click)="submitWorker()">Submit</button>
+</div>
+<form *ngIf="adminForm">
+    <div>
+      <label for="firstname">First Name:</label>
+      <input type="text" id="firstname" name="firstname" [(ngModel)]="newWorker.firstname">
+    </div>
+    <div>
+      <label for="lastname">Last Name:</label>
+      <input type="text" id="lastname" name="lastname" [(ngModel)]="newWorker.lastname">
+    </div>
+    <div>
+      <label for="email">Email:</label>
+      <input type="email" id="email" name="email" [(ngModel)]="newWorker.email">
+    </div>
+    <div>
+      <label for="phone">Phone:</label>
+      <input type="text" id="phone" name="phone" [(ngModel)]="newWorker.phone">
+    </div>
+    <div>
+      <label for="specialization">Specialization:</label>
+      <input type="text" id="specialization" name="specialization" [(ngModel)]="newWorker.specialization">
+    </div>
+    <div>
+      <button (click)="submitWorker()">Submit</button>
+    </div>
+  </form>
+  <div *ngIf="userType == 'adminUser'">
+    <div *ngFor="let req of requests">
+        <div *ngIf="req != null">
+          <table>
+            <tr>
+                <th>Agency name</th>
+                <th>Number of vacancies</th>
+            </tr>
+            <tr>
+              <td>{{req.name}}</td>
+              <td>{{req.number}}</td>
+              <td><button (click)="acceptVacancyRequest(req.name)">Accept</button></td>
+              <td><button (click)="deleteVacancyRequest(req.name)">Delete</button></td>
+            </tr>
+          </table>
+        </div>
+      </div>
+  </div>
+  

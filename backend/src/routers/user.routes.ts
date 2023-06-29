@@ -28,4 +28,8 @@ UserRouter.route('/getLoggedUser').get(
     (req, res) => new UserController().getLoggedUser(req, res)
 );
 
+UserRouter.route('/getUserById').post(
+    (req, res) => new UserController().getUserById(req, res)
+);
+
 export default UserRouter;

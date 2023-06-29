@@ -12,5 +12,6 @@ UserRouter.route('/getId').get((req, res) => new user_controller_1.UserControlle
 UserRouter.route('/images/:username').get((req, res) => new user_controller_1.UserController().getImage(req, res));
 UserRouter.route('/:username/upload').post((req, res) => new user_controller_1.UserController().upload(req, res));
 UserRouter.route('/getLoggedUser').get((req, res) => new user_controller_1.UserController().getLoggedUser(req, res));
+UserRouter.route('/getUserById').post((req, res) => new user_controller_1.UserController().getUserById(req, res));
 exports.default = UserRouter;
 //# sourceMappingURL=user.routes.js.map

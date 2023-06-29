@@ -20,11 +20,19 @@ export class CommonService {
   }
 
   getId(type: string) {
-    return this.http.get(`${this.uri}/user/getId?param=type`);
+    return this.http.get(`${this.uri}/user/getId?param=${type}`);
   }
 
   getLoggedUser(username) {
     return this.http.get(`${this.uri}/user/getLoggedUser?param=${username}`);
+  }
+
+  getUserById(id: number, type: string) {
+    let data = {
+      id: id,
+      type: type
+    };
+    return this.http.post(`${this.uri}/user/getUserById`, data);
   }
   
   uploadProfilePicture(username: string, blob: string, userType: string) {

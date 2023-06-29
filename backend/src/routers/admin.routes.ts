@@ -19,4 +19,12 @@ AdminRouter.route('/denyRegistration').get(
     (req, res) => new AdminController().denyRegistration(req, res)
 );
 
+AdminRouter.route('/acceptVacancyRequest').get(
+    (req, res) => new AdminController().acceptVacancyRequest(req, res)
+);
+
+AdminRouter.route('/deleteVacancyRequest').get(
+    (req, res) => new AdminController().deleteVacancyRequest(req, res)
+);
+
 export default AdminRouter;

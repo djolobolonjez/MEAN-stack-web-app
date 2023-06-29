@@ -24,4 +24,16 @@ AgencyRouter.route('/editUser').post(
     (req, res) => new AgencyController().editUser(req, res)
 );
 
+AgencyRouter.route('/getWorkers').get(
+    (req, res) => new AgencyController().getWorkers(req, res)
+);
+
+AgencyRouter.route('/sendVacanciesRequest').post(
+    (req, res) => new AgencyController().sendVacanciesRequest(req, res)
+);
+
+AgencyRouter.route('/submitWorker').post(
+    (req, res) => new AgencyController().submitWorker(req, res)
+);
+
 export default AgencyRouter;

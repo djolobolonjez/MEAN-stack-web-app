@@ -4,5 +4,5 @@ export class Worker {
     email: string;
     phone: string;
     specialization: string;
-    agency: string;
+    agency: number;
 }

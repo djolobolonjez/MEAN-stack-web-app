@@ -163,6 +163,30 @@ class UserController {
                 }
             }
         };
+        this.getUserById = (req, res) => {
+            let id = req.body.id;
+            let type = req.body.type;
+            if (type == "client") {
+                user_1.default.findOne({ 'id': id }, (err, user) => {
+                    if (err) {
+                        console.log(err);
+                    }
+                    else {
+                        res.json(user);
+                    }
+                });
+            }
+            else {
+                agency_1.default.findOne({ 'id': id }, (err, agency) => {
+                    if (err) {
+                        console.log(err);
+                    }
+                    else {
+                        res.json(agency);
+                    }
+                });
+            }
+        };
     }
     updateClientPicture(imageBlob, req, res) {
         user_1.default.findOne({ 'username': req.params.username }, (err, user) => {

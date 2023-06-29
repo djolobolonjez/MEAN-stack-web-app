@@ -214,5 +214,30 @@ export class UserController {
             }
         });
     }
- 
+    
+    getUserById = (req: express.Request, res: express.Response) => {
+        let id = req.body.id;
+        let type = req.body.type;
+
+        if (type == "client") {
+            UserModel.findOne({'id': id}, (err, user) => {
+                if (err) {
+                    console.log(err);
+                }
+                else {
+                    res.json(user);
+                }
+            });
+        }
+        else {
+            AgencyModel.findOne({'id': id}, (err, agency) => {
+                if (err) {
+                    console.log(err);
+                }
+                else {
+                    res.json(agency);
+                }
+            });
+        }
+    }
 }

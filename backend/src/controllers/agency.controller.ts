@@ -1,5 +1,6 @@
 import express from 'express';
 import AgencyModel from '../models/agency';
+import UserModel from '../models/user'
 import { SearchType } from '../types/search.type';
 
 export class AgencyController {
@@ -75,5 +76,63 @@ export class AgencyController {
                 res.json({'message': 'ok'});
             }
         });
+    }
+
+    sendVacanciesRequest = (req: express.Request, res: express.Response) => {
+        let id = req.body.id;
+        let number = req.body.numberOfVacancies;
+        
+        AgencyModel.findOne({'id': id}, (err, agency) => {
+            if (err) {
+                console.log(err);
+            }
+            else {
+                agency['openVacancies'] = -1;
+                UserModel.updateOne({'username': 'admin'},
+                    {$push: 
+                        {'vacancyRequests': { 'name': agency.agencyName, 'number': number },}
+                    },
+                    (err, resp) => {
+                        if (err) {
+                            console.log(err);
+                        }
+                        else {
+                            res.json({'message': 'ok'});
+                        }
+                    }
+                )
+            }
+            
+        });
+    }
+
+    submitWorker = (req: express.Request, res: express.Response) => {
+        let agency = req.body.agency;
+
+        AgencyModel.updateOne({'id': agency}, 
+            { $push: {'workers': req.body}, 
+              $inc: {'openVacancies': -1} 
+            }, 
+            (err, resp) => {
+                if (err) {
+                    console.log(err);
+                }
+                else {
+                    res.json({'message': 'ok'});
+                }
+        })
+    }
+
+    getWorkers = (req: express.Request, res: express.Response) => {
+        let id = parseInt(req.query.param as string);
+
+        AgencyModel.findOne({'id': id}, (err, user) => {
+            if (err) {
+                console.log(err);
+            }
+            else {
+                res.json(user.workers);
+            }
+        })
     }
 }

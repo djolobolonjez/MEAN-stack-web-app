@@ -59,7 +59,8 @@ export class MainComponent implements OnInit {
         address: user.address,
         name: user.agencyName,
         description: user.description,
-        valid: user.valid
+        valid: user.valid,
+        openVacancies: user.openVacancies
       };
       agencies.push(agency);
     });

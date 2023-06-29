@@ -15,4 +15,6 @@ export class User {
     valid: boolean;
     requests: Array<string>;
     invalid: Array<string>;
+    vacancyRequests: Array<any>;
+    openVacancies: number;
 }

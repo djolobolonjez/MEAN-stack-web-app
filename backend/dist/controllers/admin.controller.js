@@ -94,6 +94,39 @@ class AdminController {
                 }
             });
         };
+        this.acceptVacancyRequest = (req, res) => {
+            let name = req.query.param;
+            user_1.default.aggregate([
+                { $match: { 'username': 'admin' } },
+                { $unwind: '$vacancyRequests' },
+                { $match: { 'vacancyRequests.name': name } },
+                { $replaceRoot: { newRoot: '$vacancyRequests' } }
+            ], (err, result) => {
+                if (err) {
+                    console.log(err);
+                }
+                else {
+                    agency_1.default.updateOne({ 'agencyName': name }, { $set: { 'openVacancies': result[0].number } }, (err, resp) => {
+                        if (err) {
+                            console.log(err);
+                        }
+                        else {
+                            user_1.default.updateOne({ 'username': 'admin' }, { $pull: { 'vacancyRequests': { 'name': name } } }, (err, resp) => {
+                                if (err) {
+                                    console.log(err);
+                                }
+                                else {
+                                    res.json({ 'message': 'ok' });
+                                }
+                            });
+                        }
+                    });
+                }
+            });
+        };
+        this.deleteVacancyRequest = (req, res) => {
+            let name = req.query.param;
+        };
     }
 }
 exports.AdminController = AdminController;

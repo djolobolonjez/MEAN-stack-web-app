@@ -4,4 +4,5 @@ export interface Agency {
     name: string;
     description: string;
     valid: boolean;
+    openVacancies: number;
 }

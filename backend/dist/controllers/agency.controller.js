@@ -5,6 +5,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AgencyController = void 0;
 const agency_1 = __importDefault(require("../models/agency"));
+const user_1 = __importDefault(require("../models/user"));
 const search_type_1 = require("../types/search.type");
 class AgencyController {
     constructor() {
@@ -74,6 +75,51 @@ class AgencyController {
                 }
                 else {
                     res.json({ 'message': 'ok' });
+                }
+            });
+        };
+        this.sendVacanciesRequest = (req, res) => {
+            let id = req.body.id;
+            let number = req.body.numberOfVacancies;
+            agency_1.default.findOne({ 'id': id }, (err, agency) => {
+                if (err) {
+                    console.log(err);
+                }
+                else {
+                    agency['openVacancies'] = -1;
+                    user_1.default.updateOne({ 'username': 'admin' }, { $push: { 'vacancyRequests': { 'name': agency.agencyName, 'number': number }, }
+                    }, (err, resp) => {
+                        if (err) {
+                            console.log(err);
+                        }
+                        else {
+                            res.json({ 'message': 'ok' });
+                        }
+                    });
+                }
+            });
+        };
+        this.submitWorker = (req, res) => {
+            let agency = req.body.agency;
+            agency_1.default.updateOne({ 'id': agency }, { $push: { 'workers': req.body },
+                $inc: { 'openVacancies': -1 }
+            }, (err, resp) => {
+                if (err) {
+                    console.log(err);
+                }
+                else {
+                    res.json({ 'message': 'ok' });
+                }
+            });
+        };
+        this.getWorkers = (req, res) => {
+            let id = parseInt(req.query.param);
+            agency_1.default.findOne({ 'id': id }, (err, user) => {
+                if (err) {
+                    console.log(err);
+                }
+                else {
+                    res.json(user.workers);
                 }
             });
         };

@@ -103,4 +103,43 @@ export class AdminController {
             
         });
     }
+
+    acceptVacancyRequest = (req: express.Request, res: express.Response) => {
+        let name = req.query.param;
+
+        UserModel.aggregate([
+            { $match: {'username': 'admin'} },
+            { $unwind: '$vacancyRequests' },
+            { $match: {'vacancyRequests.name': name } },
+            { $replaceRoot: { newRoot: '$vacancyRequests' } }
+        ], (err, result) => {
+            if (err) {
+                console.log(err);
+            }
+            else {
+                AgencyModel.updateOne({'agencyName': name}, { $set: {'openVacancies': result[0].number}}, (err, resp) => {
+                    if (err) {
+                        console.log(err);
+                    }
+                    else {
+                        UserModel.updateOne({'username': 'admin'},
+                            { $pull: {'vacancyRequests': {'name': name} } },
+                            (err, resp) => {
+                                if (err) {
+                                    console.log(err);
+                                }
+                                else {
+                                    res.json({'message': 'ok'});
+                                }
+                            }
+                        )
+                    }
+                })
+            }
+        })
+    }
+
+    deleteVacancyRequest = (req: express.Request, res: express.Response) => {
+        let name = req.query.param;
+    }
 }

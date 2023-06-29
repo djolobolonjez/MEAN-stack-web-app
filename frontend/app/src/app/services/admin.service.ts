@@ -30,4 +30,16 @@ export class AdminService {
   denyRegistration(username: string) {
     return this.http.get(`${this.uri}/admin/denyRegistration?param=${username}`);
   }
+
+  getVacancyRequests() {
+    return this.http.get(`${this.uri}/admin/getVacancyRequests`);
+  }
+
+  acceptVacancyRequest(name: string) {
+    return this.http.get(`${this.uri}/admin/acceptVacancyRequest?param=${name}`);
+  }
+  
+  deleteVacancyRequest(name: string) {
+    return this.http.get(`${this.uri}/admin/deleteVacancyRequest?param=${name}`);
+  }
 }
