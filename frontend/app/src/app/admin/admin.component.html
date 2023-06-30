@@ -1,10 +1,22 @@
 
 <div>
     <button (click)="showClients()">Clients</button>
+    <button (click)="showAgencies()">Agencies</button>
     <button (click)="logout()">Logout</button>
 </div>
 
-
+<table *ngIf="displayAgencies">
+    <thead>
+      <tr>
+        <th>Agency name</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let agency of agencies">
+        <td (click)="navigateToAgency(agency.id)">{{ agency.name }}</td>
+      </tr>
+    </tbody>
+  </table>
 <table *ngIf="displayClients">
   <thead>
     <tr>
@@ -13,7 +25,7 @@
   </thead>
   <tbody>
     <tr *ngFor="let client of clients">
-      <td (click)="navigateToProfile(client.username)">{{ client.username }}</td>
+      <td (click)="navigateToClient(client.username)">{{ client.username }}</td>
     </tr>
   </tbody>
 </table>

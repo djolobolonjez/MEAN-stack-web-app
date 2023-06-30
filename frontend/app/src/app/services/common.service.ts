@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -68,5 +69,12 @@ export class CommonService {
   isValidPassword(password: string) {
     const regex = /^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z][A-Za-z\d@$!%*#?&]+$/;
     return regex.test(password);
+  }
+
+  refreshCurrentRoute(router: Router) {
+    const currentRoute = router.url;
+    router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+      router.navigate([currentRoute]);
+    });
   }
 }

@@ -3,7 +3,7 @@ import { CommonService } from '../services/common.service';
 import { Worker } from '../models/worker';
 import { AgencyService } from '../services/agency.service';
 import { Agency } from '../models/agency';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { AdminService } from '../services/admin.service';
 import { User } from '../models/user';
 
@@ -15,11 +15,13 @@ import { User } from '../models/user';
 export class WorkersComponent implements OnInit {
 
   constructor(private agencyService: AgencyService, private commonService: CommonService,
-              private route: ActivatedRoute, private adminService: AdminService) { }
+              private route: ActivatedRoute, private adminService: AdminService,
+              private router: Router) { }
 
   ngOnInit(): void {
     this.route.paramMap.subscribe(params => {
       this.newWorker = new Worker();
+      this.editedWorker = new Worker();
       this.userType = params.get('userType');
       this.agencyId = parseInt(params.get('id'));
 
@@ -53,7 +55,11 @@ export class WorkersComponent implements OnInit {
   showWorkerInput: boolean = false;
   adminForm: boolean = false;
   
+  selectedWorker: Worker;
   newWorker: Worker;
+  editedWorker: Worker;
+
+  editMail: string;
 
   userType: string;
 
@@ -83,6 +89,7 @@ export class WorkersComponent implements OnInit {
       alert(resp['message']);
       this.agencyService.getWorkers(this.agencyId).subscribe((workers: Worker[]) => {
         this.workers = workers;
+        this.commonService.refreshCurrentRoute(this.router);
       });
     })
   }
@@ -101,5 +108,33 @@ export class WorkersComponent implements OnInit {
     this.adminService.deleteVacancyRequest(name).subscribe((resp) => {
       this.ngOnInit();
     });
+  }
+
+  editWorker(selectedWorker: Worker) {
+    this.selectedWorker = selectedWorker;
+    this.editMail = this.selectedWorker.email;
+    this.editedWorker.email = this.selectedWorker.email;
+    this.editedWorker.firstname = this.selectedWorker.firstname;
+    this.editedWorker.lastname = this.selectedWorker.lastname;
+    this.editedWorker.phone = this.selectedWorker.phone;
+    this.editedWorker.specialization = this.selectedWorker.specialization;
+  }
+
+  workerEditSubmit() {
+    this.editedWorker.agency = this.agencyId;
+    this.agencyService.editWorker(this.editMail, this.editedWorker).subscribe((resp) => {
+      this.agencyService.getWorkers(this.agencyId).subscribe((workers: Worker[]) => {
+        this.workers = workers;
+        this.selectedWorker = null;
+      });
+    })
+  }
+
+  deleteWorker(email: string) {
+    this.agencyService.deleteWorker(email).subscribe((resp) => {
+      this.agencyService.getWorkers(this.agencyId).subscribe((workers: Worker[]) => {
+        this.workers = workers;
+      });
+    })
   }
 }

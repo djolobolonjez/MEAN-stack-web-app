@@ -141,19 +141,12 @@ export class ProfileComponent implements OnInit {
             this.commonService.changePassword(this.username, this.newPasswordFirst, this.type)
               .subscribe((resp) => {
                 alert(resp['message']);
-                this.refreshCurrentRoute();
+                this.commonService.refreshCurrentRoute(this.router);
               });
           }
         }
       }
     })
-  }
-
-  refreshCurrentRoute() {
-    const currentRoute = this.router.url;
-    this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
-      this.router.navigate([currentRoute]);
-    });
   }
 
 }

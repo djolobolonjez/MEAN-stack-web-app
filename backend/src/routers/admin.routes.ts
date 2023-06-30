@@ -31,4 +31,8 @@ AdminRouter.route('/getAllClients').get(
     (req, res) => new AdminController().getAllClients(req, res)
 );
 
+AdminRouter.route('/getAllAgencies').get(
+    (req, res) => new AdminController().getAllAgencies(req, res)
+);
+
 export default AdminRouter;

@@ -1,6 +1,7 @@
 import express from 'express';
 import AgencyModel from '../models/agency';
-import UserModel from '../models/user'
+import UserModel from '../models/user';
+import WorkerModel from '../models/worker'
 import { SearchType } from '../types/search.type';
 
 export class AgencyController {
@@ -87,52 +88,124 @@ export class AgencyController {
                 console.log(err);
             }
             else {
-                agency['openVacancies'] = -1;
-                UserModel.updateOne({'username': 'admin'},
-                    {$push: 
-                        {'vacancyRequests': { 'name': agency.agencyName, 'number': number },}
-                    },
-                    (err, resp) => {
-                        if (err) {
-                            console.log(err);
-                        }
-                        else {
-                            res.json({'message': 'ok'});
-                        }
+                agency.openVacancies = -1;
+                agency.save((err, resp) => {
+                    if (err) {
+                        console.log(err);
                     }
-                )
+                    else {
+                        UserModel.updateOne({'username': 'admin'},
+                            {$push: 
+                                {'vacancyRequests': { 'name': agency.agencyName, 'number': number },}
+                            },
+                            (err, resp) => {
+                                if (err) {
+                                    console.log(err);
+                                }
+                                else {
+                                    res.json({'message': 'ok'});
+                                }
+                            }
+                        );
+                    }
+                })
+                
             }
             
         });
     }
 
     submitWorker = (req: express.Request, res: express.Response) => {
-        let agency = req.body.agency;
+        let worker = new WorkerModel(req.body);
 
-        AgencyModel.updateOne({'id': agency}, 
-            { $push: {'workers': req.body}, 
-              $inc: {'openVacancies': -1} 
-            }, 
-            (err, resp) => {
-                if (err) {
-                    console.log(err);
-                }
-                else {
-                    res.json({'message': 'ok'});
-                }
-        })
+        worker.save((err, resp) => {
+            if (err) {
+                console.log(err);
+            }
+            else {
+                AgencyModel.updateOne({'id': req.body.agency}, 
+                {$inc: {'openVacancies': -1}}, 
+                (err, resp) => {
+                    if (err) {
+                        console.log(err);
+                    }
+                    else {
+                        res.json({'message': 'ok'});
+                    }
+                });
+            }
+        });
+        
     }
 
     getWorkers = (req: express.Request, res: express.Response) => {
         let id = parseInt(req.query.param as string);
 
-        AgencyModel.findOne({'id': id}, (err, user) => {
+        WorkerModel.find({'agency': id}, (err, workers) => {
             if (err) {
                 console.log(err);
             }
             else {
-                res.json(user.workers);
+                res.json(workers);
             }
         })
+    }
+
+    deleteWorker = (req: express.Request, res: express.Response) => {
+        let email = req.query.param;
+        WorkerModel.findOne({'email': email}, (err, worker) => {
+            if (err) {
+                console.log(err);
+            }
+            else {
+                let agencyId = worker.agency;
+                AgencyModel.updateOne({'id': agencyId},
+                    {
+                        $inc: {'openVacancies': 1}
+                    },
+                    (err, resp) => {
+                        if (err) {
+                            console.log(err);
+                        }
+                        else {
+                            WorkerModel.deleteOne({'email': email}, (err, resp) => {
+                                if (err) {
+                                    console.log(err);
+                                }
+                                else {
+                                    res.json();
+                                }
+                            })
+                        }
+                    }
+                )
+            }
+        })
+        
+    }
+
+    editWorker = (req: express.Request, res: express.Response) => {
+        let editMail = req.body.editMail;
+        let email = req.body.email;
+        let firstname = req.body.firstname;
+        let lastname = req.body.lastname;
+        let phone = req.body.phone;
+        let specialization = req.body.specialization;
+
+        WorkerModel.updateOne({'email': editMail},
+        {   $set: {
+            'firstname': firstname,
+            'lastname': lastname,
+            'email': email, 
+            'phone': phone,
+            'specialization': specialization}},
+            (err, resp) => {
+            if (err) {
+                console.log(err);
+            }
+            else {
+                res.json({'message': 'ok'});
+            }
+        }); 
     }
 }

@@ -46,4 +46,8 @@ export class AdminService {
   getAllClients() {
     return this.http.get(`${this.uri}/admin/getAllClients`);
   }
+
+  getAllAgencies() {
+    return this.http.get(`${this.uri}/admin/getAllAgencies`);
+  }
 }

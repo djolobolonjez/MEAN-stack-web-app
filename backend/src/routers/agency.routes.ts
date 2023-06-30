@@ -36,4 +36,12 @@ AgencyRouter.route('/submitWorker').post(
     (req, res) => new AgencyController().submitWorker(req, res)
 );
 
+AgencyRouter.route('/deleteWorker').get(
+    (req, res) => new AgencyController().deleteWorker(req, res)
+);
+
+AgencyRouter.route('/editWorker').post(
+    (req, res) => new AgencyController().editWorker(req, res)
+);
+
 export default AgencyRouter;

@@ -126,6 +126,21 @@ class AdminController {
         };
         this.deleteVacancyRequest = (req, res) => {
             let name = req.query.param;
+            agency_1.default.updateOne({ 'agencyName': name }, { $set: { 'openVacancies': 0 } }, (err, resp) => {
+                if (err) {
+                    console.log(err);
+                }
+                else {
+                    user_1.default.updateOne({ 'username': 'admin' }, { $pull: { 'vacancyRequests': { 'name': name } } }, (err, resp) => {
+                        if (err) {
+                            console.log(err);
+                        }
+                        else {
+                            res.json({ 'message': 'ok' });
+                        }
+                    });
+                }
+            });
         };
         this.getAllClients = (req, res) => {
             user_1.default.find({ 'type': 'client' }, (err, users) => {
@@ -134,6 +149,16 @@ class AdminController {
                 }
                 else {
                     res.json(users);
+                }
+            });
+        };
+        this.getAllAgencies = (req, res) => {
+            agency_1.default.find({}, (err, agencies) => {
+                if (err) {
+                    console.log(err);
+                }
+                else {
+                    res.json(agencies);
                 }
             });
         };

@@ -141,6 +141,24 @@ export class AdminController {
 
     deleteVacancyRequest = (req: express.Request, res: express.Response) => {
         let name = req.query.param;
+
+        AgencyModel.updateOne({'agencyName': name}, {$set: {'openVacancies': 0}}, (err, resp) => {
+            if (err) {
+                console.log(err);
+            }
+            else {
+                UserModel.updateOne({'username': 'admin'}, 
+                    {$pull: {'vacancyRequests': {'name': name}}},
+                     (err, resp) => {
+                        if (err) {
+                            console.log(err);
+                        }
+                        else {
+                            res.json({'message': 'ok'});
+                        }
+                     })
+            }
+        });
     }
 
     getAllClients = (req: express.Request, res: express.Response) => {
@@ -150,6 +168,17 @@ export class AdminController {
             }
             else {
                 res.json(users);
+            }
+        });
+    }
+
+    getAllAgencies = (req: express.Request, res: express.Response) => {
+        AgencyModel.find({}, (err, agencies) => {
+            if (err) {
+                console.log(err);
+            }
+            else {
+                res.json(agencies);
             }
         });
     }

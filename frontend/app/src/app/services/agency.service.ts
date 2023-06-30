@@ -77,11 +77,29 @@ export class AgencyService {
     let data = {
       firstname: worker.firstname,
       lastname: worker.lastname,
-      email: worker.lastname,
+      email: worker.email,
       phone: worker.phone,
       specialization: worker.specialization,
       agency: id
     };
     return this.http.post(`${this.uri}/agency/submitWorker`, data);
   }
+
+  deleteWorker(email: string) {
+    return this.http.get(`${this.uri}/agency/deleteWorker?param=${email}`);
+  }
+
+  editWorker(editMail: string, worker: Worker) {
+    let data = {
+      editMail: editMail,
+      firstname: worker.firstname,
+      lastname: worker.lastname,
+      email: worker.email,
+      phone: worker.phone,
+      specialization: worker.specialization,
+      agency: worker.agency
+    };
+    return this.http.post(`${this.uri}/agency/editWorker`, data);
+  }
+
 }

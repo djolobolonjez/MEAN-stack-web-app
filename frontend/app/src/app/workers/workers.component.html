@@ -14,8 +14,37 @@
           <td>{{worker.phone}}</td>
           <td>{{worker.email}}</td>
           <td>{{worker.specialization}}</td>
-          <td><button>Edit</button></td>
-          <td><button>Delete</button></td>
+          <td><button (click)="editWorker(worker)">Edit</button></td>
+          <td><button (click)="deleteWorker(worker.email)">Delete</button></td>
+        </tr>
+        <tr *ngIf="worker === selectedWorker">
+          <td colspan="6">
+            <form (ngSubmit)="workerEditSubmit()">
+              <div>
+                First Name:
+                <input type="text" [(ngModel)]="editedWorker.firstname" name="firstname">
+              </div>
+              <div>
+                Last Name:
+                <input type="text" [(ngModel)]="editedWorker.lastname" name="lastname">
+              </div>
+              <div>
+                Email:
+                <input type="text" [(ngModel)]="editedWorker.email" name="email">
+              </div>
+              <div>
+                Phone:
+                <input type="text" [(ngModel)]="editedWorker.phone" name="phone">
+              </div>
+              <div>
+                Specialization:
+                <input type="text" [(ngModel)]="editedWorker.specialization" name="specialization">
+              </div>
+              <div>
+                <button type="submit">Submit</button>
+              </div>
+            </form>
+          </td>
         </tr>
       </table>
     </div>
