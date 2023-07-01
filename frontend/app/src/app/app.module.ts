@@ -18,6 +18,7 @@ import { AdminLoginComponent } from './admin-login/admin-login.component';
 import { ClientJobsComponent } from './client-jobs/client-jobs.component';
 import { AgencyJobsComponent } from './agency-jobs/agency-jobs.component';
 import { WorkersComponent } from './workers/workers.component';
+import { CanvasComponent } from './canvas/canvas.component';
 
 @NgModule({
   declarations: [
@@ -34,7 +35,8 @@ import { WorkersComponent } from './workers/workers.component';
     AdminLoginComponent,
     ClientJobsComponent,
     AgencyJobsComponent,
-    WorkersComponent
+    WorkersComponent,
+    CanvasComponent
   ],
   imports: [
     BrowserModule,

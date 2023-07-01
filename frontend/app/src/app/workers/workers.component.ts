@@ -3,9 +3,10 @@ import { CommonService } from '../services/common.service';
 import { Worker } from '../models/worker';
 import { AgencyService } from '../services/agency.service';
 import { Agency } from '../models/agency';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { AdminService } from '../services/admin.service';
 import { User } from '../models/user';
+import { NavigationService } from '../services/navigation.service';
 
 @Component({
   selector: 'app-workers',
@@ -16,7 +17,7 @@ export class WorkersComponent implements OnInit {
 
   constructor(private agencyService: AgencyService, private commonService: CommonService,
               private route: ActivatedRoute, private adminService: AdminService,
-              private router: Router) { }
+              private router: Router, private navigationService: NavigationService) { }
 
   ngOnInit(): void {
     this.route.paramMap.subscribe(params => {

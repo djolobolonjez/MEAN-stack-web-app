@@ -5,6 +5,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ClientController = void 0;
 const user_1 = __importDefault(require("../models/user"));
+const object_1 = __importDefault(require("../models/object"));
 class ClientController {
     constructor() {
         this.register = (req, res) => {
@@ -53,6 +54,16 @@ class ClientController {
                 }
                 else {
                     res.json({ 'message': 'ok' });
+                }
+            });
+        };
+        this.getAllObjects = (req, res) => {
+            object_1.default.find({ 'owner': req.query.param }, (err, objects) => {
+                if (err) {
+                    console.log(err);
+                }
+                else {
+                    res.json(objects);
                 }
             });
         };

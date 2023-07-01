@@ -1,1 +1,19 @@
-<p>objects works!</p>
+<table>
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Address</th>
+        <th>Number of Rooms</th>
+        <th>Size</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let obj of objects">
+        <td>{{ obj.type }}</td>
+        <td>{{ obj.address }}</td>
+        <td>{{ obj.numberOfRooms }}</td>
+        <td>{{ obj.size }}</td>
+        <td><app-canvas [width]="250" [height]="120" [numberOfRooms]="obj.numberOfRooms"></app-canvas></td>
+      </tr>
+    </tbody>
+  </table>

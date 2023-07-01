@@ -1,5 +1,6 @@
 import express from 'express';
 import UserModel from '../models/user';
+import ObjectModel from '../models/object';
 
 export class ClientController {
         
@@ -58,5 +59,16 @@ export class ClientController {
                 res.json({'message': 'ok'});
             }
         });
+    }
+
+    getAllObjects = (req: express.Request, res: express.Response) => {
+        ObjectModel.find({'owner': req.query.param}, (err, objects) => {
+            if (err) {
+                console.log(err);
+            }
+            else {
+                res.json(objects);
+            }
+        })
     }
 }

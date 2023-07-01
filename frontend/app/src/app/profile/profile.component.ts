@@ -5,7 +5,8 @@ import { CommonService } from '../services/common.service';
 import { ImageWrapper } from '../models/image';
 import { ImageService } from '../services/image.service';
 import { AgencyService } from '../services/agency.service';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
+import { NavigationService } from '../services/navigation.service';
 
 @Component({
   selector: 'app-profile',
@@ -16,7 +17,15 @@ export class ProfileComponent implements OnInit {
 
   constructor(private clientService: ClientService, private commonService: CommonService,
               private imageService: ImageService, private agencyService: AgencyService,
-              private route: ActivatedRoute, private router: Router) { }
+              private route: ActivatedRoute, private router: Router,
+              private navigationService: NavigationService) {
+
+               this.router.events.subscribe((event) => {
+                if (event instanceof NavigationEnd) {
+                  this.navigationService.storeCurrentRoute();
+                }
+              }); 
+               }
 
   username: string;
   firstname: string;
@@ -47,36 +56,33 @@ export class ProfileComponent implements OnInit {
 
   ngOnInit(): void {
     this.imageHandler = new ImageWrapper();
-    this.route.paramMap.subscribe((params) => {
-      this.userType = params.get('userType');
+    const queryParams = JSON.parse(localStorage.getItem('queryParams'));
+    const urlSegments = this.router.url.split('/');
+    this.type = urlSegments[1];
+    this.isClient = (this.type == "client" ? true : false);
 
-      const urlSegments = this.router.url.split('/');
-      this.type = urlSegments[1];
-      this.isClient = (this.type == "client" ? true : false);
-
-      if (this.type == "agency") {
-        let id = parseInt(params.get('id'));
-        this.commonService.getUserById(id, this.type).subscribe((user: User) => {
-          this.username = user.username;
-          this.agencyName = user.agencyName;
-          this.description = user.description;
-          this.address = user.address;
-          this.email = user.email;
-          this.phone = user.phone;
-          this.profileImage = user.profilePicture;
-        })
-      }
-      else {
-        this.username = params.get('username');
-        this.commonService.getUserByUsername(this.username, this.type).subscribe((user: User) => {
-          this.firstname = user.firstname;
-          this.lastname = user.lastname;
-          this.email = user.email;
-          this.phone = user.phone;
-          this.profileImage = user.profilePicture;
-        });
-      }
-     });
+    if (this.type == "agency") {
+      let id = parseInt(queryParams.username);
+      this.commonService.getUserById(id, this.type).subscribe((user: User) => {
+        this.username = user.username;
+        this.agencyName = user.agencyName;
+        this.description = user.description;
+        this.address = user.address;
+        this.email = user.email;
+        this.phone = user.phone;
+        this.profileImage = user.profilePicture;
+      })
+    }
+    else {
+      this.username = queryParams.username;
+      this.commonService.getUserByUsername(this.username, this.type).subscribe((user: User) => {
+        this.firstname = user.firstname;
+        this.lastname = user.lastname;
+        this.email = user.email;
+        this.phone = user.phone;
+        this.profileImage = user.profilePicture;
+      });
+    }
   }
 
   editUser() {

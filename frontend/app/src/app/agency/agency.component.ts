@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { CommonService } from '../services/common.service';
 import { Agency } from '../models/agency';
 import { User } from '../models/user';
+import { NavigationService } from '../services/navigation.service';
 
 @Component({
   selector: 'app-agency',
@@ -12,14 +13,15 @@ import { User } from '../models/user';
 export class AgencyComponent implements OnInit {
 
   constructor(private router: Router, private commonService: CommonService,
-              private route: ActivatedRoute) { }
+              private route: ActivatedRoute, private navigationService: NavigationService) { }
 
   ngOnInit(): void {
+    this.navigationService.ngOnInit();
     const params = this.route.firstChild?.snapshot.params;
     if (params) {
       this.userType = params['userType'];
       this.id = params['id'];
-      this.router.navigate(['agency', this.id, this.userType, 'profile']);
+      //this.router.navigate(['agency', this.id, this.userType, 'profile']);
     }
     else {
       let username = sessionStorage.getItem('username');
@@ -27,13 +29,14 @@ export class AgencyComponent implements OnInit {
         this.id = user.id;
         this.userType = 'agencyUser';
         
-        this.router.navigate(['agency', this.id, this.userType, 'profile']);
+        //this.router.navigate(['agency', this.id, this.userType, 'profile']);
       })
     }
   }
 
   userType: string;
   id: number;
+  activeChild: any;
 
   logout(): void {
     sessionStorage.clear();
@@ -50,7 +53,7 @@ export class AgencyComponent implements OnInit {
         this.userType = 'agencyUser';
       }
       this.router.navigate(['agency', this.id, this.userType, 'workers']);
-    })
+    });
   }
 
   showProfile() {
@@ -63,7 +66,8 @@ export class AgencyComponent implements OnInit {
         this.userType = 'agencyUser';
       }
       this.router.navigate(['agency', this.id, this.userType, 'profile']);
-    })
+     
+    });
   }
 
 }

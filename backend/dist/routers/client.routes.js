@@ -7,5 +7,6 @@ const express_1 = __importDefault(require("express"));
 const client_controller_1 = require("../controllers/client.controller");
 const ClientRouter = express_1.default.Router();
 ClientRouter.route('/editUser').post((req, res) => new client_controller_1.ClientController().editUser(req, res));
+ClientRouter.route('/getAllObjects').get((req, res) => new client_controller_1.ClientController().getAllObjects(req, res));
 exports.default = ClientRouter;
 //# sourceMappingURL=client.routes.js.map

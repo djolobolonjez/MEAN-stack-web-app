@@ -11,16 +11,16 @@ export class ClientComponent implements OnInit {
   constructor(private router: Router, private route: ActivatedRoute) { }
 
   ngOnInit(): void {
-    const params = this.route.firstChild?.snapshot.params;
-    if (params) {
-      this.userType = params['userType'];
-      this.username = params['username'];
-      this.router.navigate(['client', this.username, this.userType, 'profile']);
-    }
-    else {
-      this.username = sessionStorage.getItem('username');
-      this.router.navigate(['client', this.username, 'clientUser', 'profile']);
-    }
+    // const params = this.route.firstChild?.snapshot.params;
+    // if (params) {
+    //   this.userType = params['userType'];
+    //   this.username = params['username'];
+    //   this.router.navigate(['client', this.username, this.userType, 'profile']);
+    // }
+    // else {
+    //   this.username = sessionStorage.getItem('username');
+    //   this.router.navigate(['client', this.username, 'clientUser', 'profile']);
+    // }
   }
 
   userType: string;
@@ -33,7 +33,8 @@ export class ClientComponent implements OnInit {
 
   showProfile() {
     let username = sessionStorage.getItem('username');
-    this.router.navigate(['client', username, 'clientUser', 'profile']);
+    localStorage.setItem('queryParams', JSON.stringify({'username': username, 'userType': 'clientUser'}));
+    this.router.navigate(['client', 'profile']);
   }
 
 }

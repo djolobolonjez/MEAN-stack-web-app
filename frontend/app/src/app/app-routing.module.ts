@@ -22,7 +22,7 @@ const routes: Routes = [
   { path: "register", component: RegisterComponent },
   { path: "client", component: ClientComponent, children: [
     { path: '', redirectTo: 'profile', pathMatch: 'full'},
-    { path: ':username/:userType/profile', component: ProfileComponent },
+    { path: 'profile', component: ProfileComponent },
     { path: 'objects', component: ObjectsComponent },
     { path: 'agencies', component: AgenciesComponent },
     { path: 'client-jobs', component: ClientJobsComponent }

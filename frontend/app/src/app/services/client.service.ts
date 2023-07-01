@@ -37,4 +37,8 @@ export class ClientService {
     };
     return this.http.post(`${this.uri}/client/editUser`, data);
   }
+
+  getAllObjects(id: number) {
+    return this.http.get(`${this.uri}/client/getAllObjects?param=${id}`);
+  }
 }
