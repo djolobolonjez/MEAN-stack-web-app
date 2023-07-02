@@ -61,8 +61,17 @@ export class ProfileComponent implements OnInit {
     this.type = urlSegments[1];
     this.isClient = (this.type == "client" ? true : false);
 
+    this.userType = queryParams.userType;
+    let isAdmin = (this.userType == 'adminUser' ? true : false);
+
     if (this.type == "agency") {
-      let id = parseInt(queryParams.username);
+      let id: number;
+      if (isAdmin) {
+        id = parseInt(localStorage.getItem('agencyId'));
+      }
+      else {
+        id = parseInt(queryParams.username);
+      }
       this.commonService.getUserById(id, this.type).subscribe((user: User) => {
         this.username = user.username;
         this.agencyName = user.agencyName;
@@ -74,7 +83,12 @@ export class ProfileComponent implements OnInit {
       })
     }
     else {
-      this.username = queryParams.username;
+      if (isAdmin) {
+        this.username = localStorage.getItem('user');
+      }
+      else {
+        this.username = queryParams.username;
+      }
       this.commonService.getUserByUsername(this.username, this.type).subscribe((user: User) => {
         this.firstname = user.firstname;
         this.lastname = user.lastname;

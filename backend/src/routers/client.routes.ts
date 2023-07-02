@@ -11,4 +11,8 @@ ClientRouter.route('/getAllObjects').get(
     (req, res) => new ClientController().getAllObjects(req, res)
 );
 
+ClientRouter.route('/addObject').post(
+    (req, res) => new ClientController().addObject(req, res)
+);
+
 export default ClientRouter;

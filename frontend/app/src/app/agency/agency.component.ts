@@ -17,21 +17,17 @@ export class AgencyComponent implements OnInit {
 
   ngOnInit(): void {
     this.navigationService.ngOnInit();
-    const params = this.route.firstChild?.snapshot.params;
-    if (params) {
-      this.userType = params['userType'];
-      this.id = params['id'];
-      //this.router.navigate(['agency', this.id, this.userType, 'profile']);
-    }
-    else {
-      let username = sessionStorage.getItem('username');
-      this.commonService.getUserByUsername(username, "agency").subscribe((user: User) => {
-        this.id = user.id;
+    let username = sessionStorage.getItem('username');
+    this.commonService.getUserByUsername(username, "agency").subscribe((user: User) => {
+      if (user == null) {
+        this.userType = 'adminUser';
+      }
+      else {
         this.userType = 'agencyUser';
-        
-        //this.router.navigate(['agency', this.id, this.userType, 'profile']);
-      })
-    }
+        this.id = user.id;
+      }
+      localStorage.setItem('queryParams', JSON.stringify({'username': this.id, 'userType': this.userType}));
+    });
   }
 
   userType: string;
@@ -44,30 +40,11 @@ export class AgencyComponent implements OnInit {
   }
 
   visitWorkers() {
-    let username = sessionStorage.getItem('username');
-    this.commonService.getUserByUsername(username, "agency").subscribe((res) => {
-      if (res == null) {
-        this.userType = 'adminUser';
-      }
-      else {
-        this.userType = 'agencyUser';
-      }
-      this.router.navigate(['agency', this.id, this.userType, 'workers']);
-    });
+    this.router.navigate(['agency', 'workers']);
   }
 
   showProfile() {
-    let username = sessionStorage.getItem('username');
-    this.commonService.getUserByUsername(username, "agency").subscribe((res) => {
-      if (res == null) {
-        this.userType = 'adminUser';
-      }
-      else {
-        this.userType = 'agencyUser';
-      }
-      this.router.navigate(['agency', this.id, this.userType, 'profile']);
-     
-    });
+    this.router.navigate(['agency', 'profile']);
   }
 
 }

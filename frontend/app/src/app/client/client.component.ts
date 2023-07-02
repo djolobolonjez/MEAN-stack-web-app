@@ -1,5 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { CommonService } from '../services/common.service';
+import { User } from '../models/user';
 
 @Component({
   selector: 'app-client',
@@ -8,19 +10,19 @@ import { ActivatedRoute, Router } from '@angular/router';
 })
 export class ClientComponent implements OnInit {
 
-  constructor(private router: Router, private route: ActivatedRoute) { }
+  constructor(private router: Router, private commonService: CommonService) { }
 
   ngOnInit(): void {
-    // const params = this.route.firstChild?.snapshot.params;
-    // if (params) {
-    //   this.userType = params['userType'];
-    //   this.username = params['username'];
-    //   this.router.navigate(['client', this.username, this.userType, 'profile']);
-    // }
-    // else {
-    //   this.username = sessionStorage.getItem('username');
-    //   this.router.navigate(['client', this.username, 'clientUser', 'profile']);
-    // }
+    let username = sessionStorage.getItem('username');
+    this.commonService.getUserByUsername(username, "client").subscribe((user: User) => {
+      if (user == null) {
+        this.userType = 'adminUser';
+      }
+      else {
+        this.userType = 'clientUser';
+      }
+      localStorage.setItem('queryParams', JSON.stringify({'username': username, 'userType': this.userType}));
+    })
   }
 
   userType: string;
@@ -32,8 +34,6 @@ export class ClientComponent implements OnInit {
   }
 
   showProfile() {
-    let username = sessionStorage.getItem('username');
-    localStorage.setItem('queryParams', JSON.stringify({'username': username, 'userType': 'clientUser'}));
     this.router.navigate(['client', 'profile']);
   }
 

@@ -20,29 +20,30 @@ export class WorkersComponent implements OnInit {
               private router: Router, private navigationService: NavigationService) { }
 
   ngOnInit(): void {
-    this.route.paramMap.subscribe(params => {
-      this.newWorker = new Worker();
-      this.editedWorker = new Worker();
-      this.userType = params.get('userType');
-      this.agencyId = parseInt(params.get('id'));
+    const queryParams = JSON.parse(localStorage.getItem('queryParams'));
+    this.newWorker = new Worker();
+    this.editedWorker = new Worker();
 
-      if (this.userType == 'agencyUser') {
+    this.userType = queryParams.userType;
+    this.agencyId = queryParams.username;
+    if (this.userType == 'agencyUser') {
+      this.agencyId = queryParams.username;
+      this.agencyService.getWorkers(this.agencyId).subscribe((workers: Worker[]) => {
+        this.workers = workers;
+      });
+      this.commonService.getUserById(this.agencyId, "agency").subscribe((agency: Agency) => {
+        this.openVacancies = agency.openVacancies;
+      });
+    } 
+    else {
+      this.agencyId = parseInt(localStorage.getItem('agencyId'));
+      this.commonService.getLoggedUser(sessionStorage.getItem('username')).subscribe((user: User) => {
+        this.requests = user.vacancyRequests;
         this.agencyService.getWorkers(this.agencyId).subscribe((workers: Worker[]) => {
           this.workers = workers;
         });
-        this.commonService.getUserById(this.agencyId, "agency").subscribe((agency: Agency) => {
-          this.openVacancies = agency.openVacancies;
-        });
-      } 
-      else {
-        this.commonService.getLoggedUser(sessionStorage.getItem('username')).subscribe((user: User) => {
-          this.requests = user.vacancyRequests;
-          this.agencyService.getWorkers(this.agencyId).subscribe((workers: Worker[]) => {
-            this.workers = workers;
-          });
-        });
-      }
-    });
+      });
+    }
     
   }
 

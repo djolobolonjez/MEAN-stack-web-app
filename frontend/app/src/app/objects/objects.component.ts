@@ -13,21 +13,46 @@ export class ObjectsComponent implements OnInit {
 
   constructor(private clientService: ClientService, private commonService: CommonService) { }
 
-  @ViewChild('canvasRef', { static: true }) canvasRef: ElementRef<HTMLCanvasElement>;
+  objects: Object[] = []; 
 
-  objects: Object[] = [];
+  selectedObject: Object
+  newObject: Object
+
+  userId: number;
+
+  addObjectForm: boolean = false;
 
   ngOnInit(): void { 
     const queryParams = JSON.parse(localStorage.getItem('queryParams'));
     let username = queryParams.username;
 
     this.commonService.getUserByUsername(username, "client").subscribe((user: User) => {
-      this.clientService.getAllObjects(user.id).subscribe((objects: Object[]) => {
+      this.userId = user.id;
+      this.clientService.getAllObjects(this.userId).subscribe((objects: Object[]) => {
+        this.objects = objects;
+      });
+    });
+
+    this.newObject = new Object();
+  }
+
+  showScheme(obj) {
+    this.selectedObject = obj;
+  }
+
+  addObject() {
+    this.addObjectForm = true;
+  }
+
+  submitObject() {
+    this.addObjectForm = false;
+    this.newObject.owner = this.userId;
+    this.clientService.addObject(this.newObject).subscribe((resp) => {
+      alert(resp['message']);
+      this.clientService.getAllObjects(this.userId).subscribe((objects: Object[]) => {
         this.objects = objects;
       });
     })
-
-    
   }
 }
 

@@ -191,7 +191,7 @@ class UserController {
             let username = req.body.username;
             let type = req.body.type;
             if (type == "client") {
-                user_1.default.findOne({ 'username': username }, (err, user) => {
+                user_1.default.findOne({ 'username': username, 'type': 'client' }, (err, user) => {
                     if (err) {
                         console.log(err);
                     }

@@ -246,7 +246,7 @@ export class UserController {
         let type = req.body.type;
 
         if (type == "client") {
-            UserModel.findOne({'username': username}, (err, user) => {
+            UserModel.findOne({'username': username, 'type': 'client'}, (err, user) => {
                 if (err) {
                     console.log(err);
                 }

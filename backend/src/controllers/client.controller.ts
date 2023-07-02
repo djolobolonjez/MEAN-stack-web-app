@@ -71,4 +71,19 @@ export class ClientController {
             }
         })
     }
+
+    addObject = (req: express.Request, res: express.Response) => {
+        console.log("tuu");
+        let obj = new ObjectModel(req.body);
+        console.log(obj);
+
+        obj.save((err, resp) => {
+            if (err) {
+                console.log(err);
+            }
+            else {
+                res.json({'message': 'ok'});
+            }
+        })
+    }
 }

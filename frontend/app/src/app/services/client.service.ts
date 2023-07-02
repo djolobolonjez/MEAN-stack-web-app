@@ -41,4 +41,8 @@ export class ClientService {
   getAllObjects(id: number) {
     return this.http.get(`${this.uri}/client/getAllObjects?param=${id}`);
   }
+
+  addObject(obj) {
+    return this.http.post(`${this.uri}/client/addObject`, obj);
+  }
 }

@@ -34,7 +34,7 @@ export class AdminComponent implements OnInit {
       myAgencies.push(agency);
     });
       this.agencies = myAgencies;
-    })
+    });
   }
 
   registrationRequests: string[] = [];
@@ -67,11 +67,13 @@ export class AdminComponent implements OnInit {
   }
 
   navigateToClient(username: string) {
-    this.router.navigate(['client', username, 'adminUser', 'profile']);
+    localStorage.setItem('user', username);
+    this.router.navigate(['client', 'profile']);
   }
 
   navigateToAgency(id: number) {
-    this.router.navigate(['agency', id, 'adminUser', 'profile']);
+    localStorage.setItem('agencyId', id.toString());
+    this.router.navigate(['agency', 'profile']);
   }
 
   logout() {

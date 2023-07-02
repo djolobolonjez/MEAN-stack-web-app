@@ -67,6 +67,19 @@ class ClientController {
                 }
             });
         };
+        this.addObject = (req, res) => {
+            console.log("tuu");
+            let obj = new object_1.default(req.body);
+            console.log(obj);
+            obj.save((err, resp) => {
+                if (err) {
+                    console.log(err);
+                }
+                else {
+                    res.json({ 'message': 'ok' });
+                }
+            });
+        };
     }
 }
 exports.ClientController = ClientController;
