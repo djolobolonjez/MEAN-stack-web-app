@@ -29,7 +29,8 @@ export class AdminComponent implements OnInit {
         name: user.agencyName,
         description: user.description,
         valid: user.valid,
-        openVacancies: user.openVacancies
+        openVacancies: user.openVacancies,
+        profileImage: user.profilePicture
       };
       myAgencies.push(agency);
     });

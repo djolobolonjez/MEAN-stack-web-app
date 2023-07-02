@@ -19,6 +19,8 @@ import { ClientJobsComponent } from './client-jobs/client-jobs.component';
 import { AgencyJobsComponent } from './agency-jobs/agency-jobs.component';
 import { WorkersComponent } from './workers/workers.component';
 import { CanvasComponent } from './canvas/canvas.component';
+import { AgencySearchComponent } from './agency-search/agency-search.component';
+import { AgencyViewComponent } from './agency-view/agency-view.component';
 
 @NgModule({
   declarations: [
@@ -36,7 +38,9 @@ import { CanvasComponent } from './canvas/canvas.component';
     ClientJobsComponent,
     AgencyJobsComponent,
     WorkersComponent,
-    CanvasComponent
+    CanvasComponent,
+    AgencySearchComponent,
+    AgencyViewComponent
   ],
   imports: [
     BrowserModule,

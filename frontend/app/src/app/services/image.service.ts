@@ -25,7 +25,15 @@ export class ImageService {
           alert('Maximum image size is 300x300 and minimum size is 100x100!');
           resolve(false);
         } else {
-          resolve(true);
+          const extension = this.getFileExtension(img.image.name);
+          const validExtensions = ['jpg', 'png'];
+          if (!validExtensions.includes(extension)) {
+            alert('Invalid file format!');
+            resolve(false);
+          }
+          else {
+            resolve(true);
+          }
         }
   
         URL.revokeObjectURL(imageUrl);
@@ -42,5 +50,10 @@ export class ImageService {
       imageHandler.image = <File>event.target.files[0];
     }
     return this.validImage(imageHandler);
+  }
+
+  getFileExtension(filename) {
+    const parts = filename.split('.');
+    return parts[parts.length - 1].toLowerCase();
   }
 }

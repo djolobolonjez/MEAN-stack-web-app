@@ -13,6 +13,7 @@ import { AdminComponent } from './admin/admin.component';
 import { ClientJobsComponent } from './client-jobs/client-jobs.component';
 import { WorkersComponent } from './workers/workers.component';
 import { AgencyJobsComponent } from './agency-jobs/agency-jobs.component';
+import { AgencyViewComponent } from './agency-view/agency-view.component';
 
 const routes: Routes = [
   { path: "", component: MainComponent },
@@ -34,7 +35,8 @@ const routes: Routes = [
     { path: 'workers', component: WorkersComponent },
     { path: 'agency-jobs', component: AgencyJobsComponent }
   ] 
-  }
+  },
+  { path: 'agency-view', component: AgencyViewComponent }
 ];
 
 @NgModule({

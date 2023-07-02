@@ -3,6 +3,7 @@ import { Object } from '../models/object';
 import { ClientService } from '../services/client.service';
 import { CommonService } from '../services/common.service';
 import { User } from '../models/user';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-objects',
@@ -11,7 +12,8 @@ import { User } from '../models/user';
 })
 export class ObjectsComponent implements OnInit {
 
-  constructor(private clientService: ClientService, private commonService: CommonService) { }
+  constructor(private clientService: ClientService, private commonService: CommonService, 
+              private router: Router) { }
 
   objects: Object[] = []; 
 
@@ -19,8 +21,12 @@ export class ObjectsComponent implements OnInit {
   newObject: Object
 
   userId: number;
+  inputData: any;
 
   addObjectForm: boolean = false;
+  fileInput: boolean = false;
+  manualInput: boolean = false;
+  fileChoosen: boolean = false;
 
   ngOnInit(): void { 
     const queryParams = JSON.parse(localStorage.getItem('queryParams'));
@@ -52,6 +58,53 @@ export class ObjectsComponent implements OnInit {
       this.clientService.getAllObjects(this.userId).subscribe((objects: Object[]) => {
         this.objects = objects;
       });
+    })
+  }
+
+  jsonAdd() {
+    this.fileInput = true;
+    this.manualInput = false;
+  }
+
+  manualAdd() {
+    this.fileInput = false;
+    this.manualInput = true;
+  }
+
+  onUpload(event: any) {
+    if (event.target.files && event.target.files.length > 0) {
+      const file = event.target.files[0];
+      const reader = new FileReader();
+  
+      reader.onload = (e) => {
+        const fileContent = reader.result;
+        const fileExtension = this.getFileExtension(file.name);
+        
+        if (fileExtension != 'json') {
+          alert('Invalid input file format!');
+        }
+        else {
+          const data = JSON.parse(fileContent as string);
+          data[0].owner = this.userId;
+          this.inputData = data[0];
+          this.fileChoosen = true;
+        }
+        
+      };
+  
+      reader.readAsText(file);
+    }
+  }
+
+  getFileExtension(filename) {
+    const parts = filename.split('.');
+    return parts[parts.length - 1].toLowerCase();
+  }
+
+  uploadFile() {
+    this.clientService.addObject(this.inputData).subscribe((resp) => {
+      alert(resp['message']);
+      this.commonService.refreshCurrentRoute(this.router);
     })
   }
 }

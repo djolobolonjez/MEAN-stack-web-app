@@ -22,7 +22,9 @@
     <button (click)="addObject()">Add object</button>
   </div>
   <div *ngIf="addObjectForm">
-    <form>
+    <button (click)="jsonAdd()">Add from JSON</button>
+    <button (click)="manualAdd()">Add manually</button>
+    <form *ngIf="manualInput">
         <div>
             <label>Object type: </label>
             <input type="text" [(ngModel)]="newObject.type" name="type">
@@ -43,5 +45,11 @@
             <button (click)="submitObject()">Submit</button>
         </div>
     </form>
+    <div *ngIf="fileInput">
+      <div>
+        <input type="file" (input)="onUpload($event)">
+        <button *ngIf="fileChoosen" (click)="uploadFile()">Upload</button>
+      </div>
+    </div>
   </div>
   
