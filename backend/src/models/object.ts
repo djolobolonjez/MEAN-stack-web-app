@@ -3,6 +3,9 @@ import mongoose from "mongoose";
 const Schema = mongoose.Schema;
 
 let ObjectSchema = new Schema({
+    id: {
+        type: Number
+    },
     type: {
         type: String
     },

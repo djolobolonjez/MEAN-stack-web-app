@@ -2,6 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { CommonService } from '../services/common.service';
 import { User } from '../models/user';
 import { Agency } from '../models/agency';
+import { ClientService } from '../services/client.service';
+import { Object } from '../models/object';
+import { Job } from '../models/job';
 
 @Component({
   selector: 'app-agency-view',
@@ -10,10 +13,22 @@ import { Agency } from '../models/agency';
 })
 export class AgencyViewComponent implements OnInit {
 
-  constructor(private commonService: CommonService) { }
+  constructor(private commonService: CommonService, private clientService: ClientService) { }
 
   ngOnInit(): void {
     this.agencyId = parseInt(localStorage.getItem('viewAgency'));
+    this.username = sessionStorage.getItem('username');
+    this.isClient = (this.username == null ? false : true);
+
+    if (this.isClient) {
+      this.commonService.getUserByUsername(this.username, "client").subscribe((user: User) => {
+        this.userId = user.id;
+        this.clientService.getAllObjects(this.userId).subscribe((objects: Object[]) => {
+          this.objects = objects;
+        });
+      });
+    }
+
     this.commonService.getUserById(this.agencyId, "agency").subscribe((user: User) => {
       this.agency = {
         id: this.agencyId,
@@ -28,5 +43,31 @@ export class AgencyViewComponent implements OnInit {
   }
 
   agencyId: number;
+  userId: number;
   agency: Agency;
+  username: string;
+
+  objects: Object[] = [];
+  selectedObject: Object;
+  date: string;
+  
+  isClient: boolean = false;
+  
+  isRequesting: boolean = false;
+
+  request() {
+    this.isRequesting = true;
+  }
+
+  sendRequest() {
+    let job = new Job();
+    job.clientID = this.userId;
+    job.objectID = this.selectedObject.id;
+    console.log(this.selectedObject);
+    job.completionDate = this.date;
+    job.status = "requested";
+    this.clientService.requestJob(job).subscribe((resp) => {
+      alert(resp['message']);
+    });
+  }
 }

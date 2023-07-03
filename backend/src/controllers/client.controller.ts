@@ -1,6 +1,7 @@
 import express from 'express';
 import UserModel from '../models/user';
 import ObjectModel from '../models/object';
+import JobModel from '../models/job';
 
 export class ClientController {
         
@@ -81,6 +82,41 @@ export class ClientController {
             }
             else {
                 res.json({'message': 'ok'});
+            }
+        })
+    }
+
+    requestJob = (req: express.Request, res: express.Response) => {
+        let job = new JobModel(req.body);
+
+        job.save((err, resp) => {
+            if (err) {
+                console.log(err);
+            }
+            else {
+                res.json({'message': 'ok'});
+            }
+        });
+    }
+
+    getAllJobs = (req: express.Request, res: express.Response) => {
+        JobModel.find({'clientID': req.query.param}, (err, jobs) => {
+            if (err) {
+                console.log(err);
+            }
+            else {
+                res.json(jobs);
+            }
+        })
+    }
+    
+    getObjectById = (req: express.Request, res: express.Response) => {
+        ObjectModel.findOne({'id': req.query.param}, (err, obj) => {
+            if (err) {
+                console.log(err);
+            }
+            else {
+                res.json(obj);
             }
         })
     }

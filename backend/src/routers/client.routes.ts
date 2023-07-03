@@ -15,4 +15,16 @@ ClientRouter.route('/addObject').post(
     (req, res) => new ClientController().addObject(req, res)
 );
 
+ClientRouter.route('/requestJob').post(
+    (req, res) => new ClientController().requestJob(req, res)
+);
+
+ClientRouter.route('/getAllJobs').get(
+    (req, res) => new ClientController().getAllJobs(req, res)
+);
+
+ClientRouter.route('/getObjectById').get(
+    (req, res) => new ClientController().getObjectById(req, res)
+);
+
 export default ClientRouter;

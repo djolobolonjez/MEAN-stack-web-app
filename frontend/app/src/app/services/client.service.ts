@@ -45,4 +45,16 @@ export class ClientService {
   addObject(obj) {
     return this.http.post(`${this.uri}/client/addObject`, obj);
   }
+
+  requestJob(job) {
+    return this.http.post(`${this.uri}/client/requestJob`, job);
+  }
+
+  getAllJobs(id) {
+    return this.http.get(`${this.uri}/client/getAllJobs?param=${id}`)
+  }
+
+  getObjectById(id) {
+    return this.http.get(`${this.uri}/client/getObjectById?param=${id}`);
+  }
 }

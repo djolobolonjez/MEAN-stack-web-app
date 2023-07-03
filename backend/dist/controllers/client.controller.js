@@ -6,6 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.ClientController = void 0;
 const user_1 = __importDefault(require("../models/user"));
 const object_1 = __importDefault(require("../models/object"));
+const job_1 = __importDefault(require("../models/job"));
 class ClientController {
     constructor() {
         this.register = (req, res) => {
@@ -68,15 +69,44 @@ class ClientController {
             });
         };
         this.addObject = (req, res) => {
-            console.log("tuu");
             let obj = new object_1.default(req.body);
-            console.log(obj);
             obj.save((err, resp) => {
                 if (err) {
                     console.log(err);
                 }
                 else {
                     res.json({ 'message': 'ok' });
+                }
+            });
+        };
+        this.requestJob = (req, res) => {
+            let job = new job_1.default(req.body);
+            job.save((err, resp) => {
+                if (err) {
+                    console.log(err);
+                }
+                else {
+                    res.json({ 'message': 'ok' });
+                }
+            });
+        };
+        this.getAllJobs = (req, res) => {
+            job_1.default.find({ 'clientID': req.query.param }, (err, jobs) => {
+                if (err) {
+                    console.log(err);
+                }
+                else {
+                    res.json(jobs);
+                }
+            });
+        };
+        this.getObjectById = (req, res) => {
+            object_1.default.findOne({ 'id': req.query.param }, (err, obj) => {
+                if (err) {
+                    console.log(err);
+                }
+                else {
+                    res.json(obj);
                 }
             });
         };

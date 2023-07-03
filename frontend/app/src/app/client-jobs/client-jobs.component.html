@@ -1,1 +1,12 @@
-<p>client-jobs works!</p>
+<table>
+    <tr>
+        <th>Object ID</th>
+        <th>Completion date</th>
+    </tr>
+    <tr *ngFor="let job of allJobs">
+        <td>{{job.objectID}}</td>
+        <td>{{job.completionDate}}</td>
+        <td><button (click)="showProgress(job)">Show progress</button></td>
+        <td><app-canvas *ngIf="selectedJob === job && selectedObject" [width]="250" [height]="120" [numberOfRooms]="selectedObject.numberOfRooms"></app-canvas></td>
+    </tr>
+</table>

@@ -4,3 +4,24 @@
 <div>
     <h3>{{agency.name}}</h3>
 </div>
+<div *ngIf="isClient">
+    <button (click)="request()">Send job request</button>
+</div>
+<div *ngIf="isRequesting">
+    <div>
+        <label>Object: </label>
+        <select [(ngModel)]="selectedObject">
+            <option value="">Select an object</option>
+            <ng-container *ngFor="let object of objects; let i = index">
+                <option [ngValue]="object">{{ 'Object' + (i+1) }}</option>
+            </ng-container>
+        </select>
+    </div>
+    <div>
+        <label>Completion date: </label>
+        <input type="text" placeholder="yyyy-MM-dd" [(ngModel)]="date">
+    </div>
+    <div>
+        <button (click)="sendRequest()">Send</button>
+    </div>
+</div>
