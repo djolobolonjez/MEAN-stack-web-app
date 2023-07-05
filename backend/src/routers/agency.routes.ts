@@ -44,4 +44,20 @@ AgencyRouter.route('/editWorker').post(
     (req, res) => new AgencyController().editWorker(req, res)
 );
 
+AgencyRouter.route('/getRequestedJobs').get(
+    (req, res) => new AgencyController().getRequestedJobs(req, res)
+);
+
+AgencyRouter.route('/getJobId').get(
+    (req, res) => new AgencyController().getJobId(req, res)
+);
+
+AgencyRouter.route('/declineJob').get(
+    (req, res) => new AgencyController().declineJob(req, res)
+);
+
+AgencyRouter.route('/sendOffer').post(
+    (req, res) => new AgencyController().sendOffer(req, res)
+);
+
 export default AgencyRouter;

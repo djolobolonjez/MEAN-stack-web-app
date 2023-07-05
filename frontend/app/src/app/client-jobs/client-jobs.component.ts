@@ -40,4 +40,26 @@ export class ClientJobsComponent implements OnInit {
       this.selectedObject = object;
     })
   }
+
+  declineOffer(job) {
+    this.clientService.declineOffer(job.id).subscribe((resp) => {
+      this.ngOnInit();
+    })
+  }
+
+  acceptOffer(job) {
+    this.clientService.acceptOffer(job.id).subscribe((resp) => {
+      this.ngOnInit();
+    })
+  }
+
+  jobStatus(job) {
+    if (job.status == 'accepted') {
+      return 'Green';
+    }
+    else if (job.status == 'declined') {
+      return 'Red';
+    }
+    return '';
+  }
 }

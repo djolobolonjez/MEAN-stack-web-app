@@ -110,6 +110,26 @@ class ClientController {
                 }
             });
         };
+        this.acceptOffer = (req, res) => {
+            job_1.default.updateOne({ 'id': req.query.param }, { $set: { 'status': 'active' } }, (err, resp) => {
+                if (err) {
+                    console.log(err);
+                }
+                else {
+                    res.json();
+                }
+            });
+        };
+        this.declineOffer = (req, res) => {
+            job_1.default.deleteOne({ 'id': req.query.param }, (err, resp) => {
+                if (err) {
+                    console.log(err);
+                }
+                else {
+                    res.json();
+                }
+            });
+        };
     }
 }
 exports.ClientController = ClientController;

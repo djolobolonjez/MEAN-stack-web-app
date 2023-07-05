@@ -17,17 +17,6 @@ export class AgencyComponent implements OnInit {
 
   ngOnInit(): void {
     this.navigationService.ngOnInit();
-    let username = sessionStorage.getItem('username');
-    this.commonService.getUserByUsername(username, "agency").subscribe((user: User) => {
-      if (user == null) {
-        this.userType = 'adminUser';
-      }
-      else {
-        this.userType = 'agencyUser';
-        this.id = user.id;
-      }
-      localStorage.setItem('queryParams', JSON.stringify({'username': this.id, 'userType': this.userType}));
-    });
   }
 
   userType: string;
@@ -41,10 +30,6 @@ export class AgencyComponent implements OnInit {
 
   visitWorkers() {
     this.router.navigate(['agency', 'workers']);
-  }
-
-  showProfile() {
-    this.router.navigate(['agency', 'profile']);
   }
 
 }

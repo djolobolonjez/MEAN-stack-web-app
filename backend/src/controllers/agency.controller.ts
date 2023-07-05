@@ -1,7 +1,8 @@
 import express from 'express';
 import AgencyModel from '../models/agency';
 import UserModel from '../models/user';
-import WorkerModel from '../models/worker'
+import WorkerModel from '../models/worker';
+import JobModel from '../models/job';
 import { SearchType } from '../types/search.type';
 
 export class AgencyController {
@@ -207,5 +208,50 @@ export class AgencyController {
                 res.json({'message': 'ok'});
             }
         }); 
+    }
+
+    getRequestedJobs = (req: express.Request, res: express.Response) => {
+        JobModel.find({'status': 'requested', 'agencyID': req.query.param}, (err, jobs) => {
+            if (err) {
+                console.log(err);
+            }
+            else {
+                res.json(jobs);
+            }
+        })
+    }
+s
+    getJobId = (req: express.Request, res: express.Response) => {
+        JobModel.findOne({}).sort({"id": -1}).limit(1).exec((err, job) => {
+            if (err) {
+                console.log(err);
+            }
+            else {
+                res.json(job);
+            }
+        })
+    }
+
+    declineJob = (req: express.Request, res: express.Response) => {
+        JobModel.updateOne({'id': req.query.param}, { $set: {'status': 'declined' }}, (err, resp) => {
+            if (err) {
+                console.log(err);
+            }
+            else {
+                res.json({'message': 'ok'});
+            }
+        })
+    }
+
+    sendOffer = (req: express.Request, res: express.Response) => {
+        JobModel.updateOne({'id': req.body.id}, { $set: {'price': req.body.price, 'status': 'accepted'}},
+                            (err, resp) => {
+                                if (err) {
+                                    console.log(err);
+                                }
+                                else {
+                                    res.json({'message': 'ok'});
+                                }
+                            })
     }
 }

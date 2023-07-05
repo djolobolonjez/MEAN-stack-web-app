@@ -15,6 +15,7 @@ import { NavigationService } from '../services/navigation.service';
 })
 export class ProfileComponent implements OnInit {
 
+
   constructor(private clientService: ClientService, private commonService: CommonService,
               private imageService: ImageService, private agencyService: AgencyService,
               private route: ActivatedRoute, private router: Router,
@@ -56,45 +57,74 @@ export class ProfileComponent implements OnInit {
 
   ngOnInit(): void {
     this.imageHandler = new ImageWrapper();
-    const queryParams = JSON.parse(localStorage.getItem('queryParams'));
+    //const queryParams = JSON.parse(localStorage.getItem('queryParams'));
     const urlSegments = this.router.url.split('/');
     this.type = urlSegments[1];
     this.isClient = (this.type == "client" ? true : false);
 
-    this.userType = queryParams.userType;
-    let isAdmin = (this.userType == 'adminUser' ? true : false);
+    //this.userType = queryParams.userType;
+    //let isAdmin = (this.userType == 'adminUser' ? true : false);
+    
 
     if (this.type == "agency") {
       let id: number;
-      if (isAdmin) {
-        id = parseInt(localStorage.getItem('agencyId'));
-      }
-      else {
-        id = parseInt(queryParams.username);
-      }
-      this.commonService.getUserById(id, this.type).subscribe((user: User) => {
-        this.username = user.username;
-        this.agencyName = user.agencyName;
-        this.description = user.description;
-        this.address = user.address;
-        this.email = user.email;
-        this.phone = user.phone;
-        this.profileImage = user.profilePicture;
-      })
+      let username = sessionStorage.getItem('username');
+      this.commonService.getUserByUsername(username, "agency").subscribe((user: User) => {
+        if (user == null) {
+          this.userType = 'adminUser';
+        }
+        else {
+          this.userType = 'agencyUser';
+        }
+        let isAdmin = (this.userType == 'adminUser' ? true : false);
+        if (isAdmin) {
+          id = parseInt(localStorage.getItem('agencyId'));
+        }
+        else {
+          id = user.id;
+        }
+        this.commonService.getUserById(id, this.type).subscribe((user: User) => {
+          if (user) {
+            this.username = user.username;
+            this.agencyName = user.agencyName;
+            this.description = user.description;
+            this.address = user.address;
+            this.email = user.email;
+            this.phone = user.phone;
+            this.profileImage = user.profilePicture;
+          }
+        });
+        localStorage.setItem('queryParams', JSON.stringify({'username': id.toString(), 'userType': this.userType}));
+      });
+      
     }
     else {
-      if (isAdmin) {
-        this.username = localStorage.getItem('user');
-      }
-      else {
-        this.username = queryParams.username;
-      }
-      this.commonService.getUserByUsername(this.username, this.type).subscribe((user: User) => {
-        this.firstname = user.firstname;
-        this.lastname = user.lastname;
-        this.email = user.email;
-        this.phone = user.phone;
-        this.profileImage = user.profilePicture;
+      let username = sessionStorage.getItem('username');
+      this.commonService.getUserByUsername(username, "client").subscribe((user: User) => {
+
+        if (user == null) {
+          this.userType = 'adminUser';
+        }
+        else {
+          this.userType = 'clientUser';
+        }
+        let isAdmin = (this.userType == 'adminUser' ? true : false);
+        if (isAdmin) {
+          this.username = localStorage.getItem('user');
+        }
+        else {
+          this.username = user.username;
+        }
+        this.commonService.getUserByUsername(this.username, this.type).subscribe((user: User) => {
+          if (user) {
+            this.firstname = user.firstname;
+            this.lastname = user.lastname;
+            this.email = user.email;
+            this.phone = user.phone;
+            this.profileImage = user.profilePicture;
+          }
+        });
+        localStorage.setItem('queryParams', JSON.stringify({'username': username, 'userType': this.userType}));
       });
     }
   }

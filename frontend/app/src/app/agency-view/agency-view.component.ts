@@ -5,6 +5,7 @@ import { Agency } from '../models/agency';
 import { ClientService } from '../services/client.service';
 import { Object } from '../models/object';
 import { Job } from '../models/job';
+import { AgencyService } from '../services/agency.service';
 
 @Component({
   selector: 'app-agency-view',
@@ -13,7 +14,8 @@ import { Job } from '../models/job';
 })
 export class AgencyViewComponent implements OnInit {
 
-  constructor(private commonService: CommonService, private clientService: ClientService) { }
+  constructor(private commonService: CommonService, private clientService: ClientService,
+              private agencyService: AgencyService) { }
 
   ngOnInit(): void {
     this.agencyId = parseInt(localStorage.getItem('viewAgency'));
@@ -61,13 +63,18 @@ export class AgencyViewComponent implements OnInit {
 
   sendRequest() {
     let job = new Job();
-    job.clientID = this.userId;
-    job.objectID = this.selectedObject.id;
-    console.log(this.selectedObject);
-    job.completionDate = this.date;
-    job.status = "requested";
-    this.clientService.requestJob(job).subscribe((resp) => {
-      alert(resp['message']);
-    });
+    this.agencyService.getJobId().subscribe((jobDB: Job) => {
+      job.id = jobDB.id + 1;
+      job.clientID = this.userId;
+      job.objectID = this.selectedObject.id;
+      job.agencyID = this.agencyId;
+      console.log(this.selectedObject);
+      job.completionDate = this.date;
+      job.status = "requested";
+      this.clientService.requestJob(job).subscribe((resp) => {
+        alert(resp['message']);
+      });
+    })
+    
   }
 }

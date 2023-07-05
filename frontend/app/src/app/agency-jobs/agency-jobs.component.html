@@ -1,1 +1,30 @@
-<p>agency-jobs works!</p>
+<table>
+    <tr>
+        <th>Firstname</th>
+        <th>Lastname</th>
+        <th>Email</th>
+        <th>Object type</th>
+        <th>Address</th>
+        <th>Number of rooms</th>
+        <th>Size</th>
+    </tr>
+    <tr *ngFor="let req of requestedJobs; let i = index">
+        <td>{{req.clientInfo.firstname}}</td>
+        <td>{{req.clientInfo.lastname}}</td>
+        <td>{{req.clientInfo.email}}</td>
+        <td>{{req.objectInfo.type}}</td>
+        <td>{{req.objectInfo.address}}</td>
+        <td>{{req.objectInfo.numberOfRooms}}</td>
+        <td>{{req.objectInfo.size}}</td>
+        <td><button (click)="acceptJob(req)">Accept</button></td>
+        <td><button (click)="declineJob(req, i)">Decline</button></td>
+    </tr>
+    <ng-container *ngFor="let req of requestedJobs; let i = index">
+        <tr>
+          <td>
+            <input type="text" placeholder="Enter job offer" *ngIf="req.clicked" name="price" [(ngModel)]="req.price">
+          </td>
+          <td><button (click)="sendOffer(req)" *ngIf="req.clicked">Send offer</button></td>
+        </tr>
+      </ng-container>
+</table>

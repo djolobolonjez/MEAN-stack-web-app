@@ -6,10 +6,16 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const mongoose_1 = __importDefault(require("mongoose"));
 const Schema = mongoose_1.default.Schema;
 let Job = new Schema({
+    id: {
+        type: Number
+    },
     clientID: {
         type: Number
     },
     objectID: {
+        type: Number
+    },
+    agencyID: {
         type: Number
     },
     completionDate: {

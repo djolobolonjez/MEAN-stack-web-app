@@ -120,4 +120,26 @@ export class ClientController {
             }
         })
     }
+
+    acceptOffer = (req: express.Request, res: express.Response) => {
+        JobModel.updateOne({'id': req.query.param}, { $set: {'status': 'active' }}, (err, resp) => {
+            if (err) {
+                console.log(err);
+            }
+            else {
+                res.json();
+            }
+        })
+    }
+
+    declineOffer = (req: express.Request, res: express.Response) => {
+        JobModel.deleteOne({'id': req.query.param}, (err, resp) => {
+            if (err) {
+                console.log(err);
+            }
+            else {
+                res.json();
+            }
+        })
+    }
 }

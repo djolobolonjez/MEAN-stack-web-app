@@ -256,7 +256,7 @@ export class UserController {
             });
         }
         else {
-            AgencyModel.findOne({'username': username}, (err, agency) => {
+            AgencyModel.findOne({'username': username, 'type': 'agency'}, (err, agency) => {
                 if (err) {
                     console.log(err);
                 }

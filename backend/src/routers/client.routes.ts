@@ -27,4 +27,12 @@ ClientRouter.route('/getObjectById').get(
     (req, res) => new ClientController().getObjectById(req, res)
 );
 
+ClientRouter.route('/acceptOffer').get(
+    (req, res) => new ClientController().acceptOffer(req, res)
+);
+
+ClientRouter.route('/declineOffer').get(
+    (req, res) => new ClientController().declineOffer(req, res)
+);
+
 export default ClientRouter;

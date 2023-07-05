@@ -7,6 +7,7 @@ exports.AgencyController = void 0;
 const agency_1 = __importDefault(require("../models/agency"));
 const user_1 = __importDefault(require("../models/user"));
 const worker_1 = __importDefault(require("../models/worker"));
+const job_1 = __importDefault(require("../models/job"));
 const search_type_1 = require("../types/search.type");
 class AgencyController {
     constructor() {
@@ -178,6 +179,46 @@ class AgencyController {
                     'phone': phone,
                     'specialization': specialization
                 } }, (err, resp) => {
+                if (err) {
+                    console.log(err);
+                }
+                else {
+                    res.json({ 'message': 'ok' });
+                }
+            });
+        };
+        this.getRequestedJobs = (req, res) => {
+            job_1.default.find({ 'status': 'requested', 'agencyID': req.query.param }, (err, jobs) => {
+                if (err) {
+                    console.log(err);
+                }
+                else {
+                    res.json(jobs);
+                }
+            });
+        };
+        this.getJobId = (req, res) => {
+            job_1.default.findOne({}).sort({ "id": -1 }).limit(1).exec((err, job) => {
+                if (err) {
+                    console.log(err);
+                }
+                else {
+                    res.json(job);
+                }
+            });
+        };
+        this.declineJob = (req, res) => {
+            job_1.default.updateOne({ 'id': req.query.param }, { $set: { 'status': 'declined' } }, (err, resp) => {
+                if (err) {
+                    console.log(err);
+                }
+                else {
+                    res.json({ 'message': 'ok' });
+                }
+            });
+        };
+        this.sendOffer = (req, res) => {
+            job_1.default.updateOne({ 'id': req.body.id }, { $set: { 'price': req.body.price, 'status': 'accepted' } }, (err, resp) => {
                 if (err) {
                     console.log(err);
                 }

@@ -3,10 +3,13 @@
         <th>Object ID</th>
         <th>Completion date</th>
     </tr>
-    <tr *ngFor="let job of allJobs">
+    <tr *ngFor="let job of allJobs" style="background-color: {{jobStatus(job)}}">
         <td>{{job.objectID}}</td>
         <td>{{job.completionDate}}</td>
+        <td colspan="2" *ngIf="job.status == 'accepted'"><p>Offer: </p>{{job.price}}</td>
         <td><button (click)="showProgress(job)">Show progress</button></td>
         <td><app-canvas *ngIf="selectedJob === job && selectedObject" [width]="250" [height]="120" [numberOfRooms]="selectedObject.numberOfRooms"></app-canvas></td>
+        <td *ngIf="job.status == 'accepted'"><button (click)="acceptOffer(job)">Accept offer</button></td>
+        <td *ngIf="job.status == 'accepted'"><button (click)="declineOffer(job)">Decline offer</button></td>
     </tr>
 </table>

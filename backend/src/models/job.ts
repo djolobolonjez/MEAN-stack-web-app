@@ -3,10 +3,16 @@ import mongoose from "mongoose";
 const Schema = mongoose.Schema;
 
 let Job = new Schema({
+    id: {
+        type: Number
+    },
     clientID: {
         type: Number
     },
     objectID: {
+        type: Number
+    },
+    agencyID: {
         type: Number
     },
     completionDate: {

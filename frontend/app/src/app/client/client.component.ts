@@ -13,16 +13,8 @@ export class ClientComponent implements OnInit {
   constructor(private router: Router, private commonService: CommonService) { }
 
   ngOnInit(): void {
-    let username = sessionStorage.getItem('username');
-    this.commonService.getUserByUsername(username, "client").subscribe((user: User) => {
-      if (user == null) {
-        this.userType = 'adminUser';
-      }
-      else {
-        this.userType = 'clientUser';
-      }
-      localStorage.setItem('queryParams', JSON.stringify({'username': username, 'userType': this.userType}));
-    })
+    let queryParams = JSON.parse(localStorage.getItem('queryParams'));
+    this.userType = queryParams.userType;
   }
 
   userType: string;
@@ -31,10 +23,6 @@ export class ClientComponent implements OnInit {
   logout(): void {
     sessionStorage.clear();
     this.router.navigate(['']);
-  }
-
-  showProfile() {
-    this.router.navigate(['client', 'profile']);
   }
 
 }

@@ -102,4 +102,20 @@ export class AgencyService {
     return this.http.post(`${this.uri}/agency/editWorker`, data);
   }
 
+  getRequestedJobs(id) {
+    return this.http.get(`${this.uri}/agency/getRequestedJobs?param=${id}`);
+  }
+
+  declineJob(id) {
+    return this.http.get(`${this.uri}/agency/declineJob?param=${id}`);
+  }
+
+  getJobId() {
+    return this.http.get(`${this.uri}/agency/getJobId`);
+  }
+
+  sendOffer(req) {
+    return this.http.post(`${this.uri}/agency/sendOffer`, req);
+  }
+
 }

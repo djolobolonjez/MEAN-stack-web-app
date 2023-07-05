@@ -57,4 +57,12 @@ export class ClientService {
   getObjectById(id) {
     return this.http.get(`${this.uri}/client/getObjectById?param=${id}`);
   }
+
+  acceptOffer(id) {
+    return this.http.get(`${this.uri}/client/acceptOffer?param=${id}`);
+  }
+
+  declineOffer(id) {
+    return this.http.get(`${this.uri}/client/declineOffer?param=${id}`);
+  }
 }

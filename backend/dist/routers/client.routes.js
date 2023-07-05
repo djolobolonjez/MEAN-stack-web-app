@@ -12,5 +12,7 @@ ClientRouter.route('/addObject').post((req, res) => new client_controller_1.Clie
 ClientRouter.route('/requestJob').post((req, res) => new client_controller_1.ClientController().requestJob(req, res));
 ClientRouter.route('/getAllJobs').get((req, res) => new client_controller_1.ClientController().getAllJobs(req, res));
 ClientRouter.route('/getObjectById').get((req, res) => new client_controller_1.ClientController().getObjectById(req, res));
+ClientRouter.route('/acceptOffer').get((req, res) => new client_controller_1.ClientController().acceptOffer(req, res));
+ClientRouter.route('/declineOffer').get((req, res) => new client_controller_1.ClientController().declineOffer(req, res));
 exports.default = ClientRouter;
 //# sourceMappingURL=client.routes.js.map
