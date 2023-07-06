@@ -14,7 +14,8 @@
         <td>{{ obj.numberOfRooms }}</td>
         <td>{{ obj.size }}</td>
         <td><button (click)="showScheme(obj)">Show scheme</button></td>
-        <td><app-canvas *ngIf="selectedObject === obj" [width]="250" [height]="120" [numberOfRooms]="obj.numberOfRooms"></app-canvas></td> 
+        <td><app-canvas *ngIf="selectedObject === obj" [width]="250" [height]="120" [numberOfRooms]="obj.numberOfRooms"
+          [roomOneStatus]="'white'" [roomTwoStatus]="'white'" [roomThreeStatus]="'white'"></app-canvas></td> 
       </tr>
     </tbody>
   </table>

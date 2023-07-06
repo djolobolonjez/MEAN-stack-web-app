@@ -3,6 +3,9 @@ import mongoose from "mongoose";
 const Schema = mongoose.Schema;
 
 let Worker = new Schema({
+    id: {
+        type: Number
+    },
     firstname: {
         type: String
     },
@@ -19,6 +22,9 @@ let Worker = new Schema({
         type: String
     },
     agency: {
+        type: String
+    },
+    status: {
         type: String
     }
 })

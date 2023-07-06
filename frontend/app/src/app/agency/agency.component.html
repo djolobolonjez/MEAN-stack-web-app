@@ -1,7 +1,7 @@
 <div>
     <button routerLink="/agency/profile">Profile</button>
-    <button (click)="visitWorkers()">Workers</button>
-    <button *ngIf="userType != 'adminUser'" routerLink="/agency/agency-jobs">Jobs</button>
+    <button routerLink="/agency/workers">Workers</button>
+    <button *ngIf="getUserType() !== 'adminUser'" routerLink="/agency/agency-jobs">Jobs</button>
     <button (click)="logout()">Logout</button>
   </div>
   

@@ -75,6 +75,7 @@ export class AgencyService {
 
   submitWorker(id: number, worker: Worker) {
     let data = {
+      id: worker.id,
       firstname: worker.firstname,
       lastname: worker.lastname,
       email: worker.email,
@@ -106,6 +107,10 @@ export class AgencyService {
     return this.http.get(`${this.uri}/agency/getRequestedJobs?param=${id}`);
   }
 
+  getActiveJobs(id) {
+    return this.http.get(`${this.uri}/agency/getActiveJobs?param=${id}`);
+  }
+
   declineJob(id) {
     return this.http.get(`${this.uri}/agency/declineJob?param=${id}`);
   }
@@ -118,4 +123,27 @@ export class AgencyService {
     return this.http.post(`${this.uri}/agency/sendOffer`, req);
   }
 
+  getWorkerId() {
+    return this.http.get(`${this.uri}/agency/getWorkerId`);
+  }
+
+  getInactiveWorkers(id) {
+    return this.http.get(`${this.uri}/agency/getInactiveWorkers?param=${id}`);
+  } 
+
+  assignWorker(job, id) {
+    let data = {
+      job: job,
+      id: id
+    };
+    return this.http.post(`${this.uri}/agency/assignWorker`, data);
+  }
+
+  updateJob(job) {
+    return this.http.post(`${this.uri}/agency/updateJob`, job);
+  }
+
+  finishJob(job) {
+    return this.http.get(`${this.uri}/agency/finishJob?param=${job.id}`);
+  }
 }

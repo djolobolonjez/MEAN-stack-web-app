@@ -23,6 +23,27 @@ let Job = new Schema({
     },
     price: {
         type: Number
+    },
+    roomOneWorkers: {
+        type: Array
+    },
+    roomTwoWorkers: {
+        type: Array
+    },
+    roomThreeWorkers: {
+        type: Array
+    },
+    roomOneStatus: {
+        type: String
+    },
+    roomTwoStatus: {
+        type: String
+    },
+    roomThreeStatus: {
+        type: String
+    },
+    pay: {
+        type: Boolean
     }
 });
 

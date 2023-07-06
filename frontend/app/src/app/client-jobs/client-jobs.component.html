@@ -7,8 +7,10 @@
         <td>{{job.objectID}}</td>
         <td>{{job.completionDate}}</td>
         <td colspan="2" *ngIf="job.status == 'accepted'"><p>Offer: </p>{{job.price}}</td>
-        <td><button (click)="showProgress(job)">Show progress</button></td>
-        <td><app-canvas *ngIf="selectedJob === job && selectedObject" [width]="250" [height]="120" [numberOfRooms]="selectedObject.numberOfRooms"></app-canvas></td>
+        <td><button (click)="showProgress(job)" *ngIf="!(job.status == 'declined')">Show progress</button></td>
+        <td><button (click)="payForJob(job)" *ngIf="job.pay && !(job.status === 'finished')">Pay</button></td>
+        <td><app-canvas *ngIf="selectedJob === job && selectedObject" [width]="250" [height]="120" [numberOfRooms]="selectedObject.numberOfRooms"
+            [roomOneStatus]="job.roomOneStatus" [roomTwoStatus]="job.roomTwoStatus" [roomThreeStatus]="job.roomThreeStatus"></app-canvas></td>
         <td *ngIf="job.status == 'accepted'"><button (click)="acceptOffer(job)">Accept offer</button></td>
         <td *ngIf="job.status == 'accepted'"><button (click)="declineOffer(job)">Decline offer</button></td>
     </tr>

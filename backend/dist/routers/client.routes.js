@@ -14,5 +14,6 @@ ClientRouter.route('/getAllJobs').get((req, res) => new client_controller_1.Clie
 ClientRouter.route('/getObjectById').get((req, res) => new client_controller_1.ClientController().getObjectById(req, res));
 ClientRouter.route('/acceptOffer').get((req, res) => new client_controller_1.ClientController().acceptOffer(req, res));
 ClientRouter.route('/declineOffer').get((req, res) => new client_controller_1.ClientController().declineOffer(req, res));
+ClientRouter.route('/payForJob').get((req, res) => new client_controller_1.ClientController().payForJob(req, res));
 exports.default = ClientRouter;
 //# sourceMappingURL=client.routes.js.map

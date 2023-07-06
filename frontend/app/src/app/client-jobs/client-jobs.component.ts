@@ -4,6 +4,7 @@ import { User } from '../models/user';
 import { ClientService } from '../services/client.service';
 import { Job } from '../models/job';
 import { Object } from '../models/object';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-client-jobs',
@@ -12,7 +13,8 @@ import { Object } from '../models/object';
 })
 export class ClientJobsComponent implements OnInit {
 
-  constructor(private commonService: CommonService, private clientService: ClientService) { }
+  constructor(private commonService: CommonService, private clientService: ClientService,
+              private router: Router) { }
 
   ngOnInit(): void {
     this.username = sessionStorage.getItem('username');
@@ -35,8 +37,6 @@ export class ClientJobsComponent implements OnInit {
   showProgress(job) {
     this.selectedJob = job;
     this.clientService.getObjectById(job.objectID).subscribe((object: Object) => {
-      console.log(job.objectID);
-      console.log(object);
       this.selectedObject = object;
     })
   }
@@ -61,5 +61,11 @@ export class ClientJobsComponent implements OnInit {
       return 'Red';
     }
     return '';
+  }
+
+  payForJob(job) {
+    this.clientService.payForJob(job.id).subscribe(resp => {
+      this.commonService.refreshCurrentRoute(this.router);
+    })
   }
 }

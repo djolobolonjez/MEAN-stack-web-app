@@ -16,7 +16,9 @@ export class AgencyComponent implements OnInit {
               private route: ActivatedRoute, private navigationService: NavigationService) { }
 
   ngOnInit(): void {
+    
     this.navigationService.ngOnInit();
+    
   }
 
   userType: string;
@@ -30,6 +32,12 @@ export class AgencyComponent implements OnInit {
 
   visitWorkers() {
     this.router.navigate(['agency', 'workers']);
+  }
+
+  getUserType() {
+    let queryParams = JSON.parse(localStorage.getItem('queryParams'));
+    this.userType = queryParams.userType;
+    return this.userType;
   }
 
 }

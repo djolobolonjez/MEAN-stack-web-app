@@ -76,6 +76,7 @@ export class WorkersComponent implements OnInit {
     if (this.vacanciesRequested > 0) {
       this.agencyService.sendVacanciesRequest(this.agencyId, this.vacanciesRequested).subscribe((resp) => {
         alert(resp['message']);
+        this.commonService.refreshCurrentRoute(this.router);
       })
     }
   }
@@ -87,11 +88,15 @@ export class WorkersComponent implements OnInit {
   submitWorker() {
     this.adminForm = false;
     this.showWorkerInput = false;
-    this.agencyService.submitWorker(this.agencyId, this.newWorker).subscribe((resp) => {
-      alert(resp['message']);
-      this.agencyService.getWorkers(this.agencyId).subscribe((workers: Worker[]) => {
-        this.workers = workers;
-        this.commonService.refreshCurrentRoute(this.router);
+    this.agencyService.getWorkerId().subscribe((worker: Worker) => {
+      this.newWorker.id = worker.id + 1;
+      console.log(this.newWorker.id);
+      this.agencyService.submitWorker(this.agencyId, this.newWorker).subscribe((resp) => {
+        alert(resp['message']);
+        this.agencyService.getWorkers(this.agencyId).subscribe((workers: Worker[]) => {
+          this.workers = workers;
+          this.commonService.refreshCurrentRoute(this.router);
+        });
       });
     })
   }

@@ -71,6 +71,9 @@ export class AgencyViewComponent implements OnInit {
       console.log(this.selectedObject);
       job.completionDate = this.date;
       job.status = "requested";
+      job.roomOneStatus = 'yellow';
+      job.roomTwoStatus = 'yellow';
+      job.roomThreeStatus = 'yellow';
       this.clientService.requestJob(job).subscribe((resp) => {
         alert(resp['message']);
       });

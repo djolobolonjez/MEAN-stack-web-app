@@ -5,6 +5,8 @@ import { CommonService } from '../services/common.service';
 import { User } from '../models/user';
 import { ClientService } from '../services/client.service';
 import { Object } from '../models/object';
+import { Worker } from '../models/worker';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-agency-jobs',
@@ -14,13 +16,27 @@ import { Object } from '../models/object';
 export class AgencyJobsComponent implements OnInit {
 
   constructor(private agencyService: AgencyService, private commonService: CommonService,
-              private clientService: ClientService) { }
+              private clientService: ClientService, private router: Router) { }
 
   ngOnInit(): void {
     this.agencyId = JSON.parse(localStorage.getItem('queryParams')).username;
     this.agencyService.getRequestedJobs(this.agencyId).subscribe((jobs: Job[]) => {
       this.requestedJobs = jobs;
       this.fetchClientAndObjectData();
+    });
+    this.agencyService.getActiveJobs(this.agencyId).subscribe((jobs: Job[]) => {
+      this.activeJobs = jobs;
+      this.activeJobs.forEach(job => {
+        this.clientService.getObjectById(job.objectID).subscribe((obj: Object) => {
+          job.numberOfRooms = obj.numberOfRooms;
+        })
+        this.validJob(job).then(result => {
+          job.started = result;
+        });
+      })
+    });
+    this.agencyService.getInactiveWorkers(this.agencyId).subscribe((workers: Worker[]) => {
+      this.inactiveWorkers = workers;
     })
   }
 
@@ -28,6 +44,18 @@ export class AgencyJobsComponent implements OnInit {
 
   requestedJobs: Job[] = [];
 
+  activeJobs: Job[] = [];
+
+  selectedJob: Job;
+  selectedObject: Object;
+
+  assignedJob: Job;
+  updatedJob: Job;
+  
+  selectedWorkers: Worker[] = [];
+  inactiveWorkers: Worker[] = [];
+  roomStatus: string[] = [];
+  
   fetchClientAndObjectData() {
     this.requestedJobs.forEach((req) => {
       this.commonService.getUserById(req.clientID, "client").subscribe((user: User) => {
@@ -56,4 +84,94 @@ export class AgencyJobsComponent implements OnInit {
     })
   }
 
+  showProgress(job) {
+    this.selectedJob = job;
+    this.clientService.getObjectById(job.objectID).subscribe((object: Object) => {
+      this.selectedObject = object;
+    })
+  }
+
+  updateObject(job) {
+    this.updatedJob = job;
+  }
+
+  validJob(job): Promise<boolean> {
+    return new Promise((resolve) => {
+      this.clientService.getObjectById(job.objectID).subscribe((object: Object) => {
+        let numberOfRooms = object.numberOfRooms;
+        if (numberOfRooms == 1 && job.roomOneWorkers.length >= 1) {
+          resolve(true);
+        }
+        else if (numberOfRooms == 2 && job.roomOneWorkers.length >= 1 && job.roomTwoWorkers >= 1) {
+          resolve(true);
+        }
+        else if (numberOfRooms == 3 && 
+                job.roomOneWorkers.length >= 1 && job.roomTwoWorkers.length >= 1 && job.roomThreeWorkers.length >= 1) {
+                  resolve(true);
+                }
+        else {
+          resolve(false);
+        }
+      });
+    })
+    
+  }
+
+  getRange(numberOfRooms: number): number[] {
+    return Array(numberOfRooms).fill(0).map((_, index) => index);
+  }
+
+  assignWorker(worker: Worker, job: Job, roomIndex: number) {
+    if (roomIndex == 0) {
+      job.roomOneWorkers.push(worker.id);
+    }
+    else if (roomIndex == 1) {
+      job.roomTwoWorkers.push(worker.id);
+    }
+    else {
+      job.roomThreeWorkers.push(worker.id);
+    }
+
+    this.validJob(job).then(result => {
+      if (result) {
+        job.roomOneStatus = job.roomTwoStatus = job.roomThreeStatus = 'red';
+      }
+      else {
+        job.roomOneStatus = job.roomTwoStatus = job.roomThreeStatus = 'yellow';
+      }
+
+      this.agencyService.assignWorker(job, worker.id).subscribe((resp) => {
+        this.commonService.refreshCurrentRoute(this.router);
+      })
+
+    });
+  }
+
+  assignWorkers(job) {
+    this.assignedJob = job;
+  }
+
+  finishRoom(job, index) {
+    if (index == 0) {
+      job.roomOneStatus = 'green';
+    }
+    else if (index == 1) {
+      job.roomTwoStatus = 'green';
+    }
+    else {
+      job.roomThreeStatus = 'green';
+    }
+
+    
+    this.agencyService.updateJob(job).subscribe(resp => {
+      if (job.roomOneStatus == 'green' && 
+        job.roomTwoStatus == 'green' &&
+        job.roomThreeStatus == 'green') {
+          this.agencyService.finishJob(job).subscribe(resp => {
+
+          })
+      }
+      this.commonService.refreshCurrentRoute(this.router);
+    });
+  }
 }

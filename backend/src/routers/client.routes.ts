@@ -35,4 +35,8 @@ ClientRouter.route('/declineOffer').get(
     (req, res) => new ClientController().declineOffer(req, res)
 );
 
+ClientRouter.route('/payForJob').get(
+    (req, res) => new ClientController().payForJob(req, res)
+);
+
 export default ClientRouter;

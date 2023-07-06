@@ -26,6 +26,27 @@ let Job = new Schema({
     },
     price: {
         type: Number
+    },
+    roomOneWorkers: {
+        type: Array
+    },
+    roomTwoWorkers: {
+        type: Array
+    },
+    roomThreeWorkers: {
+        type: Array
+    },
+    roomOneStatus: {
+        type: String
+    },
+    roomTwoStatus: {
+        type: String
+    },
+    roomThreeStatus: {
+        type: String
+    },
+    pay: {
+        type: Boolean
     }
 });
 exports.default = mongoose_1.default.model('JobModel', Job, 'poslovi');

@@ -201,7 +201,7 @@ class UserController {
                 });
             }
             else {
-                agency_1.default.findOne({ 'username': username }, (err, agency) => {
+                agency_1.default.findOne({ 'username': username, 'type': 'agency' }, (err, agency) => {
                     if (err) {
                         console.log(err);
                     }

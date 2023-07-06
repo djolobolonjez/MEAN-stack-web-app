@@ -197,6 +197,16 @@ class AgencyController {
                 }
             });
         };
+        this.getActiveJobs = (req, res) => {
+            job_1.default.find({ 'status': 'active', 'agencyID': req.query.param }, (err, jobs) => {
+                if (err) {
+                    console.log(err);
+                }
+                else {
+                    res.json(jobs);
+                }
+            });
+        };
         this.getJobId = (req, res) => {
             job_1.default.findOne({}).sort({ "id": -1 }).limit(1).exec((err, job) => {
                 if (err) {
@@ -204,6 +214,16 @@ class AgencyController {
                 }
                 else {
                     res.json(job);
+                }
+            });
+        };
+        this.getWorkerId = (req, res) => {
+            worker_1.default.findOne({}).sort({ "id": -1 }).limit(1).exec((err, worker) => {
+                if (err) {
+                    console.log(err);
+                }
+                else {
+                    res.json(worker);
                 }
             });
         };
@@ -224,6 +244,62 @@ class AgencyController {
                 }
                 else {
                     res.json({ 'message': 'ok' });
+                }
+            });
+        };
+        this.getInactiveWorkers = (req, res) => {
+            worker_1.default.find({ 'agency': req.query.param, 'status': 'inactive' }, (err, workers) => {
+                if (err) {
+                    console.log(err);
+                }
+                else {
+                    res.json(workers);
+                }
+            });
+        };
+        this.assignWorker = (req, res) => {
+            let job = req.body.job;
+            let id = req.body.id;
+            worker_1.default.updateOne({ 'id': id }, { $set: { 'status': 'active' } }, (err, resp) => {
+                if (err) {
+                    console.log(err);
+                }
+                else {
+                    job_1.default.updateOne({ 'id': job.id }, { $set: { 'roomOneStatus': job.roomOneStatus,
+                            'roomTwoStatus': job.roomTwoStatus,
+                            'roomThreeStatus': job.roomThreeStatus,
+                            'roomOneWorkers': job.roomOneWorkers,
+                            'roomTwoWorkers': job.roomTwoWorkers,
+                            'roomThreeWorkers': job.roomThreeWorkers, } }, (err, resp) => {
+                        if (err) {
+                            console.log(err);
+                        }
+                        else {
+                            res.json({ 'message': 'ok' });
+                        }
+                    });
+                }
+            });
+        };
+        this.updateJob = (req, res) => {
+            job_1.default.updateOne({ 'id': req.body.id }, { $set: { 'roomOneStatus': req.body.roomOneStatus,
+                    'roomTwoStatus': req.body.roomTwoStatus,
+                    'roomThreeStatus': req.body.roomThreeStatus } }, (err, resp) => {
+                if (err) {
+                    console.log(err);
+                }
+                else {
+                    res.json({ 'message': 'ok' });
+                }
+            });
+        };
+        this.finishJob = (req, res) => {
+            job_1.default.updateOne({ 'id': req.query.param }, { $set: { 'pay': true } }, (err, resp) => {
+                if (err) {
+                    console.log(err);
+                }
+                else {
+                    res.json();
                 }
             });
         };

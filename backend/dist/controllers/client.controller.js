@@ -31,7 +31,7 @@ class ClientController {
             let password = req.body.password;
             user_1.default.findOne({ 'username': username, 'password': password }, (err, user) => {
                 if (err) {
-                    console.log(err); // prijaviti gresku o pogresno unetim podacima
+                    console.log(err);
                 }
                 else {
                     res.json(user);
@@ -81,6 +81,7 @@ class ClientController {
         };
         this.requestJob = (req, res) => {
             let job = new job_1.default(req.body);
+            job.pay = false;
             job.save((err, resp) => {
                 if (err) {
                     console.log(err);
@@ -122,6 +123,16 @@ class ClientController {
         };
         this.declineOffer = (req, res) => {
             job_1.default.deleteOne({ 'id': req.query.param }, (err, resp) => {
+                if (err) {
+                    console.log(err);
+                }
+                else {
+                    res.json();
+                }
+            });
+        };
+        this.payForJob = (req, res) => {
+            job_1.default.updateOne({ 'id': req.query.param }, { $set: { 'status': 'finished' } }, (err, resp) => {
                 if (err) {
                     console.log(err);
                 }

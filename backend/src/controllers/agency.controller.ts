@@ -220,6 +220,17 @@ export class AgencyController {
             }
         })
     }
+
+    getActiveJobs = (req: express.Request, res: express.Response) => {
+        JobModel.find({'status': 'active', 'agencyID': req.query.param}, (err, jobs) => {
+            if (err) {
+                console.log(err);
+            }
+            else {
+                res.json(jobs);
+            }
+        })
+    }
 s
     getJobId = (req: express.Request, res: express.Response) => {
         JobModel.findOne({}).sort({"id": -1}).limit(1).exec((err, job) => {
@@ -228,6 +239,17 @@ s
             }
             else {
                 res.json(job);
+            }
+        })
+    }
+
+    getWorkerId = (req: express.Request, res: express.Response) => {
+        WorkerModel.findOne({}).sort({"id": -1}).limit(1).exec((err, worker) => {
+            if (err) {
+                console.log(err);
+            }
+            else {
+                res.json(worker);
             }
         })
     }
@@ -253,5 +275,74 @@ s
                                     res.json({'message': 'ok'});
                                 }
                             })
+    }
+
+    getInactiveWorkers = (req: express.Request, res: express.Response) => {
+        WorkerModel.find({'agency': req.query.param, 'status': 'inactive'}, (err, workers) => {
+            if (err) {
+                console.log(err);
+            }
+            else {
+                res.json(workers);
+            }
+        })
+    }
+
+    assignWorker = (req: express.Request, res: express.Response) => {
+        let job = req.body.job;
+        let id = req.body.id;
+
+        WorkerModel.updateOne({'id': id}, { $set: {'status': 'active'}}, (err, resp) => {
+            if (err) {
+                console.log(err);
+            }
+            else {
+                JobModel.updateOne(
+                    {'id': job.id},
+                    { $set: {'roomOneStatus': job.roomOneStatus, 
+                             'roomTwoStatus': job.roomTwoStatus,
+                             'roomThreeStatus': job.roomThreeStatus,
+                             'roomOneWorkers': job.roomOneWorkers,
+                             'roomTwoWorkers': job.roomTwoWorkers,
+                             'roomThreeWorkers': job.roomThreeWorkers,}},
+                    (err, resp) => {
+                        if (err) {
+                            console.log(err);
+                        }
+                        else {
+                            res.json({'message': 'ok'});
+                        }
+                    }
+                )
+            }
+        })
+    }
+
+    updateJob = (req: express.Request, res: express.Response) => {
+        JobModel.updateOne(
+            {'id': req.body.id}, 
+            { $set: {'roomOneStatus': req.body.roomOneStatus,
+                     'roomTwoStatus': req.body.roomTwoStatus,
+                     'roomThreeStatus': req.body.roomThreeStatus}},
+            (err, resp) => {
+                if (err) {
+                    console.log(err);
+                }
+                else {
+                    res.json({'message': 'ok'});
+                }
+            }  
+        )
+    }
+
+    finishJob = (req: express.Request, res: express.Response) => {
+        JobModel.updateOne({'id': req.query.param }, { $set: {'pay': true}}, (err, resp) => {
+            if (err) {
+                console.log(err);
+            }
+            else {
+                res.json();
+            }
+        })
     }
 }

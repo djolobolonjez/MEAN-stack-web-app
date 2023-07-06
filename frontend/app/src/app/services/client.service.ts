@@ -65,4 +65,8 @@ export class ClientService {
   declineOffer(id) {
     return this.http.get(`${this.uri}/client/declineOffer?param=${id}`);
   }
+
+  payForJob(id) {
+    return this.http.get(`${this.uri}/client/payForJob?param=${id}`);
+  }
 }

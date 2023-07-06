@@ -10,6 +10,9 @@ export class CanvasComponent implements AfterViewInit {
   @Input() width: number;
   @Input() height: number;
   @Input() numberOfRooms: number;
+  @Input() roomOneStatus: string;
+  @Input() roomTwoStatus: string;
+  @Input() roomThreeStatus: string;
   ngAfterViewInit(): void {
     const canvas = this.canvasRef.nativeElement;
     const ctx = canvas.getContext('2d');
@@ -19,15 +22,18 @@ export class CanvasComponent implements AfterViewInit {
     const roomHeight = this.height;
 
     ctx.strokeStyle = 'black';
-    ctx.fillStyle = 'brown';
     ctx.lineWidth = 2;
 
     if (this.numberOfRooms === 1) {
-      ctx.strokeRect(10, 10, this.width - 50, this.height);
-      
       const doorX = (this.width - 50) / 2;
       const doorY = (this.height);
+      ctx.fillStyle = this.roomOneStatus;
+      ctx.fillRect(10, 10, this.width - 50, this.height);
+      ctx.strokeRect(10, 10, this.width - 50, this.height);
+      
+      ctx.fillStyle = 'brown';
       ctx.fillRect(doorX, doorY - 15, this.width / 12, this.height / 5);
+      ctx.strokeRect(doorX, doorY - 15, this.width / 12, this.height / 5);
     } else if (this.numberOfRooms === 2) {
       const room1X = 10;
       const room1Y = 10;
@@ -40,11 +46,18 @@ export class CanvasComponent implements AfterViewInit {
 
       const door2X = door1X + 80;
       const door2Y = door1Y + 50;
-
-      ctx.fillRect(door2X, door2Y, this.width / 15, this.height / 5);
-      ctx.fillRect(door1X + 20, door1Y - 15, this.width / 15, this.height / 5);
+      ctx.fillStyle = this.roomOneStatus;
+      ctx.fillRect(room1X + 30, room1Y, room1Width - 30, roomHeight / 2 + 10);
       ctx.strokeRect(room1X + 30, room1Y, room1Width - 30, roomHeight / 2 + 10);
+      ctx.fillStyle = this.roomTwoStatus;
+      ctx.fillRect(room2X, room2Y - 10, room1Width / 2 - 10, roomHeight - 55);
       ctx.strokeRect(room2X, room2Y - 10, room1Width / 2 - 10, roomHeight - 55);
+      
+      ctx.fillStyle = 'brown';
+      ctx.fillRect(door2X, door2Y, this.width / 15, this.height / 5);
+      ctx.strokeRect(door2X, door2Y, this.width / 15, this.height / 5);
+      ctx.fillRect(door1X + 20, door1Y - 15, this.width / 15, this.height / 5);
+      ctx.strokeRect(door1X + 20, door1Y - 15, this.width / 15, this.height / 5);
     }else if (this.numberOfRooms === 3) {
 
       const room1X = 10;
@@ -64,13 +77,23 @@ export class CanvasComponent implements AfterViewInit {
       const door3X = door1X + 80;
       const door3Y = door1Y - 15;
 
-      ctx.fillRect(door2X - 40, door2Y, this.width / 15, this.height / 5);
-      ctx.fillRect(door1X, door1Y - 15, this.width / 15, this.height / 5);
-      ctx.fillRect(door3X, door3Y, this.width / 15, this.height / 5);
-
+      ctx.fillStyle = this.roomOneStatus;
+      ctx.fillRect(room1X + 30, room1Y, room1Width - 30, roomHeight / 2 + 10);
       ctx.strokeRect(room1X + 30, room1Y, room1Width - 30, roomHeight / 2 + 10);
+      ctx.fillStyle = this.roomThreeStatus;
+      ctx.fillRect(room2X - 40, room2Y - 10, room1Width / 2 + 30, roomHeight - 55);
       ctx.strokeRect(room2X - 40, room2Y - 10, room1Width / 2 + 30, roomHeight - 55);
+      ctx.fillStyle = this.roomTwoStatus;
+      ctx.fillRect(room3X + 10, room3Y, room1Width * 1 / 3 - 10, roomHeight / 2 + 10);
       ctx.strokeRect(room3X + 10, room3Y, room1Width * 1 / 3 - 10, roomHeight / 2 + 10);
+      
+      ctx.fillStyle = 'brown';
+      ctx.fillRect(door2X - 40, door2Y, this.width / 15, this.height / 5);
+      ctx.strokeRect(door2X - 40, door2Y, this.width / 15, this.height / 5);
+      ctx.fillRect(door1X, door1Y - 15, this.width / 15, this.height / 5);
+      ctx.strokeRect(door1X, door1Y - 15, this.width / 15, this.height / 5);
+      ctx.fillRect(door3X, door3Y, this.width / 15, this.height / 5);
+      ctx.strokeRect(door3X, door3Y, this.width / 15, this.height / 5);
     }
     
   }

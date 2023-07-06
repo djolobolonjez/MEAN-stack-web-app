@@ -48,8 +48,16 @@ AgencyRouter.route('/getRequestedJobs').get(
     (req, res) => new AgencyController().getRequestedJobs(req, res)
 );
 
+AgencyRouter.route('/getActiveJobs').get(
+    (req, res) => new AgencyController().getActiveJobs(req, res)
+);
+
 AgencyRouter.route('/getJobId').get(
     (req, res) => new AgencyController().getJobId(req, res)
+);
+
+AgencyRouter.route('/getWorkerId').get(
+    (req, res) => new AgencyController().getWorkerId(req, res)
 );
 
 AgencyRouter.route('/declineJob').get(
@@ -58,6 +66,22 @@ AgencyRouter.route('/declineJob').get(
 
 AgencyRouter.route('/sendOffer').post(
     (req, res) => new AgencyController().sendOffer(req, res)
+);
+
+AgencyRouter.route('/getInactiveWorkers').get(
+    (req, res) => new AgencyController().getInactiveWorkers(req, res)
+);
+
+AgencyRouter.route('/assignWorker').post(
+    (req, res) => new AgencyController().assignWorker(req, res)
+);
+
+AgencyRouter.route('/updateJob').post(
+    (req, res) => new AgencyController().updateJob(req, res)
+);
+
+AgencyRouter.route('/finishJob').get(
+    (req, res) => new AgencyController().finishJob(req, res)
 );
 
 export default AgencyRouter;

@@ -2,6 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CommonService } from '../services/common.service';
 import { User } from '../models/user';
+import { NavigationService } from '../services/navigation.service';
 
 @Component({
   selector: 'app-client',
@@ -10,11 +11,11 @@ import { User } from '../models/user';
 })
 export class ClientComponent implements OnInit {
 
-  constructor(private router: Router, private commonService: CommonService) { }
+  constructor(private router: Router, private commonService: CommonService,
+              private navigationService: NavigationService) { }
 
   ngOnInit(): void {
-    let queryParams = JSON.parse(localStorage.getItem('queryParams'));
-    this.userType = queryParams.userType;
+    this.navigationService.ngOnInit();
   }
 
   userType: string;
@@ -23,6 +24,11 @@ export class ClientComponent implements OnInit {
   logout(): void {
     sessionStorage.clear();
     this.router.navigate(['']);
+  }
+
+  getUserType() {
+    let queryParams = JSON.parse(localStorage.getItem('queryParams'));
+    return queryParams.userType;
   }
 
 }

@@ -31,7 +31,7 @@ export class ClientController {
 
         UserModel.findOne({'username': username, 'password': password}, (err, user) => {
             if (err) {
-                console.log(err); // prijaviti gresku o pogresno unetim podacima
+                console.log(err);
             }
             else {
                 res.json(user);
@@ -88,6 +88,7 @@ export class ClientController {
 
     requestJob = (req: express.Request, res: express.Response) => {
         let job = new JobModel(req.body);
+        job.pay = false;
 
         job.save((err, resp) => {
             if (err) {
@@ -134,6 +135,17 @@ export class ClientController {
 
     declineOffer = (req: express.Request, res: express.Response) => {
         JobModel.deleteOne({'id': req.query.param}, (err, resp) => {
+            if (err) {
+                console.log(err);
+            }
+            else {
+                res.json();
+            }
+        })
+    }
+
+    payForJob = (req: express.Request, res: express.Response) => {
+        JobModel.updateOne({'id': req.query.param }, { $set: {'status': 'finished' }}, (err, resp) => {
             if (err) {
                 console.log(err);
             }

@@ -28,3 +28,36 @@
         </tr>
       </ng-container>
 </table>
+<br>
+<table>
+  <tr>
+    <th>Object</th>
+  </tr>
+  <tr *ngFor="let job of activeJobs">
+    <td>{{'Object ' + job.objectID}}</td>
+    <td><button (click)="showProgress(job)">Show progress</button></td>
+    <td><button (click)="updateObject(job)" *ngIf="job.started">Update object</button></td>
+    <td><button (click)="assignWorkers(job)" *ngIf="!job.started">Assign workers</button></td>
+    <td><app-canvas *ngIf="selectedJob === job && selectedObject" [width]="250" [height]="120" [numberOfRooms]="selectedObject.numberOfRooms"
+      [roomOneStatus]="job.roomOneStatus" [roomTwoStatus]="job.roomTwoStatus" [roomThreeStatus]="job.roomThreeStatus"></app-canvas></td>
+  </tr>
+  <ng-container *ngFor="let job of activeJobs">
+    <ng-container *ngIf="job === assignedJob">
+      <tr *ngFor="let roomIndex of getRange(job.numberOfRooms)">
+        <td>Room {{ roomIndex + 1 }}</td>
+        <td>
+          <select [(ngModel)]="selectedWorkers[roomIndex]">
+            <option *ngFor="let worker of inactiveWorkers" [ngValue]="worker">{{ 'Worker ' + worker.id }}</option>
+          </select>
+        </td>
+        <td><button (click)="assignWorker(selectedWorkers[roomIndex], job, roomIndex)">Assign</button></td>
+      </tr>
+    </ng-container>
+    <ng-container *ngIf="job === updatedJob">
+      <tr *ngFor="let roomIndex of getRange(job.numberOfRooms)">
+        <td>Room {{ roomIndex + 1 }}</td>
+        <td><button (click)="finishRoom(job, roomIndex)">Finish</button></td>
+      </tr>
+    </ng-container>
+  </ng-container>
+</table>
