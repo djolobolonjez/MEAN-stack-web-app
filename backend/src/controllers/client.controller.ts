@@ -2,6 +2,7 @@ import express from 'express';
 import UserModel from '../models/user';
 import ObjectModel from '../models/object';
 import JobModel from '../models/job';
+import AgencyModel from '../models/agency';
 
 export class ClientController {
         
@@ -151,6 +152,104 @@ export class ClientController {
             }
             else {
                 res.json();
+            }
+        })
+    }
+
+    addComment = (req: express.Request, res: express.Response) => {
+        JobModel.updateOne({'id': req.body.id}, { $set: {'comment': req.body.comment }}, (err, resp) => {
+            if (err) {
+                console.log(err);
+            }
+            else {
+                AgencyModel.findOne({'id': req.body.agencyID }, (err, agency) => {
+                    if (err) {
+                        console.log(err);
+                    }
+                    else {
+                        const commentIndex = agency.comments.findIndex(comment => comment.jobId === req.body.id);
+                        if (commentIndex != -1) {
+                            agency.comments[commentIndex].comment = req.body.comment;
+                        }
+                        else {
+                            const newComment = {
+                                jobId: req.body.id,
+                                comment: req.body.comment
+                            };
+                            agency.comments.push(newComment);
+                        }
+                        agency.markModified('comments');
+                        agency.save((err, resp) => {
+                            if (err) {
+                                console.log(err);
+                            }
+                            else {
+                                res.json();
+                            }
+                        })
+                    }
+                })
+            }
+        })
+    }
+
+    addRating = (req: express.Request, res: express.Response) => {
+        JobModel.updateOne({'id': req.body.id}, { $set: {'rating': req.body.rating }}, (err, resp) => {
+            if (err) {
+                console.log(err);
+            }
+            else {
+                AgencyModel.findOne({'id': req.body.agencyID }, (err, agency) => {
+                    if (err) {
+                        console.log(err);
+                    }
+                    else {
+                        const commentIndex = agency.comments.findIndex(comment => comment.jobId === req.body.id);
+                        if (commentIndex != -1) {
+                            agency.comments[commentIndex].rating = req.body.rating;
+                        }
+                        else {
+                            const newComment = {
+                                jobId: req.body.id,
+                                rating: req.body.rating
+                            };
+                            agency.comments.push(newComment);
+                        }
+                        agency.markModified('comments');
+                        agency.save((err, resp) => {
+                            if (err) {
+                                console.log(err);
+                            }
+                            else {
+                                res.json();
+                            }
+                        })
+                    }
+                })
+            }
+        })
+    }
+
+    deleteComment = (req: express.Request, res: express.Response) => {
+        let comm = {
+            jobId: req.body.id,
+            comment: req.body.comment,
+            rating: req.body.rating
+        };
+
+        AgencyModel.updateOne({'id': req.body.agencyID }, { $pull: {'comments': comm }}, (err, resp) => {
+            if (err) {
+                console.log(err);
+            }
+            else {
+                JobModel.updateOne({'id': req.body.id}, { $unset: {'comment': '', 'rating': ''}}, (err, resp) => {
+                    if (err) {
+                        console.log(err);
+                    }
+                    else {
+                        res.json();
+                    }
+                })
             }
         })
     }

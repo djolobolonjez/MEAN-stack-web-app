@@ -139,8 +139,12 @@ export class AgencyService {
     return this.http.post(`${this.uri}/agency/assignWorker`, data);
   }
 
-  updateJob(job) {
-    return this.http.post(`${this.uri}/agency/updateJob`, job);
+  updateJob(job, target) {
+    let data = {
+      job: job,
+      target: target
+    };
+    return this.http.post(`${this.uri}/agency/updateJob`, data);
   }
 
   finishJob(job) {

@@ -44,6 +44,12 @@ let Job = new Schema({
     },
     pay: {
         type: Boolean
+    },
+    comment: {
+        type: String
+    },
+    rating: {
+        type: Number
     }
 });
 

@@ -3,6 +3,10 @@ import { AdminService } from '../services/admin.service';
 import { User } from '../models/user';
 import { Router } from '@angular/router';
 import { Agency } from '../models/agency';
+import { Job } from '../models/job';
+import { Object } from '../models/object';
+import { ClientService } from '../services/client.service';
+import { CommonService } from '../services/common.service';
 
 @Component({
   selector: 'app-admin',
@@ -11,7 +15,8 @@ import { Agency } from '../models/agency';
 })
 export class AdminComponent implements OnInit {
 
-  constructor(private adminService: AdminService, private router: Router) { }
+  constructor(private adminService: AdminService, private router: Router,
+              private clientService: ClientService, private commonService: CommonService) { }
 
   ngOnInit(): void {
     this.adminService.getRegistrationRequests().subscribe((user: User) => {
@@ -30,12 +35,24 @@ export class AdminComponent implements OnInit {
         description: user.description,
         valid: user.valid,
         openVacancies: user.openVacancies,
-        profileImage: user.profilePicture
+        profileImage: user.profilePicture,
+        comments: user.comments
       };
       myAgencies.push(agency);
     });
       this.agencies = myAgencies;
     });
+    this.adminService.getAllJobs().subscribe((jobs: Job[]) => {
+      this.allJobs = jobs;
+      this.allJobs.forEach(job => {
+        this.commonService.getUserById(job.clientID, "client").subscribe((user: User) => {
+          job.client = user;
+          this.commonService.getUserById(job.agencyID, "agency").subscribe((user: User) => {
+            job.agency = user;
+          })
+        })
+      })
+    })
   }
 
   registrationRequests: string[] = [];
@@ -44,7 +61,19 @@ export class AdminComponent implements OnInit {
 
   displayClients: boolean = false;
   displayAgencies: boolean = false;
+  displayJobs: boolean = false;
+  
+  allJobs: Job[] = [];
+  selectedJob: Job;
+  selectedObject: Object;
 
+  showProgress(job) {
+    this.selectedJob = job;
+    this.clientService.getObjectById(job.objectID).subscribe((object: Object) => {
+      this.selectedObject = object;
+    })
+  }
+ 
   allowRegistration(username: string) {
     this.adminService.allowRegistration(username).subscribe((resp) => {
       this.ngOnInit();
@@ -59,12 +88,20 @@ export class AdminComponent implements OnInit {
 
   showClients() {
     this.displayAgencies = false;
+    this.displayJobs = false;
     this.displayClients = true;
   }
 
   showAgencies() {
     this.displayClients = false;
+    this.displayJobs = false;
     this.displayAgencies = true;
+  }
+
+  showJobs() {
+    this.displayJobs = true;
+    this.displayClients = false;
+    this.displayAgencies = false;
   }
 
   navigateToClient(username: string) {

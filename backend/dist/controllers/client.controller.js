@@ -7,6 +7,7 @@ exports.ClientController = void 0;
 const user_1 = __importDefault(require("../models/user"));
 const object_1 = __importDefault(require("../models/object"));
 const job_1 = __importDefault(require("../models/job"));
+const agency_1 = __importDefault(require("../models/agency"));
 class ClientController {
     constructor() {
         this.register = (req, res) => {
@@ -138,6 +139,100 @@ class ClientController {
                 }
                 else {
                     res.json();
+                }
+            });
+        };
+        this.addComment = (req, res) => {
+            job_1.default.updateOne({ 'id': req.body.id }, { $set: { 'comment': req.body.comment } }, (err, resp) => {
+                if (err) {
+                    console.log(err);
+                }
+                else {
+                    agency_1.default.findOne({ 'id': req.body.agencyID }, (err, agency) => {
+                        if (err) {
+                            console.log(err);
+                        }
+                        else {
+                            const commentIndex = agency.comments.findIndex(comment => comment.jobId === req.body.id);
+                            if (commentIndex != -1) {
+                                agency.comments[commentIndex].comment = req.body.comment;
+                            }
+                            else {
+                                const newComment = {
+                                    jobId: req.body.id,
+                                    comment: req.body.comment
+                                };
+                                agency.comments.push(newComment);
+                            }
+                            agency.markModified('comments');
+                            agency.save((err, resp) => {
+                                if (err) {
+                                    console.log(err);
+                                }
+                                else {
+                                    res.json();
+                                }
+                            });
+                        }
+                    });
+                }
+            });
+        };
+        this.addRating = (req, res) => {
+            job_1.default.updateOne({ 'id': req.body.id }, { $set: { 'rating': req.body.rating } }, (err, resp) => {
+                if (err) {
+                    console.log(err);
+                }
+                else {
+                    agency_1.default.findOne({ 'id': req.body.agencyID }, (err, agency) => {
+                        if (err) {
+                            console.log(err);
+                        }
+                        else {
+                            const commentIndex = agency.comments.findIndex(comment => comment.jobId === req.body.id);
+                            if (commentIndex != -1) {
+                                agency.comments[commentIndex].rating = req.body.rating;
+                            }
+                            else {
+                                const newComment = {
+                                    jobId: req.body.id,
+                                    rating: req.body.rating
+                                };
+                                agency.comments.push(newComment);
+                            }
+                            agency.markModified('comments');
+                            agency.save((err, resp) => {
+                                if (err) {
+                                    console.log(err);
+                                }
+                                else {
+                                    res.json();
+                                }
+                            });
+                        }
+                    });
+                }
+            });
+        };
+        this.deleteComment = (req, res) => {
+            let comm = {
+                jobId: req.body.id,
+                comment: req.body.comment,
+                rating: req.body.rating
+            };
+            agency_1.default.updateOne({ 'id': req.body.agencyID }, { $pull: { 'comments': comm } }, (err, resp) => {
+                if (err) {
+                    console.log(err);
+                }
+                else {
+                    job_1.default.updateOne({ 'id': req.body.id }, { $unset: { 'comment': '', 'rating': '' } }, (err, resp) => {
+                        if (err) {
+                            console.log(err);
+                        }
+                        else {
+                            res.json();
+                        }
+                    });
                 }
             });
         };

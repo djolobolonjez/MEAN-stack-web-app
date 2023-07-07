@@ -1,6 +1,7 @@
 import express from 'express';
 import UserModel from '../models/user';
 import AgencyModel from '../models/agency';
+import JobModel from '../models/job';
 
 export class AdminController {
 
@@ -179,6 +180,17 @@ export class AdminController {
             }
             else {
                 res.json(agencies);
+            }
+        });
+    }
+
+    getAllJobs = (req: express.Request, res: express.Response) => {
+        JobModel.find({}, (err, jobs) => {
+            if (err) {
+                console.log(err);
+            }
+            else {
+                res.json(jobs);
             }
         });
     }

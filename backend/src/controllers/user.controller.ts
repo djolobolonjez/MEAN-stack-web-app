@@ -38,6 +38,7 @@ export class UserController {
     agencyRegister = (req: express.Request, res: express.Response) => {
         let agency = new AgencyModel(req.body);
         agency.valid = false;
+        agency.comments = [];
 
         UserModel.updateOne({'username': 'admin'}, {$push: {'requests': agency.username}}, (err, resp) => {
             if (err) {

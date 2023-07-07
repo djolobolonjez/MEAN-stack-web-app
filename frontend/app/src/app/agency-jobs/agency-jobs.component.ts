@@ -152,23 +152,35 @@ export class AgencyJobsComponent implements OnInit {
   }
 
   finishRoom(job, index) {
+    let sourceArray: Array<number>;
     if (index == 0) {
       job.roomOneStatus = 'green';
+      sourceArray = job.roomOneWorkers;
+      
     }
     else if (index == 1) {
       job.roomTwoStatus = 'green';
+      sourceArray = job.roomTwoWorkers;
+      
     }
     else {
       job.roomThreeStatus = 'green';
+      sourceArray = job.roomThreeWorkers;
+      
     }
 
+    let target: number[] = JSON.parse(JSON.stringify(sourceArray));
     
-    this.agencyService.updateJob(job).subscribe(resp => {
-      if (job.roomOneStatus == 'green' && 
-        job.roomTwoStatus == 'green' &&
-        job.roomThreeStatus == 'green') {
-          this.agencyService.finishJob(job).subscribe(resp => {
+    this.agencyService.updateJob(job, target).subscribe(resp => {
+      let condition = (job.numberOfRooms == 1 && job.roomOneStatus == 'green') ||
+                      (job.numberOfRooms == 2 && job.roomOneStatus == 'green' && 
+                      job.roomTwoStatus == 'green') ||
+                      (job.numberOfRooms == 3 && job.roomOneStatus == 'green' && 
+                      job.roomTwoStatus == 'green' &&
+                      job.roomThreeStatus == 'green');
 
+      if (condition) {
+          this.agencyService.finishJob(job).subscribe(resp => {
           })
       }
       this.commonService.refreshCurrentRoute(this.router);

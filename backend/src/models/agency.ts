@@ -44,6 +44,9 @@ let Agency = new Schema({
     },
     openVacancies: {
         type: Number
+    },
+    comments: {
+        type: Array
     }
 });
 

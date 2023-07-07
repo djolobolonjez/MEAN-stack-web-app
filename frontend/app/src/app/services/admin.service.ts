@@ -50,4 +50,8 @@ export class AdminService {
   getAllAgencies() {
     return this.http.get(`${this.uri}/admin/getAllAgencies`);
   }
+
+  getAllJobs() {
+    return this.http.get(`${this.uri}/admin/getAllJobs`);
+  }
 }

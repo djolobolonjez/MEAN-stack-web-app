@@ -35,4 +35,8 @@ AdminRouter.route('/getAllAgencies').get(
     (req, res) => new AdminController().getAllAgencies(req, res)
 );
 
+AdminRouter.route('/getAllJobs').get(
+    (req, res) => new AdminController().getAllJobs(req, res)
+);
+
 export default AdminRouter;

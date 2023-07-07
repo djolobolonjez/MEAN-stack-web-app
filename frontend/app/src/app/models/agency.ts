@@ -6,4 +6,5 @@ export interface Agency {
     valid: boolean;
     openVacancies: number;
     profileImage: string;
+    comments: Array<any>;
 }

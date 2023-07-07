@@ -69,4 +69,16 @@ export class ClientService {
   payForJob(id) {
     return this.http.get(`${this.uri}/client/payForJob?param=${id}`);
   }
+
+  addComment(job) {
+    return this.http.post(`${this.uri}/client/addComment`, job);
+  }
+
+  addRating(job) {
+    return this.http.post(`${this.uri}/client/addRating`, job);
+  }
+
+  deleteComment(job) {
+    return this.http.post(`${this.uri}/client/deleteComment`, job);
+  }
 }

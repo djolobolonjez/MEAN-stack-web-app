@@ -6,6 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.AdminController = void 0;
 const user_1 = __importDefault(require("../models/user"));
 const agency_1 = __importDefault(require("../models/agency"));
+const job_1 = __importDefault(require("../models/job"));
 class AdminController {
     constructor() {
         this.login = (req, res) => {
@@ -159,6 +160,16 @@ class AdminController {
                 }
                 else {
                     res.json(agencies);
+                }
+            });
+        };
+        this.getAllJobs = (req, res) => {
+            job_1.default.find({}, (err, jobs) => {
+                if (err) {
+                    console.log(err);
+                }
+                else {
+                    res.json(jobs);
                 }
             });
         };

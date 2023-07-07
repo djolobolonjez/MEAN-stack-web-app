@@ -1,8 +1,12 @@
+import { User } from "./user";
+
 export class Job {
     id: number;
     clientID: number;
+    client: User;
     objectID: number;
     agencyID: number;
+    agency: User;
     completionDate: string;
     status: string;
     price: number;
@@ -18,4 +22,10 @@ export class Job {
     started: boolean = false;
     numberOfRooms: number;
     pay: boolean;
+    comment: string;
+    commentInput: string;
+    showCommentInput: boolean;
+    rating: number;
+    newRating: number;
+    showRatingInput: boolean;
 }

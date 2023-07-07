@@ -319,17 +319,31 @@ s
     }
 
     updateJob = (req: express.Request, res: express.Response) => {
+        let job = req.body.job;
+        let target = req.body.target;
+
         JobModel.updateOne(
-            {'id': req.body.id}, 
-            { $set: {'roomOneStatus': req.body.roomOneStatus,
-                     'roomTwoStatus': req.body.roomTwoStatus,
-                     'roomThreeStatus': req.body.roomThreeStatus}},
+            {'id': job.id}, 
+            { $set: {'roomOneStatus': job.roomOneStatus,
+                     'roomTwoStatus': job.roomTwoStatus,
+                     'roomThreeStatus': job.roomThreeStatus,
+                     'roomOneWorkers': job.roomOneWorkers,
+                     'roomTwoWorkers': job.roomTwoWorkers,
+                     'roomThreeWorkers': job.roomThreeWorkers,}},
             (err, resp) => {
                 if (err) {
                     console.log(err);
                 }
                 else {
-                    res.json({'message': 'ok'});
+                    WorkerModel.updateMany({'id': {$in: target}}, {$set: {'status': 'inactive'}}, (err, resp) => {
+                        if (err) {
+                            console.log(err);
+                        }
+                        else {
+                            res.json({'message': 'ok'});
+                        }
+                    })
+                    
                 }
             }  
         )

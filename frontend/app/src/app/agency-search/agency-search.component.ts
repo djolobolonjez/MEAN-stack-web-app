@@ -52,7 +52,8 @@ export class AgencySearchComponent implements OnInit {
         description: user.description,
         valid: user.valid,
         openVacancies: user.openVacancies,
-        profileImage: user.profilePicture
+        profileImage: user.profilePicture,
+        comments: user.comments
       };
       agencies.push(agency);
     });

@@ -17,4 +17,5 @@ export class User {
     invalid: Array<string>;
     vacancyRequests: Array<any>;
     openVacancies: number;
+    comments: Array<any>
 }

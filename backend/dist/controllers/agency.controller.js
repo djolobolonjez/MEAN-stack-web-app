@@ -282,14 +282,26 @@ class AgencyController {
             });
         };
         this.updateJob = (req, res) => {
-            job_1.default.updateOne({ 'id': req.body.id }, { $set: { 'roomOneStatus': req.body.roomOneStatus,
-                    'roomTwoStatus': req.body.roomTwoStatus,
-                    'roomThreeStatus': req.body.roomThreeStatus } }, (err, resp) => {
+            let job = req.body.job;
+            let target = req.body.target;
+            job_1.default.updateOne({ 'id': job.id }, { $set: { 'roomOneStatus': job.roomOneStatus,
+                    'roomTwoStatus': job.roomTwoStatus,
+                    'roomThreeStatus': job.roomThreeStatus,
+                    'roomOneWorkers': job.roomOneWorkers,
+                    'roomTwoWorkers': job.roomTwoWorkers,
+                    'roomThreeWorkers': job.roomThreeWorkers, } }, (err, resp) => {
                 if (err) {
                     console.log(err);
                 }
                 else {
-                    res.json({ 'message': 'ok' });
+                    worker_1.default.updateMany({ 'id': { $in: target } }, { $set: { 'status': 'inactive' } }, (err, resp) => {
+                        if (err) {
+                            console.log(err);
+                        }
+                        else {
+                            res.json({ 'message': 'ok' });
+                        }
+                    });
                 }
             });
         };

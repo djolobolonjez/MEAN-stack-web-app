@@ -1,7 +1,21 @@
-
+<div *ngIf="registrationRequests.length > 0">
+  <h3>Requests</h3>
+  <div *ngFor="let request of registrationRequests">
+    <div>
+        <table>
+        <tr>
+            <td><h4>Username: {{request}}</h4></td>
+            <td><button (click)="allowRegistration(request)">Allow</button></td>
+            <td><button (click)="denyRegistration(request)">Deny</button></td>
+        </tr>
+        </table>
+    </div>
+  </div>
+</div>
 <div>
     <button (click)="showClients()">Clients</button>
     <button (click)="showAgencies()">Agencies</button>
+    <button (click)="showJobs()">Jobs</button>
     <button (click)="logout()">Logout</button>
 </div>
 
@@ -29,17 +43,24 @@
     </tr>
   </tbody>
 </table>
-<hr>
-<h3>Requests</h3>
-<div *ngFor="let request of registrationRequests">
+<div *ngIf="displayJobs">
+  <div *ngFor="let job of allJobs">
     <div>
         <table>
         <tr>
-            <td><h4>Username: {{request}}</h4></td>
-            <td><button (click)="allowRegistration(request)">Allow</button></td>
-            <td><button (click)="denyRegistration(request)">Deny</button></td>
+          <th>Job ID</th>
+          <th>Client</th>
+          <th>Agency</th>
+        </tr>
+        <tr>
+            <td>{{job.id}}</td>
+            <td>{{job.client.firstname + ' ' + job.client.lastname}}</td>
+            <td>{{job.agency.agencyName}}</td>
+            <td><button (click)="showProgress(job)" *ngIf="!(job.status == 'declined')">Show progress</button></td>
+            <td><app-canvas *ngIf="selectedJob === job && selectedObject" [width]="250" [height]="120" [numberOfRooms]="selectedObject.numberOfRooms"
+              [roomOneStatus]="job.roomOneStatus" [roomTwoStatus]="job.roomTwoStatus" [roomThreeStatus]="job.roomThreeStatus"></app-canvas></td>
         </tr>
         </table>
     </div>
+  </div>
 </div>
-<hr>

@@ -38,6 +38,7 @@ class UserController {
         this.agencyRegister = (req, res) => {
             let agency = new agency_1.default(req.body);
             agency.valid = false;
+            agency.comments = [];
             user_1.default.updateOne({ 'username': 'admin' }, { $push: { 'requests': agency.username } }, (err, resp) => {
                 if (err) {
                     console.log(err);

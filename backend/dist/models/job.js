@@ -47,6 +47,12 @@ let Job = new Schema({
     },
     pay: {
         type: Boolean
+    },
+    comment: {
+        type: String
+    },
+    rating: {
+        type: Number
     }
 });
 exports.default = mongoose_1.default.model('JobModel', Job, 'poslovi');

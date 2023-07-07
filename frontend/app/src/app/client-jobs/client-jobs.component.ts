@@ -31,8 +31,16 @@ export class ClientJobsComponent implements OnInit {
   selectedJob: Job;
 
   selectedObject: Object;
+  selectedFilter: string = 'all';
 
   allJobs: Job[] = [];
+
+  get filteredJobs(): Job[] {
+    if (this.selectedFilter === 'all') {
+      return this.allJobs;
+    }
+    return this.allJobs.filter(job => job.status === this.selectedFilter);
+  }
 
   showProgress(job) {
     this.selectedJob = job;
@@ -67,5 +75,43 @@ export class ClientJobsComponent implements OnInit {
     this.clientService.payForJob(job.id).subscribe(resp => {
       this.commonService.refreshCurrentRoute(this.router);
     })
+  }
+
+  addComment(job) {
+    job.showCommentInput = true;
+    job.commentInput = job.comment || '';
+  }
+
+  saveComment(job) {
+    job.comment = job.commentInput;
+    job.showCommentInput = false;
+    this.clientService.addComment(job).subscribe((resp) => {
+
+    })
+  }
+
+  cancelComment(job) {
+    job.showCommentInput = false;
+  }
+
+  addRating(job: any) {
+    if (job.newRating && job.newRating >= 1 && job.newRating <= 5) {
+      job.rating = job.newRating;
+      job.showRatingInput = false;
+      this.clientService.addRating(job).subscribe((resp) => {
+
+      })
+    }
+  }
+  editRating(job: any) {
+    job.newRating = job.rating;
+    job.showRatingInput = true;
+  }
+
+  deleteComment(job) {
+    this.clientService.deleteComment(job).subscribe((resp) => {
+      this.commonService.refreshCurrentRoute(this.router);
+    })
+    // do some magic
   }
 }
