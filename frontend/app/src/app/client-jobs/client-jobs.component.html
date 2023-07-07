@@ -1,43 +1,57 @@
-<div>
+<div class="job-table-container">
+  <div class="filter-section">
     <select [(ngModel)]="selectedFilter">
       <option [ngValue]="'all'">All jobs</option>
       <option [ngValue]="'requested'">Requested jobs</option>
       <option [ngValue]="'active'">Active jobs</option>
       <option [ngValue]="'finished'">Finished jobs</option>
     </select>
-</div>
-<table>
-    <tr>
+  </div>
+  <table>
+    <thead>
+      <tr>
         <th>Object ID</th>
         <th>Completion date</th>
-    </tr>
-    <tr *ngFor="let job of filteredJobs" style="background-color: {{jobStatus(job)}}">
-        <td>{{job.objectID}}</td>
-        <td>{{job.completionDate}}</td>
-        <td colspan="2" *ngIf="job.status == 'accepted'"><p>Offer: </p>{{job.price}}</td>
-        <td><button (click)="showProgress(job)" *ngIf="!(job.status == 'declined' || job.status == 'finished')">Show progress</button></td>
-        <td><button (click)="payForJob(job)" *ngIf="job.pay && !(job.status === 'finished')">Pay</button></td>
-        <td><app-canvas *ngIf="selectedJob === job && selectedObject" [width]="250" [height]="120" [numberOfRooms]="selectedObject.numberOfRooms"
-            [roomOneStatus]="job.roomOneStatus" [roomTwoStatus]="job.roomTwoStatus" [roomThreeStatus]="job.roomThreeStatus"></app-canvas></td>
-        <td *ngIf="job.status == 'accepted'"><button (click)="acceptOffer(job)">Accept offer</button></td>
-        <td *ngIf="job.status == 'accepted'"><button (click)="declineOffer(job)">Decline offer</button></td>
-        <td *ngIf="job.status === 'finished'">
-            <button *ngIf="!job.comment" (click)="addComment(job)">Add Comment</button>
-            <button *ngIf="job.comment" (click)="addComment(job)">Edit Comment</button>
-            <button *ngIf="job.comment" (click)="deleteComment(job)">Delete Comment</button>
-            <div *ngIf="job.showRatingInput || !job.rating">
+        <th>Offer</th>
+        <th>Actions</th>
+        <th>Schema</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let job of filteredJobs" [ngClass]="job.status === 'declined' ? 'danger' : (job.status === 'accepted' ? 'success' : '')">
+        <td>{{ job.objectID }}</td>
+        <td>{{ job.completionDate }}</td>
+        <td>{{ job.price }}</td>
+        <td>
+          <div class="action-buttons">
+            <button (click)="showProgress(job)" *ngIf="!(job.status === 'declined' || job.status === 'finished')" class="btn btn-lighter">Show progress</button>
+            <button (click)="payForJob(job)" *ngIf="job.pay && !(job.status === 'finished')" class="btn btn-lighter">Pay</button>
+            <button (click)="acceptOffer(job)" *ngIf="job.status === 'accepted'" class="btn btn-lighter">Accept offer</button>
+            <button (click)="declineOffer(job)" *ngIf="job.status === 'accepted'" class="btn btn-lighter">Decline offer</button>
+            <div *ngIf="job.status === 'finished'" class="comment-section">
+              <button (click)="addComment(job)" *ngIf="!job.comment" class="btn btn-lighter">Add Comment</button>
+              <button (click)="addComment(job)" *ngIf="job.comment" class="btn btn-lighter">Edit Comment</button>
+              <button (click)="deleteComment(job)" *ngIf="job.comment" class="btn btn-lighter">Delete Comment</button>
+              <div *ngIf="job.showRatingInput || !job.rating" class="rating-section">
                 <input type="number" min="1" max="5" [(ngModel)]="job.newRating">
-                <button (click)="addRating(job)">Add Rating</button>
+                <button (click)="addRating(job)" class="btn btn-lighter">Add Rating</button>
               </div>
-              <div *ngIf="job.rating">
-                <button (click)="editRating(job)">Edit Rating</button>
+              <div *ngIf="job.rating" class="rating-section">
+                <button (click)="editRating(job)" class="btn btn-lighter">Edit Rating</button>
               </div>
-              <div *ngIf="job.showCommentInput">
+              <div *ngIf="job.showCommentInput" class="comment-input-section">
                 <input type="text" [(ngModel)]="job.commentInput" placeholder="Comment">
-                <button (click)="saveComment(job)">Save Comment</button>
-                <button (click)="cancelComment(job)">Cancel</button>
+                <button (click)="saveComment(job)" class="btn btn-lighter">Save Comment</button>
+                <button (click)="cancelComment(job)" class="btn btn-lighter">Cancel</button>
               </div>
-          </td>
-          
-    </tr>
-</table>
+            </div>
+          </div>
+        </td>
+        <td>
+          <app-canvas *ngIf="selectedJob === job && selectedObject" [width]="250" [height]="120" [numberOfRooms]="selectedObject.numberOfRooms"
+              [roomOneStatus]="job.roomOneStatus" [roomTwoStatus]="job.roomTwoStatus" [roomThreeStatus]="job.roomThreeStatus"></app-canvas>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

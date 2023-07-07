@@ -101,6 +101,10 @@ export class RegisterComponent implements OnInit {
 
     reader.readAsDataURL(this.imageHandler.image);
   }
+
+  goBack() {
+    this.router.navigate(['']);
+  }
 }
 
   

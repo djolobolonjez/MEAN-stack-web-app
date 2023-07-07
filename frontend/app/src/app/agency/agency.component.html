@@ -1,8 +1,14 @@
-<div>
-    <button routerLink="/agency/profile">Profile</button>
-    <button routerLink="/agency/workers">Workers</button>
-    <button *ngIf="getUserType() !== 'adminUser'" routerLink="/agency/agency-jobs">Jobs</button>
-    <button (click)="logout()">Logout</button>
-  </div>
-  
-  <router-outlet></router-outlet>
+<div *ngIf="getUserType() !== 'adminUser'">
+  <nav class="navbar navbar-expand navbar-light bg-light">
+    <div class="container-fluid">
+      <div class="navbar-nav w-100">
+        <button class="nav-link btn btn-lighter" routerLink="/agency/profile">Profile</button>
+        <button class="nav-link btn btn-lighter" routerLink="/agency/workers">Workers</button>
+        <button class="nav-link btn btn-lighter" *ngIf="getUserType() !== 'adminUser'" routerLink="/agency/agency-jobs">Jobs</button>
+        <button class="nav-link btn btn-lighter" (click)="logout()">Logout</button>
+      </div>
+    </div>
+  </nav>
+</div>
+
+<router-outlet></router-outlet>

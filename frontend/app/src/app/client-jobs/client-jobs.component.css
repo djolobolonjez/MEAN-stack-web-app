@@ -1,0 +1,88 @@
+.job-table-container {
+    max-width: 100%;
+    margin: 0 auto;
+    padding: 20px;
+  }
+  
+  table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  th,
+  td {
+    padding: 10px;
+    text-align: left;
+  }
+  
+  thead th {
+    background-color: #f8f9fa;
+    font-weight: bold;
+  }
+  
+  tr {
+    border-bottom: 1px solid #dee2e6;
+  }
+  
+  tr.danger {
+    background-color: #dc3545;
+    color: #fff;
+  }
+  
+  tr.success {
+    background-color: #28a745;
+    color: #fff;
+  }
+  
+  .btn-lighter {
+    background-color: #f8f9fa;
+    color: #000;
+    border-color: #f8f9fa;
+    transition: background-color 0.3s, border-color 0.3s, color 0.3s;
+  }
+  
+  .btn-lighter:hover {
+    background-color: #e5e5e5;
+    color: #000;
+    border-color: #e5e5e5;
+  }
+  
+  .comment-section,
+  .rating-section,
+  .comment-input-section {
+    margin-top: 10px;
+  }
+  
+  .comment-input-section input[type="text"] {
+    width: 200px;
+  }
+  
+  .action-buttons {
+    display: flex;
+    flex-wrap: wrap;
+  }
+  
+  .action-buttons button {
+    margin-right: 5px;
+    margin-bottom: 5px;
+  }
+  
+  @media (max-width: 576px) {
+    .job-table-container {
+      padding: 10px;
+    }
+  
+    table {
+      font-size: 14px;
+    }
+  
+    th,
+    td {
+      padding: 5px;
+    }
+  
+    .comment-input-section input[type="text"] {
+      width: 150px;
+    }
+  }
+  

@@ -1,0 +1,5 @@
+.login-link:hover,
+.register-link:hover {
+  background-color: #e5e5e5; 
+  cursor: pointer;
+}

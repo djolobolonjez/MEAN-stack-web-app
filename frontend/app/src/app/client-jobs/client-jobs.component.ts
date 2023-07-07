@@ -61,14 +61,14 @@ export class ClientJobsComponent implements OnInit {
     })
   }
 
-  jobStatus(job) {
-    if (job.status == 'accepted') {
-      return 'Green';
+  getJobRowClass(job: Job): string {
+    if (job.status === 'declined') {
+      return 'danger';
+    } else if (job.status === 'accepted') {
+      return 'success';
+    } else {
+      return '';
     }
-    else if (job.status == 'declined') {
-      return 'Red';
-    }
-    return '';
   }
 
   payForJob(job) {

@@ -1,0 +1,40 @@
+.object-container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+  
+  @media (max-width: 768px) {
+    .object-container {
+      padding: 10px;
+    }
+  }
+  
+  .table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .table th,
+  .table td {
+    padding: 10px;
+    border: 1px solid #dee2e6;
+  }
+  
+  .table th {
+    background-color: #f8f9fa;
+  }
+  
+  .btn-lighter {
+    background-color: #f8f9fa;
+    color: #000;
+    border-color: #f8f9fa;
+    transition: background-color 0.3s, border-color 0.3s, color 0.3s;
+  }
+  
+  .btn-lighter:hover {
+    background-color: #e5e5e5;
+    color: #000;
+    border-color: #e5e5e5;
+  }
+  

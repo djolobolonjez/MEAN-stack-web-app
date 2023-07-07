@@ -1,0 +1,23 @@
+.navbar {
+    margin-bottom: 20px;
+  }
+  
+  .navbar .navbar-nav .nav-link {
+    flex-grow: 1;
+    text-align: center;
+    margin: 0 5px;
+  }
+  
+  .btn-lighter {
+    background-color: #f8f9fa;
+    color: #000;
+    border-color: #f8f9fa;
+    transition: background-color 0.3s, border-color 0.3s, color 0.3s;
+  }
+  
+  .btn-lighter:hover {
+    background-color: #e5e5e5;
+    color: #000;
+    border-color: #e5e5e5;
+  }
+  

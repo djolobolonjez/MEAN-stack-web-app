@@ -1,10 +1,13 @@
-<table>
+<div class="object-container">
+  <table class="table">
     <thead>
       <tr>
         <th>Type</th>
         <th>Address</th>
         <th>Number of Rooms</th>
         <th>Size</th>
+        <th>Show scheme</th>
+        <th>Scheme</th>
       </tr>
     </thead>
     <tbody>
@@ -13,44 +16,49 @@
         <td>{{ obj.address }}</td>
         <td>{{ obj.numberOfRooms }}</td>
         <td>{{ obj.size }}</td>
-        <td><button (click)="showScheme(obj)">Show scheme</button></td>
-        <td><app-canvas *ngIf="selectedObject === obj" [width]="250" [height]="120" [numberOfRooms]="obj.numberOfRooms"
-          [roomOneStatus]="'white'" [roomTwoStatus]="'white'" [roomThreeStatus]="'white'"></app-canvas></td> 
+        <td><button class="btn btn-lighter" (click)="showScheme(obj)">Show scheme</button></td>
+        <td>
+          <app-canvas *ngIf="selectedObject === obj" [width]="250" [height]="120" [numberOfRooms]="obj.numberOfRooms"
+            [roomOneStatus]="'white'" [roomTwoStatus]="'white'" [roomThreeStatus]="'white'">
+          </app-canvas>
+        </td>
       </tr>
     </tbody>
   </table>
+
   <div>
-    <button (click)="addObject()">Add object</button>
+    <button class="btn btn-lighter" (click)="addObject()">Add object</button>
   </div>
+
   <div *ngIf="addObjectForm">
-    <button (click)="jsonAdd()">Add from JSON</button>
-    <button (click)="manualAdd()">Add manually</button>
+    <button class="btn btn-lighter" (click)="jsonAdd()">Add from JSON</button>
+    <button class="btn btn-lighter" (click)="manualAdd()">Add manually</button>
     <form *ngIf="manualInput">
-        <div>
-            <label>Object type: </label>
-            <input type="text" [(ngModel)]="newObject.type" name="type">
-        </div>
-        <div>
-            <label>Address: </label>
-            <input type="text" [(ngModel)]="newObject.address" name="address">
-        </div>
-        <div>
-            <label>Number of rooms: </label>
-            <input type="text" [(ngModel)]="newObject.numberOfRooms" name="rooms">
-        </div>
-        <div>
-            <label>Object size: </label>
-            <input type="text" [(ngModel)]="newObject.size" name="size">
-        </div>
-        <div>
-            <button (click)="submitObject()">Submit</button>
-        </div>
+      <div>
+        <label>Object type:</label>
+        <input type="text" [(ngModel)]="newObject.type" name="type">
+      </div>
+      <div>
+        <label>Address:</label>
+        <input type="text" [(ngModel)]="newObject.address" name="address">
+      </div>
+      <div>
+        <label>Number of rooms:</label>
+        <input type="text" [(ngModel)]="newObject.numberOfRooms" name="rooms">
+      </div>
+      <div>
+        <label>Object size:</label>
+        <input type="text" [(ngModel)]="newObject.size" name="size">
+      </div>
+      <div>
+        <button class="btn btn-lighter" (click)="submitObject()">Submit</button>
+      </div>
     </form>
     <div *ngIf="fileInput">
       <div>
         <input type="file" (input)="onUpload($event)">
-        <button *ngIf="fileChoosen" (click)="uploadFile()">Upload</button>
+        <button class="btn btn-lighter" *ngIf="fileChoosen" (click)="uploadFile()">Upload</button>
       </div>
     </div>
   </div>
-  
+</div>

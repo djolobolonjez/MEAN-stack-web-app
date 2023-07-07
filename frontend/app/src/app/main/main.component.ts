@@ -29,6 +29,10 @@ export class MainComponent implements OnInit {
     this.router.navigate(['register']);
   }
 
+  refreshPage(): void {
+    window.location.reload();
+  }
+
   
 
 }
