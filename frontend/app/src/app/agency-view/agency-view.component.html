@@ -1,28 +1,46 @@
-<div>
-    <img [src]="agency.profileImage">
-</div>
-<div>
-    <h3>{{agency.name}}</h3>
-</div>
-<div *ngIf="isClient">
-    <button (click)="request()">Send job request</button>
-</div>
-<div *ngIf="isRequesting">
-    <div>
-        <label>Object: </label>
-        <select [(ngModel)]="selectedObject">
-            <option value="">Select an object</option>
-            <ng-container *ngFor="let object of objects; let i = index">
-                <option [ngValue]="object">{{ 'Object' + (i+1) }}</option>
-            </ng-container>
-        </select>
+<div class="navbar">
+    <button class="btn btn-lighter" (click)="goBack()">Back</button>
+  </div>
+  
+  <div class="agency-info">
+    <div class="agency-header">
+      <img [src]="agency.profileImage" alt="Agency Profile Image">
+      <h3>{{agency.name}}</h3>
     </div>
-    <div>
-        <label>Completion date: </label>
-        <input type="text" placeholder="yyyy-MM-dd" [(ngModel)]="date">
+  
+    <div *ngIf="isClient">
+      <button (click)="request()" class="btn btn-lighter">Send job request</button>
     </div>
-    <div>
-        <button (click)="sendRequest()">Send</button>
+  
+    <div *ngIf="isRequesting" class="request-form">
+      <label>Object:</label>
+      <select [(ngModel)]="selectedObject">
+        <option value="">Select an object</option>
+        <ng-container *ngFor="let object of objects; let i = index">
+          <option [ngValue]="object">{{ 'Object' + (i + 1) }}</option>
+        </ng-container>
+      </select>
+      <label>Completion date:</label>
+      <input type="text" placeholder="yyyy-MM-dd" [(ngModel)]="date">
+      <button (click)="sendRequest()" class="btn btn-lighter">Send</button>
     </div>
-</div>
-{{agency.comments[0].comment}}
+  
+    <div class="comments-section">
+      <h3>Comments</h3>
+      <div class="comments-container">
+        <div class="comment" *ngFor="let comment of agency.comments">
+          <div class="comment-content">
+            <div class="comment-text">{{ comment.comment }}</div>
+            <div class="comment-rating">
+              <label>Rating:</label>
+              <span class="rating">{{ comment.rating }}</span>
+            </div>
+          </div>
+          <div class="comment-client" *ngIf="isClient">
+            <p class="client-name">{{ comment.firstname + ' ' + comment.lastname }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  

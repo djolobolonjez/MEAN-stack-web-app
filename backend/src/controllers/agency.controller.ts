@@ -359,4 +359,15 @@ s
             }
         })
     }
+
+    getJobById = (req: express.Request, res: express.Response) => {
+        JobModel.findOne({'id': req.query.param }, (err, resp) => {
+            if (err) {
+                console.log(err);
+            }
+            else {
+                res.json(resp);
+            }
+        })
+    }
 }

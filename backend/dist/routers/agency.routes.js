@@ -27,5 +27,6 @@ AgencyRouter.route('/getInactiveWorkers').get((req, res) => new agency_controlle
 AgencyRouter.route('/assignWorker').post((req, res) => new agency_controller_1.AgencyController().assignWorker(req, res));
 AgencyRouter.route('/updateJob').post((req, res) => new agency_controller_1.AgencyController().updateJob(req, res));
 AgencyRouter.route('/finishJob').get((req, res) => new agency_controller_1.AgencyController().finishJob(req, res));
+AgencyRouter.route('/getJobById').get((req, res) => new agency_controller_1.AgencyController().getJobById(req, res));
 exports.default = AgencyRouter;
 //# sourceMappingURL=agency.routes.js.map

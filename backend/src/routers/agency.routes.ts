@@ -84,4 +84,9 @@ AgencyRouter.route('/finishJob').get(
     (req, res) => new AgencyController().finishJob(req, res)
 );
 
+AgencyRouter.route('/getJobById').get(
+    (req, res) => new AgencyController().getJobById(req, res)
+);
+
+
 export default AgencyRouter;

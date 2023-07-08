@@ -6,6 +6,8 @@ import { ClientService } from '../services/client.service';
 import { Object } from '../models/object';
 import { Job } from '../models/job';
 import { AgencyService } from '../services/agency.service';
+import { Router } from '@angular/router';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-agency-view',
@@ -15,7 +17,7 @@ import { AgencyService } from '../services/agency.service';
 export class AgencyViewComponent implements OnInit {
 
   constructor(private commonService: CommonService, private clientService: ClientService,
-              private agencyService: AgencyService) { }
+              private agencyService: AgencyService, private router: Router, private location: Location) { }
 
   ngOnInit(): void {
     this.agencyId = parseInt(localStorage.getItem('viewAgency'));
@@ -41,7 +43,15 @@ export class AgencyViewComponent implements OnInit {
         openVacancies: user.openVacancies,
         profileImage: user.profilePicture,
         comments: user.comments
-      }
+      };
+      this.agency.comments.forEach(comment => {
+        this.agencyService.getJobById(comment.jobId).subscribe((job: Job) => {
+          this.commonService.getUserById(job.clientID, "client").subscribe((user: User) => {
+            comment.firstname = user.firstname;
+            comment.lastname = user.lastname;
+          })
+        })
+      })
     });
   }
 
@@ -77,8 +87,13 @@ export class AgencyViewComponent implements OnInit {
       job.roomThreeStatus = 'yellow';
       this.clientService.requestJob(job).subscribe((resp) => {
         alert(resp['message']);
+        this.commonService.refreshCurrentRoute(this.router);
       });
     })
     
+  }
+
+  goBack() {
+    this.location.back();
   }
 }

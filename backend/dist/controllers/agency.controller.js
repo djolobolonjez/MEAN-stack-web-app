@@ -315,6 +315,16 @@ class AgencyController {
                 }
             });
         };
+        this.getJobById = (req, res) => {
+            job_1.default.findOne({ 'id': req.query.param }, (err, resp) => {
+                if (err) {
+                    console.log(err);
+                }
+                else {
+                    res.json(resp);
+                }
+            });
+        };
     }
 }
 exports.AgencyController = AgencyController;

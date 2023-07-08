@@ -150,4 +150,8 @@ export class AgencyService {
   finishJob(job) {
     return this.http.get(`${this.uri}/agency/finishJob?param=${job.id}`);
   }
+
+  getJobById(id) {
+    return this.http.get(`${this.uri}/agency/getJobById?param=${id}`);
+  }
 }
