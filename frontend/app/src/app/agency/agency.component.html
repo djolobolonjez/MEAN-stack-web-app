@@ -2,6 +2,7 @@
   <nav class="navbar navbar-expand navbar-light bg-light">
     <div class="container-fluid">
       <div class="navbar-nav w-100">
+        <button *ngIf="getUserType() === 'adminUser'" class="nav-link btn btn-lighter" (click)="goBack()">Back</button>
         <button class="nav-link btn btn-lighter" routerLink="/agency/profile">Profile</button>
         <button class="nav-link btn btn-lighter" routerLink="/agency/workers">Workers</button>
         <button class="nav-link btn btn-lighter" *ngIf="getUserType() !== 'adminUser'" routerLink="/agency/agency-jobs">Jobs</button>

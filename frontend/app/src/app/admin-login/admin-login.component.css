@@ -10,3 +10,48 @@
     display: flex;
     justify-content: center;
 }
+
+.form-group {
+    margin-bottom: 15px;
+  }
+
+  .back-button {
+    background-color: #f8f9fa;
+    color: #000;
+    border-color: #f8f9fa;
+    transition: background-color 0.3s, border-color 0.3s, color 0.3s;
+  }
+  
+  .back-button:hover {
+    background-color: #e5e5e5;
+    color: #000;
+    border-color: #e5e5e5;
+  }
+  
+  .btn-lighter {
+    background-color: #f8f9fa;
+    color: #000;
+    border-color: #f8f9fa;
+    transition: background-color 0.3s, border-color 0.3s, color 0.3s;
+  }
+  
+  .btn-lighter:hover {
+    background-color: #e5e5e5;
+    color: #000;
+    border-color: #e5e5e5;
+  }
+  
+  .login-container {
+    max-width: 400px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #f8f9fa;
+    border: 1px solid #dee2e6;
+    border-radius: 5px;
+  }
+  
+  .alert {
+    margin-top: 10px;
+    width: 100%;
+  }
+  

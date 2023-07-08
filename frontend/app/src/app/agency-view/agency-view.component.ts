@@ -67,19 +67,25 @@ export class AgencyViewComponent implements OnInit {
   isClient: boolean = false;
   
   isRequesting: boolean = false;
+  isDateValid: boolean = true;
 
   request() {
     this.isRequesting = true;
   }
 
   sendRequest() {
+    const today = new Date();
+    const desiredDate = new Date(this.date);
+    if (desiredDate <= today) {
+      this.isDateValid = false;
+      return;
+    }
     let job = new Job();
     this.agencyService.getJobId().subscribe((jobDB: Job) => {
       job.id = jobDB.id + 1;
       job.clientID = this.userId;
       job.objectID = this.selectedObject.id;
       job.agencyID = this.agencyId;
-      console.log(this.selectedObject);
       job.completionDate = this.date;
       job.status = "requested";
       job.roomOneStatus = 'yellow';

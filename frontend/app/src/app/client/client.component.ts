@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { CommonService } from '../services/common.service';
 import { User } from '../models/user';
 import { NavigationService } from '../services/navigation.service';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-client',
@@ -12,7 +13,7 @@ import { NavigationService } from '../services/navigation.service';
 export class ClientComponent implements OnInit {
 
   constructor(private router: Router, private commonService: CommonService,
-              private navigationService: NavigationService) { }
+              private navigationService: NavigationService, private location: Location) { }
 
   ngOnInit(): void {
     this.navigationService.ngOnInit();
@@ -52,4 +53,7 @@ export class ClientComponent implements OnInit {
     return this.userType;
   }
 
+  goBack() {
+    this.location.back();
+  }
 }

@@ -36,5 +36,8 @@ export class AdminLoginComponent implements OnInit {
       }
     })
   }
+  goBack() {
+    this.router.navigate(['']);
+  }
 
 }

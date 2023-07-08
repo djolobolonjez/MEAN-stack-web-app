@@ -19,20 +19,45 @@ export class UserController {
         let user = new UserModel(req.body);
         user.valid = false;
 
-        UserModel.updateOne({'username': 'admin'}, {$push: {'requests': user.username}}, (err, resp) => {
+        UserModel.findOne({'username': req.body.username}, (err, resp) => {
             if (err) {
                 console.log(err);
             }
-        });
-
-        user.save((err, resp) => {
-            if (err) {
-                console.log(err); // prijaviti nekako drugacije gresku
-            }
             else {
-                res.json({'message': 'ok'});
+                if (resp != null) {
+                    res.json({'invalid': true, 'message': 'Username already in use!'});
+                }
+                else {
+                    UserModel.findOne({'email': req.body.email}, (err, resp) => {
+                        if (err) {
+                            console.log(err);
+                        }
+                        else {
+                            if (resp != null) {
+                                res.json({'invalid': true, 'message': 'E-mail already in use!'});
+                            }
+                            else {
+                                UserModel.updateOne({'username': 'admin'}, {$push: {'requests': user.username}}, (err, resp) => {
+                                    if (err) {
+                                        console.log(err);
+                                    }
+                                });
+                        
+                                user.save((err, resp) => {
+                                    if (err) {
+                                        console.log(err); // prijaviti nekako drugacije gresku
+                                    }
+                                    else {
+                                        res.json({'invalid': false, 'message': 'ok'});
+                                    }
+                                });
+                            }
+                        }
+                    })
+                }
             }
         });
+       
     }
 
     agencyRegister = (req: express.Request, res: express.Response) => {
@@ -40,20 +65,44 @@ export class UserController {
         agency.valid = false;
         agency.comments = [];
 
-        UserModel.updateOne({'username': 'admin'}, {$push: {'requests': agency.username}}, (err, resp) => {
+        AgencyModel.findOne({'username': req.body.username}, (err, resp) => {
             if (err) {
                 console.log(err);
             }
-        });
-
-        agency.save((err, resp) => {
-            if (err) {
-                console.log(err); // prijaviti nekako drugacije gresku
-            }
             else {
-                res.json({'message': 'ok'});
+                if (resp != null) {
+                    res.json({'invalid': true, 'message': 'Username already in use!'});
+                }
+                else {
+                    AgencyModel.findOne({'uniqueNumber': req.body.uniqueNumber}, (err, resp) => {
+                        if (err) {
+                            console.log(err);
+                        }
+                        else {
+                            if (resp != null) {
+                                res.json({'invalid': true, 'message': 'Unique number is already in use!'});
+                            }
+                            else {
+                                UserModel.updateOne({'username': 'admin'}, {$push: {'requests': agency.username}}, (err, resp) => {
+                                    if (err) {
+                                        console.log(err);
+                                    }
+                                });
+                        
+                                agency.save((err, resp) => {
+                                    if (err) {
+                                        console.log(err);
+                                    }
+                                    else {
+                                        res.json({'invalid': false, 'message': 'ok'});
+                                    }
+                                });
+                            }
+                        }
+                    })
+                }
             }
-        });
+        })
     }
 
     login = (req: express.Request, res: express.Response) => {

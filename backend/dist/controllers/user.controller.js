@@ -21,17 +21,41 @@ class UserController {
         this.clientRegister = (req, res) => {
             let user = new user_1.default(req.body);
             user.valid = false;
-            user_1.default.updateOne({ 'username': 'admin' }, { $push: { 'requests': user.username } }, (err, resp) => {
+            user_1.default.findOne({ 'username': req.body.username }, (err, resp) => {
                 if (err) {
                     console.log(err);
                 }
-            });
-            user.save((err, resp) => {
-                if (err) {
-                    console.log(err); // prijaviti nekako drugacije gresku
-                }
                 else {
-                    res.json({ 'message': 'ok' });
+                    if (resp != null) {
+                        res.json({ 'invalid': true, 'message': 'Username already in use!' });
+                    }
+                    else {
+                        user_1.default.findOne({ 'email': req.body.email }, (err, resp) => {
+                            if (err) {
+                                console.log(err);
+                            }
+                            else {
+                                if (resp != null) {
+                                    res.json({ 'invalid': true, 'message': 'E-mail already in use!' });
+                                }
+                                else {
+                                    user_1.default.updateOne({ 'username': 'admin' }, { $push: { 'requests': user.username } }, (err, resp) => {
+                                        if (err) {
+                                            console.log(err);
+                                        }
+                                    });
+                                    user.save((err, resp) => {
+                                        if (err) {
+                                            console.log(err); // prijaviti nekako drugacije gresku
+                                        }
+                                        else {
+                                            res.json({ 'invalid': false, 'message': 'ok' });
+                                        }
+                                    });
+                                }
+                            }
+                        });
+                    }
                 }
             });
         };
@@ -39,17 +63,41 @@ class UserController {
             let agency = new agency_1.default(req.body);
             agency.valid = false;
             agency.comments = [];
-            user_1.default.updateOne({ 'username': 'admin' }, { $push: { 'requests': agency.username } }, (err, resp) => {
+            agency_1.default.findOne({ 'username': req.body.username }, (err, resp) => {
                 if (err) {
                     console.log(err);
                 }
-            });
-            agency.save((err, resp) => {
-                if (err) {
-                    console.log(err); // prijaviti nekako drugacije gresku
-                }
                 else {
-                    res.json({ 'message': 'ok' });
+                    if (resp != null) {
+                        res.json({ 'invalid': true, 'message': 'Username already in use!' });
+                    }
+                    else {
+                        agency_1.default.findOne({ 'uniqueNumber': req.body.uniqueNumber }, (err, resp) => {
+                            if (err) {
+                                console.log(err);
+                            }
+                            else {
+                                if (resp != null) {
+                                    res.json({ 'invalid': true, 'message': 'Unique number is already in use!' });
+                                }
+                                else {
+                                    user_1.default.updateOne({ 'username': 'admin' }, { $push: { 'requests': agency.username } }, (err, resp) => {
+                                        if (err) {
+                                            console.log(err);
+                                        }
+                                    });
+                                    agency.save((err, resp) => {
+                                        if (err) {
+                                            console.log(err);
+                                        }
+                                        else {
+                                            res.json({ 'invalid': false, 'message': 'ok' });
+                                        }
+                                    });
+                                }
+                            }
+                        });
+                    }
                 }
             });
         };

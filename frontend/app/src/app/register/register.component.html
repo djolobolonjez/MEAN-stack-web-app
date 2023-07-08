@@ -4,7 +4,6 @@
       <button class="btn btn-lighter back-button" (click)="goBack()">Back</button>
     </div>
   </nav>
-  
 
   <div class="container mt-4">
     <div class="row">
@@ -12,7 +11,7 @@
         <div class="register-container">
           <h2>Register</h2>
 
-          <form (submit)="register()">
+          <form (submit)="register()" #registerForm="ngForm" novalidate>
             <div class="form-group">
               <label for="userType">User Type:</label>
               <select id="userType" [(ngModel)]="userType" name="userType" required>
@@ -34,8 +33,7 @@
 
               <div class="mb-2">
                 <label for="confirmPassword">Confirm Password:</label>
-                <input type="password" id="confirmPassword" [(ngModel)]="confirmPassword" name="confirmPassword"
-                  required>
+                <input type="password" id="confirmPassword" [(ngModel)]="confirmPassword" name="confirmPassword" required>
               </div>
 
               <div class="mb-2">
@@ -94,8 +92,10 @@
                 </div>
               </form>
             </div>
-
-            <button class="btn btn-lighter" type="submit">Register</button>
+            <div *ngIf="!validRegistration" class="alert alert-danger">
+              {{ errorMessage }}
+            </div>
+            <button class="btn btn-lighter" type="submit" [disabled]="!registerForm.form.valid">Register</button>
           </form>
 
           <div *ngIf="passwordError" class="alert alert-danger">

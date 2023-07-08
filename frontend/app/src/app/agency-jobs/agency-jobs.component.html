@@ -28,8 +28,10 @@
       <tr>
         <td colspan="8" *ngIf="req.clicked">
           <input type="text" placeholder="Enter job offer" name="price" [(ngModel)]="req.price">
-          <button class="btn btn-lighter" (click)="sendOffer(req)">Send offer</button>
+          <button class="btn btn-lighter" (click)="sendOffer(req)" *ngIf="req.price > 0">Send offer</button>
+          <p class="alert alert-danger" *ngIf="req.price <= 0">Please enter a positive value.</p>
         </td>
+        
       </tr>
     </ng-container>
   </table>

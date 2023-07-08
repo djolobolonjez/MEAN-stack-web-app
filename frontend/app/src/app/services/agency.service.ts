@@ -73,7 +73,7 @@ export class AgencyService {
     return this.http.post(`${this.uri}/agency/sendVacanciesRequest`, data);
   }
 
-  submitWorker(id: number, worker: Worker) {
+  submitWorker(id: number, worker: Worker, userType: string) {
     let data = {
       id: worker.id,
       firstname: worker.firstname,
@@ -84,7 +84,11 @@ export class AgencyService {
       status: "inactive",
       agency: id
     };
-    return this.http.post(`${this.uri}/agency/submitWorker`, data);
+    let request = {
+      data: data,
+      userType: userType
+    };
+    return this.http.post(`${this.uri}/agency/submitWorker`, request);
   }
 
   deleteWorker(email: string) {

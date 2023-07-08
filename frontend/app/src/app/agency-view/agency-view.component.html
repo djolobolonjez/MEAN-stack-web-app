@@ -12,17 +12,20 @@
       <button (click)="request()" class="btn btn-lighter">Send job request</button>
     </div>
   
-    <div *ngIf="isRequesting" class="request-form">
+    <form *ngIf="isRequesting" class="request-form" (ngSubmit)="sendRequest()" #requestForm="ngForm">
       <label>Object:</label>
-      <select [(ngModel)]="selectedObject">
-        <option value="">Select an object</option>
+      <select [(ngModel)]="selectedObject" required name="selectedObject">
         <ng-container *ngFor="let object of objects; let i = index">
           <option [ngValue]="object">{{ 'Object' + (i + 1) }}</option>
         </ng-container>
       </select>
       <label>Completion date:</label>
-      <input type="text" placeholder="yyyy-MM-dd" [(ngModel)]="date">
-      <button (click)="sendRequest()" class="btn btn-lighter">Send</button>
+      <input type="text" placeholder="yyyy-MM-dd" [(ngModel)]="date" name="completionDate" required>
+      <button type="submit" class="btn btn-lighter" [disabled]="requestForm.invalid">Send</button>
+    </form>
+
+    <div *ngIf="isRequesting && !isDateValid" class="alert alert-danger">
+      Invalid date format. (Help: Date must be after today)
     </div>
   
     <div class="comments-section">

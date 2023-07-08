@@ -4,6 +4,7 @@ import { CommonService } from '../services/common.service';
 import { Agency } from '../models/agency';
 import { User } from '../models/user';
 import { NavigationService } from '../services/navigation.service';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-agency',
@@ -13,7 +14,8 @@ import { NavigationService } from '../services/navigation.service';
 export class AgencyComponent implements OnInit {
 
   constructor(private router: Router, private commonService: CommonService,
-              private route: ActivatedRoute, private navigationService: NavigationService) { }
+              private route: ActivatedRoute, private navigationService: NavigationService,
+              private location: Location) { }
 
   ngOnInit(): void {
     
@@ -40,4 +42,7 @@ export class AgencyComponent implements OnInit {
     return this.userType;
   }
 
+  goBack() {
+    this.location.back();
+  }
 }

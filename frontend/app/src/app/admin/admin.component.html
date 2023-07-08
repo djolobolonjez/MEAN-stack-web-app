@@ -1,66 +1,100 @@
-<div *ngIf="registrationRequests.length > 0">
-  <h3>Requests</h3>
-  <div *ngFor="let request of registrationRequests">
-    <div>
-        <table>
-        <tr>
-            <td><h4>Username: {{request}}</h4></td>
-            <td><button (click)="allowRegistration(request)">Allow</button></td>
-            <td><button (click)="denyRegistration(request)">Deny</button></td>
-        </tr>
-        </table>
+<nav class="navbar">
+  <div class="container">
+    <div class="navbar-buttons">
+      <button class="btn btn-lighter" (click)="showClients()">Clients</button>
+      <button class="btn btn-lighter" (click)="showAgencies()">Agencies</button>
+      <button class="btn btn-lighter" (click)="showJobs()">Jobs</button>
+      <button class="btn btn-lighter" (click)="logout()">Logout</button>
     </div>
   </div>
-</div>
-<div>
-    <button (click)="showClients()">Clients</button>
-    <button (click)="showAgencies()">Agencies</button>
-    <button (click)="showJobs()">Jobs</button>
-    <button (click)="logout()">Logout</button>
-</div>
+</nav>
 
-<table *ngIf="displayAgencies">
-    <thead>
-      <tr>
-        <th>Agency name</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let agency of agencies">
-        <td (click)="navigateToAgency(agency.id)">{{ agency.name }}</td>
-      </tr>
-    </tbody>
-  </table>
-<table *ngIf="displayClients">
-  <thead>
-    <tr>
-      <th>Username</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr *ngFor="let client of clients">
-      <td (click)="navigateToClient(client.username)">{{ client.username }}</td>
-    </tr>
-  </tbody>
-</table>
-<div *ngIf="displayJobs">
-  <div *ngFor="let job of allJobs">
-    <div>
-        <table>
+<div class="admin-container">
+  <div *ngIf="displayAgencies" class="table-container">
+    <h3>Agencies</h3>
+    <table class="admin-table">
+      <thead>
+        <tr>
+          <th>Agency Name</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let agency of agencies" class="hover-effect" (click)="navigateToAgency(agency.id)">
+          <td>{{ agency.name }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div *ngIf="displayClients" class="table-container">
+    <h3>Clients</h3>
+    <table class="admin-table">
+      <thead>
+        <tr>
+          <th>Username</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let client of clients" class="hover-effect" (click)="navigateToClient(client.username)">
+          <td>{{ client.username }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div *ngIf="displayJobs" class="table-container">
+    <h3>Jobs</h3>
+    <table class="admin-table">
+      <thead>
         <tr>
           <th>Job ID</th>
           <th>Client</th>
           <th>Agency</th>
+          <th>Show Progress</th>
+          <th>Scheme</th>
         </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let job of allJobs">
+          <td>{{ job.id }}</td>
+          <td>{{ job.client.firstname + ' ' + job.client.lastname }}</td>
+          <td>{{ job.agency.agencyName }}</td>
+          <td>
+            <button class="btn btn-lighter" (click)="showProgress(job)" *ngIf="job.status !== 'declined'">Show
+              Progress</button>
+          </td>
+          <td>
+            <app-canvas *ngIf="selectedJob === job && selectedObject" [width]="250" [height]="120"
+              [numberOfRooms]="selectedObject.numberOfRooms" [roomOneStatus]="job.roomOneStatus"
+              [roomTwoStatus]="job.roomTwoStatus" [roomThreeStatus]="job.roomThreeStatus">
+            </app-canvas>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div *ngIf="registrationRequests.length > 0" class="table-container">
+    <h3>Registration Requests</h3>
+    <table class="admin-table">
+      <thead>
         <tr>
-            <td>{{job.id}}</td>
-            <td>{{job.client.firstname + ' ' + job.client.lastname}}</td>
-            <td>{{job.agency.agencyName}}</td>
-            <td><button (click)="showProgress(job)" *ngIf="!(job.status == 'declined')">Show progress</button></td>
-            <td><app-canvas *ngIf="selectedJob === job && selectedObject" [width]="250" [height]="120" [numberOfRooms]="selectedObject.numberOfRooms"
-              [roomOneStatus]="job.roomOneStatus" [roomTwoStatus]="job.roomTwoStatus" [roomThreeStatus]="job.roomThreeStatus"></app-canvas></td>
+          <th>Username</th>
+          <th>Action</th>
         </tr>
-        </table>
-    </div>
+      </thead>
+      <tbody>
+        <tr *ngFor="let request of registrationRequests">
+          <td>{{ request }}</td>
+          <td>
+            <button class="btn btn-lighter" (click)="allowRegistration(request)">Allow</button>
+            <button class="btn btn-lighter" (click)="denyRegistration(request)">Deny</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div *ngIf="registrationRequests.length === 0" class="no-requests">
+    No new requests.
   </div>
 </div>

@@ -43,6 +43,9 @@ export class RegisterComponent implements OnInit {
   imageBlob: string;
   imageChoosen: boolean = false;
 
+  validRegistration: boolean = true;
+  errorMessage: string;
+
   register(): void {
     if (this.password.length < 7 || this.password.length > 12) {
       this.passwordError = "Password should be between 7 and 12 characters long!";
@@ -61,9 +64,16 @@ export class RegisterComponent implements OnInit {
 
         this.clientService.register(this.id, this.username, this.password, this.phone, this.email, this.firstname, this.lastname, "client")
         .subscribe((resp) => {
-          this.commonService.uploadProfilePicture(this.username, this.imageBlob, "client").subscribe((result) => {
-            alert(result['message']);
-          })
+          if (resp['invalid']) {
+            this.validRegistration = false;
+            this.errorMessage = resp['message'];
+          }
+          else {
+            this.commonService.uploadProfilePicture(this.username, this.imageBlob, "client").subscribe((resp) => {
+              alert(resp['message']);
+              this.router.navigate(['']);
+            });
+          }
         })
       }
       else {
@@ -73,13 +83,18 @@ export class RegisterComponent implements OnInit {
 
         this.agencyService.register(this.id, this.username, this.password, this.phone, this.email, this.agencyName, this.address,
           this.uniqueNumber, this.description, "agency").subscribe((resp) => {
-            this.commonService.uploadProfilePicture(this.username, this.imageBlob, "agency").subscribe((resp) => {
-              alert(resp['message']);
-            });
+            if (resp['invalid']) {
+              this.validRegistration = false;
+              this.errorMessage = resp['message'];
+            }
+            else {
+              this.commonService.uploadProfilePicture(this.username, this.imageBlob, "agency").subscribe((resp) => {
+                alert(resp['message']);
+                this.router.navigate(['']);
+              });
+            }
           });
       }
-
-      this.router.navigate(['']);
     }
   }
 

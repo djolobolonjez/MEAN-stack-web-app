@@ -1,27 +1,31 @@
-<div *ngIf="getUserType() !== 'adminUser'">
-  <nav class="navbar navbar-expand navbar-light bg-light">
-    <div class="container">
-      <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav">
-          <li class="nav-item">
-            <button class="nav-link btn btn-lighter" routerLink="/client/profile">Profile</button>
-          </li>
-          <li class="nav-item">
-            <button class="nav-link btn btn-lighter" routerLink="/client/objects">Objects</button>
-          </li>
-          <li class="nav-item">
-            <button class="nav-link btn btn-lighter" routerLink="/client/agencies">Agencies</button>
-          </li>
-          <li class="nav-item">
-            <button class="nav-link btn btn-lighter" routerLink="/client/client-jobs">Jobs</button>
-          </li>
-          <li class="nav-item">
-            <button class="nav-link btn btn-lighter" (click)="logout()">Logout</button>
-          </li>
-        </ul>
-      </div>
+<nav class="navbar navbar-expand navbar-light bg-light">
+  <div class="container">
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <button *ngIf="getUserType() === 'adminUser'" class="nav-link btn btn-lighter" (click)="goBack()">Back</button>
+        </li>
+        <li class="nav-item">
+          <button *ngIf="getUserType() !== 'adminUser'" class="nav-link btn btn-lighter" routerLink="/client/profile">Profile</button>
+        </li>
+        <li class="nav-item">
+          <button *ngIf="getUserType() !== 'adminUser'" class="nav-link btn btn-lighter" routerLink="/client/objects">Objects</button>
+        </li>
+        <li class="nav-item">
+          <button *ngIf="getUserType() !== 'adminUser'" class="nav-link btn btn-lighter" routerLink="/client/agencies">Agencies</button>
+        </li>
+        <li class="nav-item">
+          <button *ngIf="getUserType() !== 'adminUser'" class="nav-link btn btn-lighter" routerLink="/client/client-jobs">Jobs</button>
+        </li>
+        <li class="nav-item">
+          <button *ngIf="getUserType() !== 'adminUser'" class="nav-link btn btn-lighter" (click)="logout()">Logout</button>
+        </li>
+      </ul>
     </div>
-  </nav>
+  </div>
+</nav>
+<div>
+  
 </div>
 
 <router-outlet></router-outlet>

@@ -109,20 +109,21 @@ class AgencyController {
             });
         };
         this.submitWorker = (req, res) => {
-            let worker = new worker_1.default(req.body);
+            let worker = new worker_1.default(req.body.data);
+            let userType = req.body.userType;
             worker.save((err, resp) => {
                 if (err) {
                     console.log(err);
                 }
                 else {
-                    agency_1.default.updateOne({ 'id': req.body.agency }, { $inc: { 'openVacancies': -1 } }, (err, resp) => {
-                        if (err) {
-                            console.log(err);
-                        }
-                        else {
-                            res.json({ 'message': 'ok' });
-                        }
-                    });
+                    if (userType != 'adminUser') {
+                        agency_1.default.updateOne({ 'id': req.body.agency }, { $inc: { 'openVacancies': -1 } }, (err, resp) => {
+                            if (err) {
+                                console.log(err);
+                            }
+                        });
+                    }
+                    res.json({ 'message': 'ok' });
                 }
             });
         };
