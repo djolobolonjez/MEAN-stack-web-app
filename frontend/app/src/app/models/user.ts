@@ -15,6 +15,7 @@ export class User {
     valid: boolean;
     requests: Array<string>;
     invalid: Array<string>;
+    workers: Array<number>;
     vacancyRequests: Array<any>;
     openVacancies: number;
     comments: Array<any>

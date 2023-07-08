@@ -1,0 +1,22 @@
+[{
+  "_id": {
+    "$oid": "64a0a61e960da933f0187a4e"
+  },
+  "id": 1,
+  "type": "apartment",
+  "address": "Svetogorska 15",
+  "numberOfRooms": 3,
+  "size": 75,
+  "owner": 1
+},
+{
+  "_id": {
+    "$oid": "64a0a7cd960da933f0187a50"
+  },
+  "id": 2,
+  "type": "apartment",
+  "address": "Hilandarska 27",
+  "numberOfRooms": 2,
+  "size": 56,
+  "owner": 1
+}]

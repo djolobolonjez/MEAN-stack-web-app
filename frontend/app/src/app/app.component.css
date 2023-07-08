@@ -3,14 +3,12 @@ html, body {
     margin: 0;
   }
   
-  .container {
+  body {
+    margin: 0;
+    padding-bottom: 60px; /* Set the height of your footer */
     display: flex;
     flex-direction: column;
     min-height: 100vh;
-  }
-  
-  .main-content {
-    flex: 1;
   }
   
   .footer {
@@ -18,6 +16,10 @@ html, body {
     padding: 20px;
     text-align: center;
     width: 100%;
-    position: absolute;
-    bottom: 0;
+    text-align: center;
+  }
+  .app-container {
+    min-height: 100vh;
+    flex-grow: 1;
+    background-color: #8fbc8f;
   }

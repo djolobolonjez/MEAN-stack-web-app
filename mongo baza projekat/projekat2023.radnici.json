@@ -1,0 +1,42 @@
+[{
+  "_id": {
+    "$oid": "649e2cbc904274260daed3db"
+  },
+  "id": 1,
+  "firstname": "Milan",
+  "lastname": "Jovanovic",
+  "email": "miki@outlook.com",
+  "phone": "0691153287",
+  "specialization": "painter",
+  "agency": "1",
+  "status": "inactive",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "64a04a665e5020138fd99939"
+  },
+  "id": 2,
+  "firstname": "Vukasin",
+  "lastname": "Markovic",
+  "email": "mvule@yahoo.com",
+  "phone": "0661202849",
+  "specialization": "plumber",
+  "agency": "1",
+  "status": "inactive",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "64a6c7d9812546dd4b45de6b"
+  },
+  "id": 3,
+  "firstname": "Marko",
+  "lastname": "Nastic",
+  "email": "marela@gmail.com",
+  "phone": "0612223572",
+  "specialization": "carpenter",
+  "agency": "1",
+  "status": "inactive",
+  "__v": 0
+}]

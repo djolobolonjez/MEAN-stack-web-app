@@ -60,10 +60,8 @@ export class RegisterComponent implements OnInit {
       if (this.userType == "client") {
         this.commonService.getId("client").subscribe((user: User) => {
           this.id = user.id + 1;
-        });
-
-        this.clientService.register(this.id, this.username, this.password, this.phone, this.email, this.firstname, this.lastname, "client")
-        .subscribe((resp) => {
+          this.clientService.register(this.id, this.username, this.password, this.phone, this.email, this.firstname, this.lastname, "client")
+          .subscribe((resp) => {
           if (resp['invalid']) {
             this.validRegistration = false;
             this.errorMessage = resp['message'];
@@ -75,25 +73,25 @@ export class RegisterComponent implements OnInit {
             });
           }
         })
+        });
       }
       else {
         this.commonService.getId("agency").subscribe((user: User) => {
           this.id = user.id + 1;
+          this.agencyService.register(this.id, this.username, this.password, this.phone, this.email, this.agencyName, this.address,
+            this.uniqueNumber, this.description, "agency").subscribe((resp) => {
+              if (resp['invalid']) {
+                this.validRegistration = false;
+                this.errorMessage = resp['message'];
+              }
+              else {
+                this.commonService.uploadProfilePicture(this.username, this.imageBlob, "agency").subscribe((resp) => {
+                  alert(resp['message']);
+                  this.router.navigate(['']);
+                });
+              }
+            });
         });
-
-        this.agencyService.register(this.id, this.username, this.password, this.phone, this.email, this.agencyName, this.address,
-          this.uniqueNumber, this.description, "agency").subscribe((resp) => {
-            if (resp['invalid']) {
-              this.validRegistration = false;
-              this.errorMessage = resp['message'];
-            }
-            else {
-              this.commonService.uploadProfilePicture(this.username, this.imageBlob, "agency").subscribe((resp) => {
-                alert(resp['message']);
-                this.router.navigate(['']);
-              });
-            }
-          });
       }
     }
   }

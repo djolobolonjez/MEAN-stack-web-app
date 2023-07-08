@@ -57,14 +57,9 @@ export class ProfileComponent implements OnInit {
 
   ngOnInit(): void {
     this.imageHandler = new ImageWrapper();
-    //const queryParams = JSON.parse(localStorage.getItem('queryParams'));
     const urlSegments = this.router.url.split('/');
     this.type = urlSegments[1];
     this.isClient = (this.type == "client" ? true : false);
-
-    //this.userType = queryParams.userType;
-    //let isAdmin = (this.userType == 'adminUser' ? true : false);
-    
 
     if (this.type == "agency") {
       let id: number;

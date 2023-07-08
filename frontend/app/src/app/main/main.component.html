@@ -1,14 +1,17 @@
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
-  <div class="container-fluid">
-    <a class="navbar-brand" href="#" (click)="refreshPage()">Naziv stranice</a>
-    <div class="navbar-nav ms-auto">
-      <a class="nav-link login-link me-lg-2" (click)="login()">Login</a>
-      <a class="nav-link register-link" (click)="register()">Register</a>
-    </div>
-  </div>
-</nav>
 
-<div class="container-fluid"> <!-- Use container-fluid to make the main container full-width -->
+<header>
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container-fluid">
+      <a class="navbar-brand title" href="#" (click)="refreshPage()">Perfect match</a>
+      <div class="navbar-nav ms-auto">
+        <a class="nav-link login-link me-lg-2" (click)="login()">Login</a>
+        <a class="nav-link register-link" (click)="register()">Register</a>
+      </div>
+    </div>
+  </nav>
+</header>
+
+<div class="container-fluid">
   <div>
     <app-agency-search></app-agency-search>
   </div>

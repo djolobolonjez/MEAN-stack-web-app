@@ -1,13 +1,15 @@
-<nav class="navbar">
-  <div class="container">
-    <div class="navbar-buttons">
-      <button class="btn btn-lighter" (click)="showClients()">Clients</button>
-      <button class="btn btn-lighter" (click)="showAgencies()">Agencies</button>
-      <button class="btn btn-lighter" (click)="showJobs()">Jobs</button>
-      <button class="btn btn-lighter" (click)="logout()">Logout</button>
+<header>
+  <nav class="navbar">
+    <div class="container">
+      <div class="navbar-buttons">
+        <button class="btn btn-lighter" (click)="showClients()">Clients</button>
+        <button class="btn btn-lighter" (click)="showAgencies()">Agencies</button>
+        <button class="btn btn-lighter" (click)="showJobs()">Jobs</button>
+        <button class="btn btn-lighter" (click)="logout()">Logout</button>
+      </div>
     </div>
-  </div>
-</nav>
+  </nav>
+</header>
 
 <div class="admin-container">
   <div *ngIf="displayAgencies" class="table-container">
