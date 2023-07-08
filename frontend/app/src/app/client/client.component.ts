@@ -28,7 +28,28 @@ export class ClientComponent implements OnInit {
 
   getUserType() {
     let queryParams = JSON.parse(localStorage.getItem('queryParams'));
-    return queryParams.userType;
+    if (queryParams == null) {
+      this.username = sessionStorage.getItem('username');
+      this.commonService.getUserByUsername(this.username, "client").subscribe((user: User) => {
+        if (user == null) {
+          this.commonService.getUserByUsername(this.username, "agency").subscribe((user: User) => {
+            if (user == null) {
+              this.userType = 'adminUser';
+            }
+            else {
+              this.userType = 'agencyUser';
+            }
+          });
+        }
+        else {
+          this.userType = 'clientUser';
+        }
+      })
+    }
+    else {
+      this.userType = queryParams.userType;
+    }
+    return this.userType;
   }
 
 }
