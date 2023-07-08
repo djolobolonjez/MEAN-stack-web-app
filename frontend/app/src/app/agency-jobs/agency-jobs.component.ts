@@ -22,13 +22,25 @@ export class AgencyJobsComponent implements OnInit {
     this.agencyId = JSON.parse(localStorage.getItem('queryParams')).username;
     this.agencyService.getRequestedJobs(this.agencyId).subscribe((jobs: Job[]) => {
       this.requestedJobs = jobs;
-      this.fetchClientAndObjectData();
+      this.requestedJobs.forEach((req) => {
+        console.log(req.clientID);
+        this.commonService.getUserById(req.clientID, "client").subscribe((user: User) => {
+          req.clientInfo = user;
+        });
+        this.clientService.getObjectById(req.objectID).subscribe((obj: Object) => {
+          console.log(req.objectID);
+          req.objectInfo = obj;
+        });
+      })
     });
     this.agencyService.getActiveJobs(this.agencyId).subscribe((jobs: Job[]) => {
       this.activeJobs = jobs;
       this.activeJobs.forEach(job => {
         this.clientService.getObjectById(job.objectID).subscribe((obj: Object) => {
           job.numberOfRooms = obj.numberOfRooms;
+        });
+        this.clientService.getObjectById(job.objectID).subscribe((obj: Object) => {
+          job.objectInfo = obj;
         })
         this.validJob(job).then(result => {
           job.started = result;
@@ -55,17 +67,6 @@ export class AgencyJobsComponent implements OnInit {
   selectedWorkers: Worker[] = [];
   inactiveWorkers: Worker[] = [];
   roomStatus: string[] = [];
-  
-  fetchClientAndObjectData() {
-    this.requestedJobs.forEach((req) => {
-      this.commonService.getUserById(req.clientID, "client").subscribe((user: User) => {
-        req.clientInfo = user;
-      });
-      this.clientService.getObjectById(req.objectID).subscribe((obj: Object) => {
-        req.objectInfo = obj;
-      });
-    })
-  }
 
   acceptJob(req) {
     req.clicked = true;

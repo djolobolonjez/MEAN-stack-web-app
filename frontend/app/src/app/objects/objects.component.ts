@@ -53,12 +53,15 @@ export class ObjectsComponent implements OnInit {
   submitObject() {
     this.addObjectForm = false;
     this.newObject.owner = this.userId;
-    this.clientService.addObject(this.newObject).subscribe((resp) => {
-      alert(resp['message']);
-      this.clientService.getAllObjects(this.userId).subscribe((objects: Object[]) => {
-        this.objects = objects;
+    this.clientService.getObjectId().subscribe((obj: Object) => {
+      this.newObject.id = obj.id + 1;
+      this.clientService.addObject(this.newObject).subscribe((resp) => {
+        alert(resp['message']);
+        this.clientService.getAllObjects(this.userId).subscribe((objects: Object[]) => {
+          this.objects = objects;
+        });
       });
-    })
+    });
   }
 
   jsonAdd() {
@@ -102,10 +105,14 @@ export class ObjectsComponent implements OnInit {
   }
 
   uploadFile() {
-    this.clientService.addObject(this.inputData).subscribe((resp) => {
-      alert(resp['message']);
-      this.commonService.refreshCurrentRoute(this.router);
+    this.clientService.getObjectId().subscribe((obj: Object) => {
+      this.inputData.id = obj.id + 1;
+      this.clientService.addObject(this.inputData).subscribe((resp) => {
+        alert(resp['message']);
+        this.commonService.refreshCurrentRoute(this.router);
+      })
     })
+    
   }
 }
 

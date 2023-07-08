@@ -51,5 +51,8 @@ ClientRouter.route('/deleteComment').post(
     (req, res) => new ClientController().deleteComment(req, res)
 );
 
+ClientRouter.route('/getObjectId').get(
+    (req, res) => new ClientController().getObjectId(req, res)
+);
 
 export default ClientRouter;

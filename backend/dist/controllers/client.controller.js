@@ -69,6 +69,16 @@ class ClientController {
                 }
             });
         };
+        this.getObjectId = (req, res) => {
+            object_1.default.findOne({}).sort({ "id": -1 }).limit(1).exec((err, obj) => {
+                if (err) {
+                    console.log(err);
+                }
+                else {
+                    res.json(obj);
+                }
+            });
+        };
         this.addObject = (req, res) => {
             let obj = new object_1.default(req.body);
             obj.save((err, resp) => {

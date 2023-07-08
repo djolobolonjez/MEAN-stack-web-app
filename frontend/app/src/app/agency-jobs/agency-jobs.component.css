@@ -1,0 +1,38 @@
+.requests-table {
+    margin-top: 20px;
+  }
+  
+  .requests-table h2,
+  .jobs-table h2 {
+    margin-bottom: 10px;
+  }
+  
+  .requests-table table,
+  .jobs-table table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .requests-table th,
+  .requests-table td,
+  .jobs-table th,
+  .jobs-table td {
+    padding: 8px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  .btn {
+    background-color: #f8f9fa;
+    border: none;
+    padding: 8px 16px;
+    color: #333;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .btn:hover {
+    background-color: #e9ecef;
+  }
+  

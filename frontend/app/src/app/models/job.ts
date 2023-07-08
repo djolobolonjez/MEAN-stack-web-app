@@ -1,3 +1,4 @@
+import { Object } from "./object";
 import { User } from "./user";
 
 export class Job {
@@ -10,8 +11,8 @@ export class Job {
     completionDate: string;
     status: string;
     price: number;
-    clientInfo: any;
-    objectInfo: any;
+    clientInfo: User;
+    objectInfo: Object;
     clicked: boolean = false;
     roomOneWorkers: Array<number>;
     roomTwoWorkers: Array<number>;

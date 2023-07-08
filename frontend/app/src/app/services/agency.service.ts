@@ -81,6 +81,7 @@ export class AgencyService {
       email: worker.email,
       phone: worker.phone,
       specialization: worker.specialization,
+      status: "inactive",
       agency: id
     };
     return this.http.post(`${this.uri}/agency/submitWorker`, data);

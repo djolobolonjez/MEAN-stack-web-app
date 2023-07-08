@@ -4,8 +4,8 @@
   
   <div class="agency-info">
     <div class="agency-header">
-      <img [src]="agency.profileImage" alt="Agency Profile Image">
-      <h3>{{agency.name}}</h3>
+      <img [src]="agency?.profileImage" alt="Agency Profile Image">
+      <h3>{{agency?.name}}</h3>
     </div>
   
     <div *ngIf="isClient">
@@ -28,7 +28,7 @@
     <div class="comments-section">
       <h3>Comments</h3>
       <div class="comments-container">
-        <div class="comment" *ngFor="let comment of agency.comments">
+        <div class="comment" *ngFor="let comment of agency?.comments">
           <div class="comment-content">
             <div class="comment-text">{{ comment.comment }}</div>
             <div class="comment-rating">

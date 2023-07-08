@@ -74,6 +74,17 @@ export class ClientController {
         })
     }
 
+    getObjectId = (req: express.Request, res: express.Response) => {
+        ObjectModel.findOne({}).sort({"id": -1}).limit(1).exec((err, obj) => {
+            if (err) {
+                console.log(err);
+            }
+            else {
+                res.json(obj);
+            }
+        })
+    }
+
     addObject = (req: express.Request, res: express.Response) => {
         let obj = new ObjectModel(req.body);
 

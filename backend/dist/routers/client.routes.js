@@ -18,5 +18,6 @@ ClientRouter.route('/payForJob').get((req, res) => new client_controller_1.Clien
 ClientRouter.route('/addComment').post((req, res) => new client_controller_1.ClientController().addComment(req, res));
 ClientRouter.route('/addRating').post((req, res) => new client_controller_1.ClientController().addRating(req, res));
 ClientRouter.route('/deleteComment').post((req, res) => new client_controller_1.ClientController().deleteComment(req, res));
+ClientRouter.route('/getObjectId').get((req, res) => new client_controller_1.ClientController().getObjectId(req, res));
 exports.default = ClientRouter;
 //# sourceMappingURL=client.routes.js.map
