@@ -119,14 +119,13 @@ export class AgencyController {
     submitWorker = (req: express.Request, res: express.Response) => {
         let worker = new WorkerModel(req.body.data);
         let userType = req.body.userType;
-
         worker.save((err, resp) => {
             if (err) {
                 console.log(err);
             }
             else {
                 if (userType != 'adminUser') {
-                    AgencyModel.updateOne({'id': req.body.agency}, 
+                    AgencyModel.updateOne({'id': req.body.data.agency}, 
                     {$inc: {'openVacancies': -1}}, 
                     (err, resp) => {
                         if (err) {

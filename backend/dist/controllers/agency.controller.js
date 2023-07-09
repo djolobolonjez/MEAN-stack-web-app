@@ -117,7 +117,7 @@ class AgencyController {
                 }
                 else {
                     if (userType != 'adminUser') {
-                        agency_1.default.updateOne({ 'id': req.body.agency }, { $inc: { 'openVacancies': -1 } }, (err, resp) => {
+                        agency_1.default.updateOne({ 'id': req.body.data.agency }, { $inc: { 'openVacancies': -1 } }, (err, resp) => {
                             if (err) {
                                 console.log(err);
                             }

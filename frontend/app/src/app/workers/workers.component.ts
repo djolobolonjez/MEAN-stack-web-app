@@ -90,7 +90,6 @@ export class WorkersComponent implements OnInit {
     this.showWorkerInput = false;
     this.agencyService.getWorkerId().subscribe((worker: Worker) => {
       this.newWorker.id = worker.id + 1;
-      console.log(this.newWorker.id);
       this.agencyService.submitWorker(this.agencyId, this.newWorker, this.userType).subscribe((resp) => {
         alert(resp['message']);
         this.agencyService.getWorkers(this.agencyId).subscribe((workers: Worker[]) => {

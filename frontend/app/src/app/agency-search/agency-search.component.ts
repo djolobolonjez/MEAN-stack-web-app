@@ -78,11 +78,11 @@ export class AgencySearchComponent implements OnInit {
   advancedSearch() {
     this.agencyService.advancedSearch(this.nameSearchTerm, this.addressSearchTerm).subscribe((users: User[]) => {
       this.allAgencies = this.retrieveAgencies(users);
+      this.searchPerformed = true;
     })
   }
 
   sortAgencies() {
-    console.log(this.selectedSortOption);
     if (this.selectedSortOption == "addressAsc") {
       this.allAgencies.sort((a, b) => a.address.localeCompare(b.address));
     }
